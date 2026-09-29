@@ -21,7 +21,7 @@ import threading
 from hayekmas.base.agent import BaseAgent
 from hayekmas.base.env import BaseEnv
 from hayekmas.base.config import DEFAULT_HAYEK_CONFIG, HayekConfig
-from hayekmas.base.mas import HayekMAS
+from hayekmas.base.mas import HayekMAS, build_wakeup_llm
 from hayekmas.utils.logger import logger
 
 
@@ -278,6 +278,7 @@ class Trainer(ABC):
             checkpoint_path = candidates[-1]
 
         self.mas = self.load_mas_from_checkpoint(checkpoint_path)
+        self.mas.wakeup_llm_override = build_wakeup_llm(self.hayek_config.concurrency.wakeup_model)
 
         # Re-attach factories for continued evolution after loading.
         good_birth_factory = self.create_agent_factory_good_birth()

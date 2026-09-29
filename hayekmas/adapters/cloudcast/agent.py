@@ -80,6 +80,7 @@ class CloudcastAgent(BaseAgent):
             name = f"{self.__class__.__name__}-{random.randint(1000, 9999)}"
         super().__init__(name=name, initial_bid=initial_bid, initial_wealth=initial_wealth)
         self.backbone_llm = backbone_llm
+        self.wakeup_llm = backbone_llm  # HayekMAS overrides this when mas.wakeup.wakeup_model is set
         self.logger = logger
 
     def _log(self, msg: str, **kwargs):
@@ -112,7 +113,7 @@ class CloudcastAgent(BaseAgent):
             agent_system_prompt=self.get_system_prompt(),
             state=getattr(env, "state", ""),
         )
-        response = (self.backbone_llm(prompt) or "").strip().lower()
+        response = (self.wakeup_llm(prompt) or "").strip().lower()
         woke = "boxed{yes}" in response
         if log_wakeup:
             self._log(f"🔔 Wakeup [{self.name}]: {'YES' if woke else 'NO'}", indent=3)

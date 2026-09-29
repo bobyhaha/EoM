@@ -108,6 +108,7 @@ class ConcurrencyConfig:
     wakeup_retry_backoff_seconds: float = 1.0
     wakeup_fail_open: bool = False
     log_wakeup: bool = True
+    wakeup_model: dict | None = None  # optional cheaper LLM for wakeup checks, e.g. {"api": ..., "name": ...}
 
 
 @dataclass
@@ -230,6 +231,7 @@ class HayekConfig:
         config.concurrency.wakeup_retry_backoff_seconds = wakeup.get("wakeup_retry_backoff_seconds", config.concurrency.wakeup_retry_backoff_seconds)
         config.concurrency.wakeup_fail_open = wakeup.get("wakeup_fail_open", config.concurrency.wakeup_fail_open)
         config.concurrency.log_wakeup = wakeup.get("log_wakeup", config.concurrency.log_wakeup)
+        config.concurrency.wakeup_model = wakeup.get("wakeup_model", config.concurrency.wakeup_model)
         terminal = raw.get("terminal", {})
         config.terminal.enabled = terminal.get("enabled", config.terminal.enabled)
         config.terminal.start_on_step_from_end = terminal.get("start_on_step_from_end", config.terminal.start_on_step_from_end)

@@ -84,6 +84,7 @@ class DSEAgentBase(BaseAgent):
             name = f"{self.ROLE.title()}-{BaseAgent._id_counter + 1}"
         super().__init__(name=name, initial_bid=initial_bid, initial_wealth=initial_wealth)
         self.backbone_llm = backbone_llm
+        self.wakeup_llm = backbone_llm  # HayekMAS overrides this when mas.wakeup.wakeup_model is set
         self.logger = logger
         self.experience: str = experience
         self.notebook_dir = Path(notebook_dir) if notebook_dir else None

@@ -53,7 +53,13 @@
     "wakeup": {
       "wakeup_parallel_enabled": true,
       "wakeup_max_workers": 10,
-      "log_wakeup": false
+      "log_wakeup": false,
+      "wakeup_model": {
+        "api": "litellm",
+        "name": "openai/gpt-5-nano",
+        "max_tokens": 4096,
+        "temperature": 1
+      }
     }
   },
   "adapter_config": "hayekmas/adapters/researchworld/configs/train_research.json"

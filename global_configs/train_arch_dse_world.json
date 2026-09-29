@@ -62,7 +62,13 @@
     },
     "wakeup": {
       "wakeup_parallel_enabled": false,
-      "wakeup_max_workers": 1
+      "wakeup_max_workers": 1,
+      "wakeup_model": {
+        "api": "litellm",
+        "name": "openai/gpt-5-nano",
+        "max_tokens": 4096,
+        "temperature": 1
+      }
     }
   },
   "adapter_config": "hayekmas/adapters/arch_dse_world/configs/train_arch_dse_world-resnet50.json"

@@ -12,6 +12,7 @@ from hayekmas.base.config import HayekConfig
 from hayekmas.base.agent import BaseAgent, AgentStatus, set_agent_id_counter
 from hayekmas.base.env import BaseEnv
 from hayekmas.base.population import Population
+from hayekmas.utils.llm import get_llm_client
 from hayekmas.utils.logger import logger
 
 
@@ -23,6 +24,12 @@ class TerminationReason(Enum):
     GOAL_REACHED = "goal_reached"
 
 
+def build_wakeup_llm(wakeup_model: Optional[Dict[str, Any]]) -> Optional[Callable[[str], str]]:
+    """Build the optional wakeup LLM from a `mas.wakeup.wakeup_model` dict (None when unset)."""
+    wm = dict(wakeup_model or {})
+    return get_llm_client(wm.pop("api"), model=wm.pop("name", ""), **wm).as_callable() if wm else None
+
+
 class HayekMAS:
     """Core execution engine for the Hayek multi-agent economy.
 
@@ -31,6 +38,9 @@ class HayekMAS:
     """
     def __init__(self, config: HayekConfig):
         self.config = deepcopy(config)
+        # Optional engine-wide override of agent.wakeup_llm (which defaults to each agent's backbone).
+        # Like the backbone, it comes from the run config and is not stored in checkpoints.
+        self.wakeup_llm_override = build_wakeup_llm(self.config.concurrency.wakeup_model)
 
         eng = self.config.engine
         self.max_steps_per_episode = eng.max_steps_per_episode
@@ -543,6 +553,9 @@ class HayekMAS:
                 # ─── ACTIVATION ───
                 log_wakeup = getattr(self.config.concurrency, "log_wakeup", True)
                 setattr(env, "log_wakeup", log_wakeup)
+                if self.wakeup_llm_override is not None:
+                    for agent in self.population.get_all():
+                        agent.wakeup_llm = self.wakeup_llm_override
                 active_agents = self.population.get_active(
                     env,
                     parallel=(

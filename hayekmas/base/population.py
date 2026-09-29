@@ -161,11 +161,11 @@ class Population(BaseModel):
             except Exception as exc:
                 is_last_attempt = attempt == total_attempts - 1
                 if is_last_attempt:
-                    if log_wakeup:
-                        logger.log(
-                            f"⚠️  Wakeup failed for {agent.name} after {total_attempts} attempt(s): {exc}",
-                            indent=2,
-                        )
+                    # Always surface final failures (e.g. a misconfigured wakeup_model), even with log_wakeup off.
+                    logger.log(
+                        f"⚠️  Wakeup failed for {agent.name} after {total_attempts} attempt(s): {exc}",
+                        indent=2,
+                    )
                     return fail_open
 
                 delay = max(0.0, retry_backoff_seconds) * (2 ** attempt)

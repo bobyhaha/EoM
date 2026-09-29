@@ -105,6 +105,7 @@ class ResearchAgent(BaseAgent):
             name = f"{self.__class__.__name__}-{self.TRAINABLE_SYSTEM_PROMPT[:20]}..."
         super().__init__(name=name, initial_bid=initial_bid, initial_wealth=initial_wealth)
         self.backbone_llm = backbone_llm
+        self.wakeup_llm = backbone_llm  # HayekMAS overrides this when mas.wakeup.wakeup_model is set
         self.logger = logger
 
     def _log(self, msg: str, **kwargs):
@@ -130,7 +131,7 @@ class ResearchAgent(BaseAgent):
             agent_system_prompt=self.get_system_prompt(),
             state=getattr(env, "state", ""),
         )
-        response = self.backbone_llm(prompt).strip().lower()
+        response = (self.wakeup_llm(prompt) or "").strip().lower()
         if "boxed{yes}" in response:
             self._log(f"🔔 Wakeup judge [{self.name}]: YES", indent=2)
             return True

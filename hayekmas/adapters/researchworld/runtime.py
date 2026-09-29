@@ -31,7 +31,7 @@ from hayekmas.adapters.researchworld.env import (
 )
 from hayekmas.base.agent import BaseAgent
 from hayekmas.base.config import DEFAULT_HAYEK_CONFIG, HayekConfig, RewardConfig
-from hayekmas.base.mas import HayekMAS
+from hayekmas.base.mas import HayekMAS, build_wakeup_llm
 from hayekmas.base.pipeline import Evaluator, Trainer
 from hayekmas.utils.llm import LLMClient, LLMConfig, get_llm_client
 from hayekmas.utils.logger import logger
@@ -439,6 +439,7 @@ class ResearchTrainer(Trainer):
                 mas_snapshot,
                 agent_deserializer=make_research_agent_deserializer(self.llm_client),
             )
+            mas.wakeup_llm_override = self.mas.wakeup_llm_override  # share one client across test tasks
             mas.eval()
             env = create_research_env(
                 task,
@@ -654,7 +655,8 @@ class ResearchEvaluator(Evaluator):
             checkpoint_path=config.run.checkpoint or config.run.output,
             verbose=config.run.verbose,
             hayek_config_overrides={
-                "max_steps_per_episode": config.mas.engine.max_steps_per_episode
+                "max_steps_per_episode": config.mas.engine.max_steps_per_episode,
+                "wakeup_llm_override": build_wakeup_llm(config.mas.concurrency.wakeup_model),
             },
             profile=config.profile,
         )
