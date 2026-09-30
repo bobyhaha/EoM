@@ -708,6 +708,11 @@ class CloudcastEnv(BaseEnv):
         return self._last_terminal_score > 0.0
 
     def get_terminal_score(self) -> Optional[float]:
+        # No final_answer() this episode (e.g. Evaluator won the terminal auction): score the program as-is.
+        if self._last_terminal_score is None and self.step_count > 0:
+            self._last_verifier_result = result = self._run_verifier()
+            self._last_terminal_score = result.normalized_score if result.available else 0.0
+            self._last_checkpoint_score = self._last_terminal_score
         return self._last_terminal_score
 
     def get_last_final_reward(self) -> float:
@@ -729,6 +734,7 @@ class CloudcastEnv(BaseEnv):
             return None
 
     def build_episode_metrics(self) -> Dict[str, Any]:
+        self.get_terminal_score()  # apply the no-final_answer fallback (eval mode never calls it)
         raw = self._last_verifier_result
         # Aggregate wakeup events by role: how often each role was judged vs
         # how often it actually woke up.  Ratio tells us whether a role is
