@@ -1,0 +1,137 @@
+// DOM regression tests for event playback, state reconstruction and stable reading.
+// JSDOM_MODULE may point to an existing jsdom installation.
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const { JSDOM, VirtualConsole } = require(process.env.JSDOM_MODULE || 'jsdom');
+const html = fs.readFileSync(process.argv[2], 'utf8');
+const errors = [], intervals = new Map();
+const virtualConsole = new VirtualConsole();
+virtualConsole.on('jsdomError', e => errors.push(e.message));
+let width = 820, resize, timerId = 0;
+const dom = new JSDOM(html, {
+  runScripts: 'dangerously', url: 'file:///replay.html', virtualConsole,
+  beforeParse(window) {
+    window.ResizeObserver = class { constructor(fn) { resize = fn; } observe() {} };
+    window.setInterval = (fn, delay) => { intervals.set(++timerId, {fn, delay}); return timerId; };
+    window.clearInterval = id => intervals.delete(id);
+    window.HTMLElement.prototype.scrollIntoView = function() {};
+    Object.defineProperty(window.HTMLElement.prototype, 'clientWidth', { get() { return width; } });
+  }
+});
+const document = dom.window.document, $ = id => document.getElementById(id);
+const payload = JSON.parse($('replay-data').textContent), round = payload.rounds[0];
+const input = (id, value, type='input') => { $(id).value=String(value); $(id).dispatchEvent(new dom.window.Event(type)); };
+const seek = n => input('event-slider', n);
+assert.ok(round.events.length > 2, 'Fixture must contain intermediate events');
+assert.equal($('event-slider').value, '0');
+assert.equal($('event-slider').max, String(round.events.length));
+assert.equal(document.querySelectorAll('.node').length, payload.initial_roster.length);
+assert.equal(document.querySelectorAll('.event').length, round.events.length, 'Full transcript remains readable');
+assert.ok(!$('round-outcome').textContent.includes('score'), 'No final outcome at start');
+$('next').click();
+assert.equal($('event-slider').value, '1', 'Next advances one event, not a whole task');
+assert.equal(document.querySelectorAll('.event.current').length, 1);
+assert.equal(document.querySelector('.event.current').dataset.event, '1');
+$('previous').click();
+assert.equal($('event-slider').value, '0');
+for (const a of payload.initial_roster) {
+  assert.equal(document.querySelector(`[data-agent="${a.name}"] small`).textContent, a.wealth.toFixed(2));
+}
+// A timer tick advances one event. Reading pauses the timer.
+$('play').click();
+assert.equal($('play').textContent, 'Pause');
+[...intervals.values()][0].fn();
+assert.equal($('event-slider').value, '1');
+dom.window.dispatchEvent(new dom.window.WheelEvent('wheel'));
+assert.equal($('play').textContent, 'Play');
+assert.equal(intervals.size, 0);
+// Playback must not replace transcript nodes, close disclosures or clear selection.
+const article = document.querySelector('.event'), details = article.querySelector('details');
+details.open = true;
+const textNode = article.querySelector('.message').firstChild;
+if (textNode) {
+  const range = document.createRange(); range.selectNodeContents(textNode);
+  dom.window.getSelection().addRange(range);
+}
+const selectedText = dom.window.getSelection().toString();
+$('next').click();
+assert.strictEqual(document.querySelector('.event'), article);
+assert.equal(details.open, true);
+assert.equal(dom.window.getSelection().toString(), selectedText);
+// Jumps and reverse scrubbing reconstruct balances instead of exposing the final snapshot.
+const auctionIndex=round.events.findIndex(e=>e.event==='auction');
+if (auctionIndex>=0) {
+  const auction=round.events[auctionIndex];seek(auctionIndex+1);
+  for (const name of auction.members) {
+    const total=auction.members.reduce((sum,n)=>sum+auction.contributions[n],0);
+    const cost=total?auction.paid*auction.contributions[name]/total:0;
+    const expected=auction.opening_wealth[name]-cost+(auction.credits?.[name]||0);
+    assert.equal(document.querySelector(`[data-agent="${name}"] small`).textContent, expected.toFixed(2));
+  }
+}
+seek(0);
+assert.ok(!$('round-outcome').textContent.includes('score'));
+$('events').querySelector('[data-event="2"] .event-jump').click();
+assert.equal($('event-slider').value, '2');
+// Inspectors and filters still work independently of playback position.
+document.querySelector('.node').click();
+assert.match($('agent-detail').textContent, /Current strategy/);
+$('clear-agent').click();
+input('channel-filter','bidding','change');
+assert.match($('events').textContent, /pledge|contribution/);
+input('channel-filter','team','change');
+if(round.events.some(e=>e.event==='finalization_started'))assert.match($('events').textContent,/Final-answer window opened/);
+if(round.events.some(e=>e.event==='submission'))assert.match($('events').textContent,/Submitted final answer|Published intermediate step/);
+if(round.events.some(e=>e.event==='review_started')) {
+  assert.match($('events').textContent,/Independent drafts started/);
+  assert.match($('events').textContent,/evidence review/);
+  assert.match($('events').textContent,/revised answer/);
+  const reviewButton=[...$('phase-nav').querySelectorAll('button')].find(b=>b.textContent.endsWith('Review'));
+  assert.ok(reviewButton,'Review phase is directly navigable');
+  reviewButton.click();
+  assert.equal($('event-slider').value,String(round.events.findIndex(e=>e.event==='review_feedback')+1));
+}
+input('channel-filter','all','change');
+if(round.events.some(e=>e.step===1)) {
+  input('step-filter','1','change');
+  assert.ok(!$('events').textContent.includes('Step 1 ·'));
+  input('step-filter','','change');
+}
+$('latest').click();
+assert.equal($('round-select').value,String(payload.rounds.length-1));
+assert.equal($('event-slider').value,String(payload.rounds.at(-1).events.length));
+for(const a of payload.rounds.at(-1).agents)assert.equal(document.querySelector(`[data-agent="${a.name}"] small`).textContent,a.wealth.toFixed(2));
+$('membership').querySelector('tbody tr td button').click();
+assert.equal($('round-label').textContent,'Initial state');
+$('play').click();
+[...intervals.values()][0].fn();
+assert.equal($('round-select').value,'0');
+assert.equal($('event-slider').value,'1');
+$('play').click();
+width=330;resize();
+for(const node of document.querySelectorAll('.node'))assert.ok(parseFloat(node.style.left)>0&&parseFloat(node.style.left)<width);
+assert.deepEqual(errors,[]);
+dom.window.close();
+// A new completed task must not drag a live viewer to the end or rebuild its transcript.
+(async()=>{
+ const liveData=JSON.parse(JSON.stringify(payload));liveData.status='running';
+ const fresh=JSON.parse(JSON.stringify(liveData));fresh.rounds.push({...fresh.rounds.at(-1),round:fresh.rounds.at(-1).round+1});
+ const safe=JSON.stringify(liveData).replace(/</g,'\\u003c');
+ const liveHtml=html.replace(/(<script id="replay-data" type="application\/json">)[\s\S]*?(<\/script>)/,(_,a,b)=>a+safe+b);
+ let poll;
+ const live=new JSDOM(liveHtml,{runScripts:'dangerously',url:'http://localhost/replay.html',virtualConsole,beforeParse(w){
+  w.ResizeObserver=class{observe(){}};w.fetch=async()=>({ok:true,json:async()=>fresh});
+  w.setInterval=(fn,delay)=>{if(delay===2000)poll=fn;return 1};w.clearInterval=()=>{};
+  Object.defineProperty(w.HTMLElement.prototype,'clientWidth',{get(){return 820}});
+ }});
+ const doc=live.window.document;doc.getElementById('next').click();
+ const node=doc.querySelector('.event');node.querySelector('details').open=true;
+ await poll();
+ assert.equal(doc.getElementById('round-select').value,'0');
+ assert.equal(doc.getElementById('event-slider').value,'1');
+ assert.equal(doc.getElementById('round-select').options.length,fresh.rounds.length+1);
+ assert.strictEqual(doc.querySelector('.event'),node);
+ assert.equal(node.querySelector('details').open,true);
+ assert.deepEqual(errors,[]);live.window.close();
+ console.log('Replay DOM checks passed: individual events, balances, seeking, readable transcript, selection, filters, playback, live refresh and narrow layout.');
+})().catch(e=>{console.error(e);process.exitCode=1});

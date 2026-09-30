@@ -1,0 +1,28 @@
+{
+  "domain": "teams",
+  "backend": "llm",
+  "environment": "exact",
+  "out": "runs/openrouter-pilot",
+  "model": {
+    "api": "openrouter",
+    "name": "qwen/qwen3-30b-a3b-instruct-2507"
+  },
+  "budget": {
+    "max_usd": 10,
+    "prompt_usd_per_million": 0.15,
+    "completion_usd_per_million": 0.6
+  },
+  "teams": {
+    "condition": "dynamic",
+    "num_agents": 12,
+    "rounds": 12,
+    "max_steps": 3,
+    "seed": 7,
+    "action_tokens": 512,
+    "inspect_tokens": 512,
+    "update_tokens": 512,
+    "evidence_tokens": 2048,
+    "context_tokens": 16384,
+    "max_calls": 2500
+  }
+}

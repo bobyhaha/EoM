@@ -29,6 +29,7 @@ classifiers = [
 
 # Core dependencies used by the active adapters and shared runtime
 dependencies = [
+    "tqdm>=4.0",
     "requests",
     "pydantic>=2.0",
     "rich>=13.0",
@@ -38,6 +39,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+teams = ["tiktoken>=0.8", "matplotlib>=3.7"]
 # LiteLLM for cloud / OpenAI-compatible APIs
 litellm = [
     "litellm",
@@ -129,6 +131,7 @@ where = ["."]
 include = ["hayekmas*"]
 
 [tool.setuptools.package-data]
+"hayekmas.adapters.teams" = ["replay.html"]
 "*" = ["data/**/*.jsonl"]
 
 [tool.black]

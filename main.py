@@ -13,6 +13,7 @@ import sys
 
 
 ADAPTER_RUNTIMES = {
+    "teams": "hayekmas.adapters.teams.runtime",
     "arch_dse_world": "hayekmas.adapters.arch_dse_world.runtime",
     "cloudcast": "hayekmas.adapters.cloudcast.runtime",
     "researchworld": "hayekmas.adapters.researchworld.runtime",

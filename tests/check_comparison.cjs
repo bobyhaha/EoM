@@ -1,0 +1,17 @@
+const fs=require('node:fs'), assert=require('node:assert/strict');
+const {JSDOM,VirtualConsole}=require(process.env.JSDOM_MODULE||'jsdom');
+const errors=[], vc=new VirtualConsole();vc.on('jsdomError',e=>errors.push(e.message));
+const dom=new JSDOM(fs.readFileSync(process.argv[2],'utf8'),{runScripts:'dangerously',url:'file:///comparison.html',virtualConsole:vc});
+const $=id=>dom.window.document.getElementById(id),data=JSON.parse($('data').textContent);
+assert.equal($('summary').children.length,data.summary.length);
+assert.equal($('task').options.length,data.pairs.length);
+assert.match($('detail').textContent,/Team score/);
+const pair=data.pairs[0];
+assert.equal($('detail').querySelector('a').getAttribute('href'),pair.team.replay);
+$('k').value=String(data.ks.at(-1));$('k').dispatchEvent(new dom.window.Event('change'));
+assert.ok($('detail').textContent.includes(`pass@${data.ks.at(-1)}`));
+$('task').value=String(data.pairs.length-1);$('task').dispatchEvent(new dom.window.Event('change'));
+assert.ok($('detail').textContent.includes(data.pairs.at(-1).task_id));
+assert.equal($('detail').querySelectorAll('details').length,data.samples_per_task+1);
+assert.deepEqual(errors,[]);dom.window.close();
+console.log('Comparison dashboard checks passed: metrics, task/k selectors, candidate answers and replay links.');

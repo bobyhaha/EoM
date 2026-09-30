@@ -1,0 +1,19 @@
+{
+  "domain": "teams",
+  "backend": "demo",
+  "out": "runs/teams-reviewed-demo",
+  "plots": false,
+  "teams": {
+    "condition": "random_fixed",
+    "num_agents": 12,
+    "fixed_team_size": 2,
+    "rounds": 3,
+    "seed": 7,
+    "bidding_mode": "sealed",
+    "collaboration_mode": "reviewed",
+    "finalization_enabled": true,
+    "bid_tokens": 256,
+    "solution_tokens": 512,
+    "max_calls": 1000
+  }
+}

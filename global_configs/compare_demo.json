@@ -1,0 +1,24 @@
+{
+  "backend": "demo",
+  "environment": "exact",
+  "out": "runs/comparison-demo",
+  "teams": {
+    "num_agents": 6,
+    "rounds": 3,
+    "max_steps": 3,
+    "condition": "dynamic"
+  },
+  "comparison": {
+    "samples": 4,
+    "ks": [
+      1,
+      2,
+      4
+    ],
+    "seeds": [
+      7,
+      17
+    ],
+    "max_total_calls": 3000
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "domain": "teams",
+  "backend": "demo",
+  "out": "runs/teams-demo",
+  "teams": {
+    "condition": "dynamic",
+    "num_agents": 12,
+    "rounds": 12,
+    "seed": 7,
+    "initial_wealth": 20,
+    "reward": 12,
+    "negotiation_interval": 5,
+    "max_team_size": 4,
+    "formation_turns": 3,
+    "bidding_turns": 2,
+    "discussion_turns": 2,
+    "reflection_cost": 2,
+    "bid_cost_rate": 1,
+    "action_tokens": 256,
+    "inspect_tokens": 256,
+    "update_tokens": 256,
+    "evidence_tokens": 2048,
+    "summary_tokens": 192,
+    "context_tokens": 8192,
+    "max_calls": 2000
+  }
+}

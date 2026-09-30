@@ -1,0 +1,50 @@
+{
+  "domain": "teams",
+  "backend": "llm",
+  "environment": "researchworld",
+  "dataset": "third_party/benchmarks/frontier-science-research/data/research_test.jsonl",
+  "split": "test",
+  "model": {
+    "api": "openrouter",
+    "name": "qwen/qwen3-30b-a3b-instruct-2507"
+  },
+  "budget": {
+    "max_usd": 10,
+    "prompt_usd_per_million": 0.15,
+    "completion_usd_per_million": 0.6
+  },
+  "out": "runs/science-comparison-test",
+  "teams": {
+    "condition": "dynamic",
+    "num_agents": 12,
+    "rounds": 19,
+    "max_steps": 8,
+    "action_tokens": 512,
+    "solution_tokens": 4096,
+    "judge_tokens": 2048,
+    "inspect_tokens": 1024,
+    "update_tokens": 1024,
+    "summary_tokens": 512,
+    "evidence_tokens": 8192,
+    "environment_tokens": 16384,
+    "context_tokens": 65536,
+    "max_calls": 10000
+  },
+  "comparison": {
+    "samples": 12,
+    "ks": [
+      1,
+      2,
+      4,
+      8,
+      12
+    ],
+    "seeds": [
+      7
+    ],
+    "train_dataset": "third_party/benchmarks/frontier-science-research/data/research_train.jsonl",
+    "train_rounds": 0,
+    "pass_threshold": 0.5,
+    "max_total_calls": 20000
+  }
+}

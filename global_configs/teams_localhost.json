@@ -1,0 +1,7 @@
+{
+  "domain": "teams",
+  "backend": "llm",
+  "model": {"api": "localhost", "name": "replace-with-served-model-id", "api_base": "http://127.0.0.1:8000/v1"},
+  "out": "runs/teams-localhost",
+  "teams": {"condition": "dynamic", "num_agents": 12, "rounds": 12, "max_calls": 2000}
+}

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Economy of Minds · Team dynamics</title>
+<style>
+:root{color-scheme:dark;--bg:#0c1420;--panel:#121e2d;--line:#29384a;--text:#ecf1f7;--muted:#adbbcc;--accent:#8de4d2}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,sans-serif}button,input,select{font:inherit}button,select{color:var(--text);background:#1c2b3f;border:1px solid #40516a;border-radius:7px;padding:8px 12px;cursor:pointer}button:hover{background:#2e435c}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button[aria-pressed=true]{border-color:var(--accent);background:#203e43}button:disabled{opacity:.45;cursor:default}a{color:var(--accent)}header{padding:24px 30px 16px;display:flex;align-items:center;justify-content:space-between;gap:20px;border-bottom:1px solid var(--line)}h1{font-size:22px;letter-spacing:-.5px;margin:0}h2{font-size:17px;margin:0}h3{font-size:16px;margin:0 0 12px}p{margin:4px 0}small,.muted{color:var(--muted);font-size:13px}.badge{font-size:12px;padding:5px 9px;border:1px solid var(--line);border-radius:4px;color:var(--accent)}main{max-width:1600px;margin:auto;padding:22px 30px 40px}.controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}.controls input[type=range]{flex:1;min-width:130px;accent-color:var(--accent)}.round-label{min-width:115px;font-variant-numeric:tabular-nums}.main-grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(330px,1fr);gap:18px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;min-width:0;overflow:hidden}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}.panel-content{padding:18px}.network{position:relative;width:100%;min-height:440px}.network svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.cluster{position:absolute;border:1px solid var(--line);border-radius:16px;background:#17253544;transition:all .5s}.cluster-name{position:absolute;left:12px;top:6px;font-size:12px;color:var(--muted)}.node{position:absolute;transform:translate(-50%,-50%);border-radius:50%;width:72px;height:72px;padding:4px;display:flex;align-items:center;justify-content:center;flex-direction:column;border:2px solid var(--node-color);background:#18283b;transition:left .5s,top .5s,box-shadow .2s;box-shadow:0 0 0 5px #121e2d}.node strong{font-size:14px}.node small{font-size:12px;color:var(--text)}.node[aria-pressed=true]{background:#355167;box-shadow:0 0 0 5px #48708b88}.network-caption{padding:8px 18px 16px;color:var(--muted);font-size:13px}.statline{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:16px}.statline strong{font-size:20px;font-weight:500;display:block;font-variant-numeric:tabular-nums}.statline span{font-size:12px;color:var(--muted)}.agent-list{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:12px 18px;border-bottom:1px solid var(--line)}.agent-list button{font-size:13px;padding:6px}.agent-content{padding:16px 18px}.agent-content pre{font:14px/1.5 system-ui,sans-serif;white-space:pre-wrap;word-break:break-word;margin:5px 0 14px;color:#d7e2ee}.agent-wealth{height:105px;width:100%;display:block;margin:8px 0}.timeline{margin-top:18px}.timeline-scroll{overflow:auto;max-height:410px;padding:16px 18px}.membership-table{border-collapse:separate;border-spacing:4px;width:100%;font-size:12px;text-align:center}.membership-table th{font-weight:400;color:var(--muted);white-space:nowrap}.membership-table button{padding:6px;min-width:30px;width:100%;border-radius:3px;border:1px solid transparent;font-size:12px;background:color-mix(in srgb,var(--cell-color) 25%,#132030);color:var(--text)}.membership-table button.selected{outline:2px solid var(--accent);outline-offset:0}.membership-table tbody th{position:sticky;left:0;background:var(--panel);text-align:left;padding-right:6px}.conversation{margin-top:18px}.filters{display:flex;gap:8px;flex-wrap:wrap}.filters label{display:flex;align-items:center;gap:7px;font-size:13px}.filters select{font-size:13px;max-width:180px}.event-list{padding:6px 18px 18px;max-height:650px;overflow:auto}.event{padding:14px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:34px 1fr;gap:12px}.event-index{font-size:12px;color:var(--muted);padding-top:2px}.event .meta{font-size:13px;color:var(--accent);margin-bottom:5px}.event .message{white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px}.event summary{cursor:pointer;font-size:13px;color:var(--muted);margin-top:8px}.event pre{white-space:pre-wrap;font-size:12px;overflow-wrap:anywhere}.empty{padding:28px;color:var(--muted)}.status{font-size:13px;color:var(--muted)}.live-note{font-size:12px;color:var(--muted);margin-bottom:14px}details summary{cursor:pointer}footer{margin-top:20px;color:var(--muted);font-size:12px}
+@media(max-width:1000px){.main-grid{grid-template-columns:1fr}.agent-list{grid-template-columns:repeat(6,1fr)}.agent-content{display:grid;grid-template-columns:1fr 1fr;gap:16px}.agent-content>h3,.agent-content>.statline{grid-column:1/-1}}
+@media(max-width:600px){header{padding:16px;align-items:flex-start;flex-direction:column;gap:8px}main{padding:16px 12px}.agent-list{grid-template-columns:repeat(3,1fr)}.agent-content{display:block}.node{width:60px;height:60px}.controls{gap:8px}.controls input[type=range]{order:3;flex-basis:100%}.filters label{width:100%;justify-content:space-between}.filters select{max-width:none;flex:1}.network{min-height:620px}.panel-head{padding:14px}.event-list{padding:4px 14px}.statline{gap:14px}}
+@media(prefers-reduced-motion:reduce){.node,.cluster{transition:none}}
+.playback{position:sticky;top:0;z-index:10;background:var(--bg);padding:12px 0;border-bottom:1px solid var(--line);margin-bottom:18px}.controls{margin-bottom:8px}.controls label{font-size:13px;display:flex;align-items:center;gap:6px}.controls .round-label{min-width:145px}.event-context{color:var(--accent);font-size:14px;min-height:24px}.event-list{max-height:none;overflow:visible}.event{scroll-margin-top:170px;padding:16px 8px}.event.current{background:#203e43;border-left:3px solid var(--accent)}.event.upcoming .event-index{color:#738294}.event-jump{padding:4px 8px;font-size:12px}.event-state{font-size:11px;display:block;color:var(--muted);margin-top:6px}.event-index{width:58px}.event{grid-template-columns:62px minmax(0,1fr)}.phase-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.phase-nav button{font-size:12px;padding:5px 9px}.live-note{margin:0 0 8px}.network-caption a{margin-left:8px}.node.speaking{box-shadow:0 0 0 6px #8de4d277}.conversation{scroll-margin-top:170px}.panel-head .status{max-width:100%}
+</style>
+</head>
+<body>
+<header><div><h1>Economy of Minds <span class="muted">/ Team dynamics</span></h1><p class="status" id="run-status"></p></div><span class="badge" id="backend-label"></span></header>
+<main>
+<div class="playback"><div class="controls"><label>Task <select id="round-select" aria-label="Task"></select></label><button id="previous" aria-label="Previous event">←</button><button id="play">Play</button><button id="next" aria-label="Next event">→</button><strong class="round-label" id="round-label" aria-live="polite">Initial state</strong><input id="event-slider" aria-label="Event progression" type="range" min="0" max="0" value="0"><label>Speed <select id="speed"><option value="2400">Slow</option><option value="1400" selected>Normal</option><option value="600">Fast</option></select></label><button id="latest">Go to end</button><label><input type="checkbox" id="follow-playback"> Follow playback</label><a href="#conversation">Read transcript ↓</a></div><div class="event-context" id="event-context"></div><div class="live-note" id="live-note"></div></div>
+<div class="phase-nav" id="phase-nav" aria-label="Jump to a phase"></div>
+<div class="main-grid">
+<section class="panel"><div class="panel-head"><h2>Teams & communication</h2><span class="status" id="round-outcome"></span></div><div class="network" id="network" aria-label="Agent state at the selected event"></div><div class="network-caption">Teams, wealth and message lines advance one event at a time. Select an agent to inspect its state.</div></section>
+<section class="panel"><div class="panel-head"><h2>Agent inspector</h2><button id="clear-agent">Show everyone</button></div><div class="agent-list" id="agent-list"></div><div class="agent-content" id="agent-detail"></div></section>
+</div>
+<section class="panel timeline"><div class="panel-head"><h2>Membership over time</h2><span class="status">Select a cell to jump to that agent and round</span></div><div class="timeline-scroll" id="membership"></div></section>
+<section class="panel conversation" id="conversation"><div class="panel-head"><h2 id="conversation-title">Task transcript</h2><span class="status">Scroll freely. Select an event number to replay from that point.</span><div class="filters"><label>Team <select id="team-filter"><option value="">All teams</option></select></label><label>Step <select id="step-filter"><option value="">All steps</option></select></label><label>Activity <select id="channel-filter"><option value="all">All activity</option><option value="conversation">Messages</option><option value="bidding">Bid negotiation</option><option value="team">Task discussion</option><option value="formation">Team formation</option><option value="economy">Auction & reward</option><option value="reflection">Reflection</option></select></label></div></div><div class="event-list" id="events"></div></section>
+<footer>Replay uses recorded actions and messages. Agent summaries are bounded extracts; the activity stream retains full recorded messages.</footer>
+</main>
+<script id="replay-data" type="application/json">__REPLAY_DATA__</script>
+<script>
+(() => {
+'use strict';
+let data=JSON.parse(document.getElementById('replay-data').textContent), index=data.rounds.length?0:-1, cursor=0, selected='', teamFilter='', channel='all', stepFilter='', timer=null, eventListKey='';
+const $=id=>document.getElementById(id), money=n=>Number(n||0).toFixed(2), colors=['#81cebe','#e2ae6c','#9cabed','#d796c2','#80bfdf','#c3ce85','#da9a89','#a9bfcc'];
+const initial=()=>({round:-1,agents:data.initial_agents||data.initial_roster.map(a=>({name:a.name,team:a.team,wealth:a.wealth,summary:'No completed experience yet.',strategy:'Choose actions that improve your future wealth.'})),events:[],metrics:{membership:Object.fromEntries(data.initial_roster.map(a=>[a.name,a.team])),wealth:Object.fromEntries(data.initial_roster.map(a=>[a.name,a.wealth])),contributions:{},reward:0},teams:[]});
+const fullRound=()=>index<0?initial():data.rounds[index];
+const color=tag=>tag?colors[(Number(String(tag).replace(/\D/g,''))||0)%colors.length]:'#71839a';
+function el(tag,text,className){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(className)n.className=className;return n}
+function svg(tag,attrs){const n=document.createElementNS('http://www.w3.org/2000/svg',tag);Object.entries(attrs||{}).forEach(([k,v])=>n.setAttribute(k,v));return n}
+// Reconstruct only what had happened by the selected event; end snapshots remain authoritative.
+function current(){
+ const full=fullRound();if(index<0)return full;if(cursor>=full.events.length&&full.events.length)return full;
+ const before=index===0?initial():data.rounds[index-1], agents=before.agents.map(a=>({...a})), byName=new Map(agents.map(a=>[a.name,a]));
+ const metrics={contributions:{},paid:{},bid_income:{},reward_income:{},wealth:{},membership:{},reward:0,winner:null};
+ const events=full.events.slice(0,cursor);
+ const credit=(name,amount,field)=>{const a=byName.get(name);if(a){a.wealth+=amount;metrics[field][name]=(metrics[field][name]||0)+amount}};
+ for(const e of events){
+  if(e.event==='joined'){for(const name of [e.agent,e.inviter])if(byName.has(name))byName.get(name).team=e.team}
+  if(e.event==='left'&&byName.has(e.agent))byName.get(e.agent).team=null;
+  if(e.event==='team_dissolved'&&byName.has(e.remaining))byName.get(e.remaining).team=null;
+  if(e.event==='pledge')metrics.contributions[e.agent]=e.amount;
+  if(e.event==='contributions_committed')Object.assign(metrics.contributions,e.contributions);
+  if(e.event==='bid_transfer'){
+   const total=(e.total||0)+(e.burned||0), pledged=(e.members||[]).reduce((s,n)=>s+(metrics.contributions[n]||0),0);
+   for(const name of e.members||[]){const cost=pledged?total*(metrics.contributions[name]||0)/pledged:0;if(byName.has(name))byName.get(name).wealth-=cost;metrics.paid[name]=(metrics.paid[name]||0)+cost}
+   for(const [name,amount]of Object.entries(e.credits||{}))credit(name,amount,'bid_income');
+  }
+  if(e.event==='auction'){metrics.winner=e.winner;Object.assign(metrics.contributions,e.contributions)}
+  if(e.event==='settlement'){
+   metrics.winner=e.winner;metrics.reward+=e.reward||0;metrics.score=e.score;
+   for(const name of e.members||[])credit(name,e.share||0,'reward_income');
+   for(const [name,wealth]of Object.entries(e.wealth||{}))if(byName.has(name))byName.get(name).wealth=wealth;
+  }
+  if(e.event==='reflection_paid'&&byName.has(e.agent))byName.get(e.agent).wealth-=e.cost;
+  if(e.event==='strategy_updated'&&byName.has(e.agent))byName.get(e.agent).strategy=e.strategy;
+  const author=e.agent||e.author||e.sender, text=e.text||e.answer;
+  if(author&&text&&byName.has(author))byName.get(author).summary=((byName.get(author).summary||'')+'\n'+text).slice(-3000);
+ }
+ for(const a of agents){metrics.wealth[a.name]=a.wealth;metrics.membership[a.name]=a.team}
+ return {...full,agents,events,metrics};
+}
+function setIndex(next,at=0){index=Math.max(-1,Math.min(data.rounds.length-1,next));cursor=Math.max(0,Math.min(fullRound().events.length,at));render()}
+function seek(at){cursor=Math.max(0,Math.min(fullRound().events.length,at));render()}
+function advance(direction){
+ if(direction>0){if(index<0)setIndex(0,1);else if(cursor<fullRound().events.length)seek(cursor+1);else if(index<data.rounds.length-1)setIndex(index+1,1);else stop()}
+ else if(cursor>0)seek(cursor-1);else if(index>0)setIndex(index-1,data.rounds[index-1].events.length);else setIndex(-1);
+}
+function chooseAgent(name){selected=selected===name?'':name;render()}
+function stop(){if(timer!==null)clearInterval(timer);timer=null;$('play').textContent='Play'}
+function start(){timer=setInterval(()=>{advance(1);if($('follow-playback').checked)$('events').querySelector('.current')?.scrollIntoView({block:'center',behavior:'instant'});if(index===data.rounds.length-1&&cursor===fullRound().events.length)stop()},Number($('speed').value));$('play').textContent='Pause'}
+$('previous').onclick=()=>{stop();advance(-1)};
+$('next').onclick=()=>{stop();advance(1)};
+$('latest').onclick=()=>{stop();setIndex(data.rounds.length-1,data.rounds.at(-1)?.events.length||0)};
+$('event-slider').oninput=e=>{stop();seek(Number(e.target.value))};
+$('round-select').onchange=e=>{stop();setIndex(Number(e.target.value))};
+$('play').onclick=()=>{if(timer!==null){stop();return}if(!data.rounds.length)return;if(index<0||cursor===fullRound().events.length)setIndex(index<0?0:index);start()};
+$('speed').onchange=()=>{if(timer!==null){stop();start()}};
+$('clear-agent').onclick=()=>{selected='';render()};
+$('channel-filter').onchange=e=>{channel=e.target.value;renderEvents()};
+$('step-filter').onchange=e=>{stepFilter=e.target.value;renderEvents()};
+$('team-filter').onchange=e=>{teamFilter=e.target.value;renderEvents()};
+// Reader interaction pauses playback; background refresh never takes over the reader's position.
+for(const type of ['wheel','touchstart'])window.addEventListener(type,()=>{if(timer!==null)stop()},{passive:true});
+function render(){
+ const round=current(),full=fullRound(),total=full.events.length,event=full.events[cursor-1];
+ $('round-label').textContent=index<0?'Initial state':`Event ${cursor} / ${total}`;
+ $('event-slider').max=total;$('event-slider').value=cursor;$('event-slider').disabled=index<0||total===0;
+ $('previous').disabled=index<0;$('next').disabled=!data.rounds.length||(index===data.rounds.length-1&&cursor>=total);$('play').disabled=!data.rounds.length;
+ const selector=$('round-select');if(selector.options.length!==data.rounds.length+1){selector.replaceChildren(new Option('Initial state','-1'));data.rounds.forEach((r,i)=>selector.add(new Option(`Task ${i+1}${r.round!==i?` (round ${r.round+1})`:''}`,String(i))))}selector.value=index;
+ $('event-context').textContent=event?`${Number.isInteger(event.step)?`Step ${event.step+1} · `:''}${describe(event)[0]}`:'Before the first event · press Play or Next, or select an event in the transcript.';
+ $('run-status').textContent=`${data.condition.replaceAll('_',' ')} · ${data.initial_roster.length} agents · ${data.status} · ${data.rounds.length} recorded tasks`;
+ $('backend-label').textContent=data.backend==='scripted_demo'?'SCRIPTED DEMO · not evidence of emergence':data.backend;
+ $('live-note').textContent=data.status==='running'?'New completed tasks appear in the task selector. Your playback and reading position stay unchanged.':'The full transcript stays readable while playback updates the diagram. Scrolling pauses playback.';
+ $('round-outcome').textContent=round.metrics.score!==undefined?`${round.metrics.winner||'No winner'} · score ${round.metrics.score} · reward ${money(round.metrics.reward)}`:round.metrics.winner?`${round.metrics.winner} won the auction`:'Auction not yet resolved';
+ const list=$('agent-list');list.replaceChildren();round.agents.forEach(a=>{const b=el('button',a.name);b.setAttribute('aria-pressed',String(selected===a.name));b.onclick=()=>chooseAgent(a.name);list.append(b)});
+ const filter=$('team-filter'),previousFilter=teamFilter;filter.replaceChildren(new Option('All teams',''));
+ [...new Set([...round.agents,...full.agents].map(a=>a.team||`solo:${a.name}`))].sort().forEach(t=>filter.add(new Option(t,t)));
+ if([...filter.options].some(o=>o.value===previousFilter))filter.value=previousFilter;else teamFilter='';
+ const steps=$('step-filter');steps.replaceChildren(new Option('All steps',''));[...new Set(full.events.map(e=>e.step).filter(Number.isInteger))].sort((a,b)=>a-b).forEach(s=>steps.add(new Option(`Step ${s+1}`,String(s))));
+ if([...steps.options].some(o=>o.value===stepFilter))steps.value=stepFilter;else stepFilter='';
+ const nav=$('phase-nav');if(nav.dataset.task!==String(index)||Number(nav.dataset.count)!==total){nav.replaceChildren();nav.dataset.task=index;nav.dataset.count=total;let last='';full.events.forEach((e,i)=>{const phase=reviewPhase(e)|| (e.event==='finalization_started'?'Finalization':e.event==='settlement'?'Reward':e.event==='submission'?'Submission':e.event==='auction'?'Auction':category(e));const key=`${e.step}:${phase}`;if(key!==last){last=key;if(['bidding','team','formation','reflection','Finalization','Independent drafts','Review','Revision','Reward','Submission','Auction'].includes(phase)){const labels={bidding:'Bidding',team:'Discussion',formation:'Formation',reflection:'Reflection'};const b=el('button',`${Number.isInteger(e.step)?`${e.step+1} · `:''}${labels[phase]||phase}`);b.onclick=()=>{stop();seek(i+1)};nav.append(b)}}})}
+ renderNetwork();renderAgent();renderTimeline();renderEvents();
+}
+function renderNetwork(){
+ const round=current(), box=$('network'), width=box.clientWidth, narrow=width<480;
+ const groups=new Map(), independent=[];round.agents.forEach(a=>{if(!a.team){independent.push(a);return}if(!groups.has(a.team))groups.set(a.team,[]);groups.get(a.team).push(a)});
+ const cols=narrow?2:Math.min(3,Math.max(1,groups.size)), rows=Math.ceil(groups.size/cols), cellW=width/cols, cellH=210;
+ const soloCols=narrow?3:6, soloRows=Math.ceil(independent.length/soloCols), height=Math.max(270,rows*cellH+(soloRows?soloRows*100+45:0));
+ box.style.height=`${height}px`;box.style.minHeight='0';const positions=new Map(), layout=[];
+ [...groups].forEach(([key,members],g)=>{const cx=(g%cols+.5)*cellW,cy=(Math.floor(g/cols)+.5)*cellH;
+   layout.push({key,members,x:(g%cols)*cellW+7,y:Math.floor(g/cols)*cellH+8,w:cellW-14,h:cellH-16});
+   members.forEach((a,i)=>{const twoColumns=members.length>1, x=twoColumns?cx+(i%2===0?-1:1)*cellW*.23:cx, y=cy+12+(members.length>2?(Math.floor(i/2)===0?-40:40):0);positions.set(a.name,{x,y})});});
+ if(independent.length){const offset=rows*cellH;layout.push({key:'Independent',x:7,y:offset+8,w:width-14,h:soloRows*100+30});independent.forEach((a,i)=>positions.set(a.name,{x:(i%soloCols+.5)*width/soloCols,y:offset+75+Math.floor(i/soloCols)*100}))}
+ box.querySelectorAll('.cluster').forEach(n=>n.remove());layout.forEach(g=>{const c=el('div',undefined,'cluster');Object.assign(c.style,{left:`${g.x}px`,top:`${g.y}px`,width:`${g.w}px`,height:`${g.h}px`});c.append(el('span',g.key.startsWith('solo:')?'Independent':g.key,'cluster-name'));box.prepend(c)});
+ let canvas=box.querySelector('svg');if(!canvas){canvas=svg('svg');box.append(canvas)}canvas.setAttribute('viewBox',`0 0 ${width} ${height}`);canvas.replaceChildren();
+ const links=new Map();round.events.forEach(e=>{let pairs=[];if(e.event==='team_message')pairs=e.members.filter(n=>n!==e.agent).map(n=>[e.agent,n]);else if(e.event==='message')pairs=[[e.sender,e.recipient]];pairs.forEach(([a,b])=>{let key=[a,b].sort().join('|');links.set(key,(links.get(key)||0)+1)})});
+ links.forEach((count,key)=>{const[a,b]=key.split('|'),p=positions.get(a),q=positions.get(b);if(!p||!q)return;canvas.append(svg('line',{x1:p.x,y1:p.y,x2:q.x,y2:q.y,stroke:selected&&(a===selected||b===selected)?'#8de4d2':'#627891','stroke-width':Math.min(5,1+Math.log2(count+1)),opacity:selected&&(a!==selected&&b!==selected)?.15:.6}))});
+ const existing=new Map([...box.querySelectorAll('.node')].map(b=>[b.dataset.agent,b]));round.agents.forEach(a=>{let b=existing.get(a.name);if(!b){b=el('button',undefined,'node');b.dataset.agent=a.name;b.onclick=()=>chooseAgent(a.name);box.append(b)}existing.delete(a.name);b.replaceChildren(el('strong',a.name.replace('agent-','A')),el('small',money(a.wealth)));b.setAttribute('aria-label',`${a.name}, ${a.team||'independent'}, wealth ${money(a.wealth)}`);b.setAttribute('aria-pressed',String(selected===a.name));b.style.setProperty('--node-color',color(a.team));b.classList.toggle('speaking',people(round.events.at(-1)||{}).includes(a.name));const p=positions.get(a.name);b.style.left=`${p.x}px`;b.style.top=`${p.y}px`});existing.forEach(b=>b.remove());
+}
+function renderAgent(){
+ const round=current(), detail=$('agent-detail');detail.replaceChildren();
+ if(!selected){detail.append(el('h3','Select an agent'),el('p','Inspect its wealth, contribution, running summary and strategy at any round.','muted'));const stats=el('div',undefined,'statline');[['Total wealth',money(round.agents.reduce((s,a)=>s+a.wealth,0))],['Bidding units',new Set(round.agents.map(a=>a.team||a.name)).size],['Reward',money(round.metrics.reward)]].forEach(([k,v])=>{const d=el('div');d.append(el('strong',v),el('span',k));stats.append(d)});detail.append(stats);return}
+ const a=round.agents.find(a=>a.name===selected);if(!a)return;const opening=data.initial_roster.find(p=>p.name===a.name).wealth;detail.append(el('h3',`${a.name} · ${a.team||'independent'}`));
+ const stats=el('div',undefined,'statline');[['Wealth',money(a.wealth)],['Last pledge',money(round.metrics.contributions[a.name])],['Paid this round',money(round.metrics.paid?.[a.name])],['Bid income',money(round.metrics.bid_income?.[a.name])],['Reward income',money(round.metrics.reward_income?.[a.name])],['Change',`${a.wealth-opening>=0?'+':''}${money(a.wealth-opening)}`]].forEach(([k,v])=>{const d=el('div');d.append(el('strong',v),el('span',k));stats.append(d)});detail.append(stats);
+ const wealth=el('div');wealth.append(el('small','Wealth through the selected event'));const plot=svg('svg',{viewBox:'0 0 400 105',role:'img','aria-label':`${a.name} wealth trajectory`});plot.classList.add('agent-wealth');const values=[opening,...data.rounds.slice(0,Math.max(0,index)).map(r=>r.metrics.wealth[a.name]),...(index>=0?[a.wealth]:[])],lo=Math.min(...values,0),hi=Math.max(...values,1),points=values.map((v,i)=>`${8+i*380/Math.max(1,values.length-1)},${85-(v-lo)*70/(hi-lo)}`).join(' ');plot.append(svg('line',{x1:8,y1:85,x2:388,y2:85,stroke:'#40516a'}),svg('polyline',{points,fill:'none',stroke:'#8de4d2','stroke-width':2}));values.forEach((v,i)=>plot.append(svg('circle',{cx:8+i*380/Math.max(1,values.length-1),cy:85-(v-lo)*70/(hi-lo),r:3,fill:'#8de4d2'})));wealth.append(plot);detail.append(wealth);
+ [['Running summary',a.summary],['Current strategy',a.strategy]].forEach(([title,text])=>{const d=el('div');d.append(el('small',title),el('pre',text));detail.append(d)});
+}
+function renderTimeline(){const root=$('membership');root.replaceChildren();const table=el('table',undefined,'membership-table'),head=el('thead'),hr=el('tr');hr.append(el('th','Agent'));for(let r=-1;r<data.rounds.length;r++)hr.append(el('th',r<0?'Start':String(r+1)));head.append(hr);table.append(head);const body=el('tbody');data.initial_roster.forEach(a=>{const tr=el('tr');tr.append(el('th',a.name));for(let r=-1;r<data.rounds.length;r++){const state=r<0?initial():data.rounds[r],tag=state.metrics.membership[a.name],td=el('td'),b=el('button',tag?tag.replace('team-','T'):'—');b.style.setProperty('--cell-color',color(tag));if(r===index&&(selected===''||selected===a.name))b.classList.add('selected');b.setAttribute('aria-label',`${a.name}, ${r<0?'initial state':`round ${r+1}`}, ${tag||'independent'}`);b.onclick=()=>{stop();selected=a.name;setIndex(r,r<0?0:data.rounds[r].events.length)};td.append(b);tr.append(td)}body.append(tr)});table.append(body);root.append(table)}
+function reviewPhase(e){return {review_started:'Independent drafts',review_draft:'Independent drafts',review_feedback:'Review',review_revision:'Revision',review_fallback:'Revision',review_abstained:'Revision'}[e.event]||''}
+function category(e){if(e.event==='funding_repair_started')return'bidding';if(reviewPhase(e))return'team';if(e.event==='phase_skipped')return e.phase;if(['finalization_started','finalization_abstained','discussion_shortened'].includes(e.event)||(e.event==='invalid_action'&&e.phase==='finalize'))return'team';if(e.event==='team_message')return e.channel;if(e.event==='message'||['invited','joined','left','team_dissolved'].includes(e.event))return'formation';if(e.event==='pledge'||e.event==='contributions_committed')return'bidding';if(['reflection_paid','strategy_updated','decision_response'].includes(e.event))return'reflection';if(['candidate','vote','submission','no_submission'].includes(e.event))return'team';return'economy'}
+function people(e){return[e.agent,e.author,e.sender,e.recipient,e.from,e.to,e.inviter,...(e.members||[]),...Object.keys(e.contributions||{}),...Object.keys(e.wealth||{}),...Object.keys(e.credits||{})].filter(Boolean)}
+function describe(e){
+ if(e.event==='funding_repair_started')return['Additional funding round',e.reason+'; one final voluntary pledge per member with teammate pledges visible.'];
+ if(e.event==='review_started')return['Independent drafts started',`Draft: ${e.drafter}. Independent check and review: ${(e.reviewers||[]).join(', ')}. Drafts remain hidden until every member has finished.`];
+ if(e.event==='review_draft')return[`${e.author} · ${e.phase==='draft'?'independent draft':'independent check'}`,`${e.answer}\n\nQuestion checklist:\n${(e.checklist||[]).map(x=>'• '+x).join('\n')}`];
+ if(e.event==='review_feedback')return[`${e.author} · evidence review`,(e.checks||[]).map(c=>`${c.status}: ${c.requirement}\n${c.evidence}`).join('\n\n')+'\n\nIssues:\n'+(e.issues||[]).map(x=>'• '+x).join('\n')];
+ if(e.event==='review_revision')return[`${e.author} · ${e.selection==='revision'?'revised answer':'fallback answer'}`,e.answer+'\n\nResolutions:\n'+(e.resolutions||[]).map(x=>'• '+x).join('\n')];
+ if(e.event==='review_fallback')return['Using an earlier complete final proposal',`${e.author}: ${e.reason}`];
+ if(e.event==='review_abstained')return[`${e.agent} · abstained during ${e.phase}`,'No answer proposed in this phase.'];
+ switch(e.event){case'finalization_started':return['Final-answer window opened',e.reason];case'finalization_abstained':return[`${e.agent} · abstained`,'No final answer proposed.'];case'discussion_shortened':return['Discussion ended early','Calls reserved for final answers and voting.'];case'phase_skipped':return[`${e.phase} skipped`,e.reason];case'team_message':return[e.agent+` → ${e.members.filter(n=>n!==e.agent).join(', ')} · ${e.channel==='bidding'?(data.bidding_mode==='sealed'?'bid assessment':'bid negotiation'):'team discussion'}`,e.text];case'message':return[`${e.sender} → ${e.recipient} · ${e.channel}`,e.text];case'invited':return['Invitation',`${e.from} invited ${e.to} to ${e.team||'form a team'}.`];case'joined':return['Team formed / joined',`${e.agent} accepted ${e.inviter}'s invitation and joined ${e.team}.`];case'left':return['Voluntary exit',`${e.agent} left ${e.team||'no team'}.`];case'team_dissolved':return['Team dissolved',`${e.team}; ${e.remaining} is independent.`];case'pledge':return[`${e.agent} · ${data.bidding_mode==='sealed'?'binding pledge':'revised pledge'}`,`${money(e.amount)} committed in ${e.group}${data.bidding_mode==='sealed'?'.':`, discussion turn ${e.turn+1}.`}`];case'contributions_committed':return[e.group+' · final contributions',Object.entries(e.contributions).map(([a,n])=>`${a}: ${money(n)}`).join(' · ')];case'auction':return['Auction result',`${e.winner||'No winner'} · bid costs paid ${money(e.paid)}\n`+Object.entries(e.bids).map(([t,v])=>`${t}: ${money(v)}`).join(' · ')];case'bid_transfer':return['Bid payment',e.receiver?`${e.payer} → ${e.receiver} · ${money(e.total)}\n`+Object.entries(e.credits).map(([a,n])=>`${a}: +${money(n)}`).join(' · '):`${e.payer||'No winner'} · ${money(e.burned)} to void (no previous winner)`];case'candidate':return[`${e.author} · ${e.id}`,e.answer];case'vote':return[`${e.agent} · vote`,e.candidate_id];case'submission':return[e.final===false?'Published intermediate step':'Submitted final answer',e.answer];case'no_submission':return['No submission',e.reason];case'settlement':return['Reward settled',`Reward ${money(e.reward)} · ${money(e.share)} per winning member · score ${e.score??0}`];case'reflection_paid':return[`${e.agent} · paid reflection`,`Spent ${money(e.cost)}.`];case'strategy_updated':return[`${e.agent} · new strategy`,e.strategy];case'decision_response':{let analysis=e.response;try{analysis=JSON.parse(e.response).analysis||e.response}catch{}return[`${e.agent} · inspection`,analysis]}case'invalid_action':return[`${e.agent} · invalid ${e.phase}`,e.reason];default:return[e.event,JSON.stringify(e)]}}
+function renderEvents(){
+ const round=fullRound(),root=$('events'),key=[index,round.events.length,selected,teamFilter,channel,stepFilter].join('|');
+ $('conversation-title').textContent=index<0?'Initial state':`Task ${index+1} · ${selected||'everyone'} · full transcript`;
+ // Keep the same DOM nodes during playback so text selection, disclosures and scroll survive.
+ if(eventListKey!==key){
+  eventListKey=key;root.replaceChildren();let count=0;
+  round.events.forEach((e,i)=>{
+   const c=category(e),ps=people(e);
+   if(stepFilter!==''&&String(e.step)!==stepFilter)return;
+   if(selected&&!ps.includes(selected)&&!['auction','settlement'].includes(e.event))return;
+   if(teamFilter){const names=round.agents.filter(a=>(a.team||`solo:${a.name}`)===teamFilter).map(a=>a.name);if(!ps.some(p=>names.includes(p))&&e.group!==teamFilter&&e.team!==teamFilter)return}
+   if(channel!=='all'&&(channel==='conversation'?!['team_message','message'].includes(e.event):c!==channel))return;
+   const row=el('article',undefined,'event'),content=el('div'),[title,text]=describe(e),number=el('div',undefined,'event-index'),jump=el('button',String(i+1).padStart(2,'0'),'event-jump');
+   row.dataset.event=i+1;jump.setAttribute('aria-label',`Jump to event ${i+1}: ${title}`);jump.onclick=()=>{stop();seek(i+1)};
+   number.append(jump,el('span','','event-state'));row.append(number);
+   content.append(el('div',(Number.isInteger(e.step)?`Step ${e.step+1} · `:'')+title,'meta'),el('div',text,'message'));
+   const d=el('details');d.append(el('summary','Event data'),el('pre',JSON.stringify(e,null,2)));content.append(d);row.append(content);root.append(row);count++;
+  });
+  if(!count)root.append(el('p',index<0?'Choose a task to read its transcript.':'No matching activity. Change the filters to see other events.','empty'));
+ }
+ for(const row of root.querySelectorAll('.event')){const n=Number(row.dataset.event);row.classList.toggle('current',n===cursor);row.classList.toggle('upcoming',n>cursor);if(n===cursor)row.setAttribute('aria-current','step');else row.removeAttribute('aria-current');row.querySelector('.event-state').textContent=n===cursor?'Current':n>cursor?'Upcoming':'Played'}
+}
+new ResizeObserver(()=>renderNetwork()).observe($('network'));
+render();
+if(location.protocol==='http:'||location.protocol==='https:'){setInterval(async()=>{
+ if(data.status!=='running')return;
+ try{
+  const response=await fetch('replay.json',{cache:'no-store'});if(!response.ok)return;
+  const fresh=await response.json();if(fresh.schema!==1)return;
+  const changed=fresh.rounds.length!==data.rounds.length||fresh.status!==data.status;
+  data=fresh;if(changed)render();
+ }catch{/* Retain the last complete snapshot during an atomic update or disconnected server. */}
+},2000)}
+})();
+</script>
+</body></html>

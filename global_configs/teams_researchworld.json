@@ -1,0 +1,17 @@
+{
+  "domain": "teams",
+  "backend": "llm",
+  "environment": "researchworld",
+  "dataset": "third_party/benchmarks/frontier-science-research/data/research_train.jsonl",
+  "split": "train",
+  "model": {"api": "openrouter", "name": "qwen/qwen3-30b-a3b-instruct-2507"},
+  "budget": {"max_usd": 10, "prompt_usd_per_million": 0.15, "completion_usd_per_million": 0.6},
+  "out": "runs/teams-science-pilot",
+  "teams": {
+    "condition": "dynamic", "num_agents": 12, "rounds": 3, "max_steps": 8,
+    "action_tokens": 512, "solution_tokens": 4096, "judge_tokens": 2048,
+    "inspect_tokens": 1024, "update_tokens": 1024, "summary_tokens": 512,
+    "evidence_tokens": 8192, "environment_tokens": 16384,
+    "context_tokens": 65536, "max_calls": 10000
+  }
+}
