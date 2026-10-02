@@ -14,6 +14,8 @@ class TeamConfig:
     objective_mode: str = "society"
     team_bid_rule: str = "voluntary"
     team_base_bid: float = 0.1
+    terminal_policy: str = "funded"
+    shared_draft_passes: int = 0
     condition: str = "dynamic"
     seed: int = 7
     num_agents: int = 12
@@ -54,6 +56,10 @@ class TeamConfig:
     rent_interval: int = 5
 
     def __post_init__(self):
+        if self.terminal_policy not in {"funded", "public_work"}:
+            raise ValueError("Unknown terminal_policy")
+        if (self.terminal_policy != "funded" or self.shared_draft_passes) and self.interaction_protocol != "rounds":
+            raise ValueError("Public-work finalization and shared drafts require rounds")
         if self.objective_mode not in {"society", "wealth"}:
             raise ValueError("Unknown objective_mode")
         if self.team_bid_rule not in {"voluntary", "fixed"}:
@@ -106,7 +112,7 @@ class TeamConfig:
         for f in fields(self):
             if f.type is int:
                 value = getattr(self, f.name)
-                if type(value) is not int or value < (0 if f.name in {"seed", "birth_interval", "num_births_per_interval", "rent_interval"} else 1):
+                if type(value) is not int or value < (0 if f.name in {"shared_draft_passes", "seed", "birth_interval", "num_births_per_interval", "rent_interval"} else 1):
                     raise ValueError(f"{f.name} must be a positive integer (seed may be zero)")
         if min(self.formation_context_tokens, self.pledge_context_tokens) < 1024:
             raise ValueError("Control context budgets must be at least 1024 tokens")

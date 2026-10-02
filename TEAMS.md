@@ -1020,3 +1020,49 @@ training-repair accessor. Public tasks, solving observations, and test adaptatio
 do not receive the reference. Financial budget stops and blocked-provider errors
 propagate from mutation calls and mark the run interrupted; they are not silently
 counted as ordinary failed births.
+
+
+## Public-work finalization and shared drafts
+
+Two opt-in round-protocol settings implement the next mechanism ablations:
+
+| Condition | `terminal_policy` | `shared_draft_passes` |
+|---|---|---:|
+| Existing baseline | `funded` | 0 |
+| Priority 1 only | `public_work` | 0 |
+| Priority 2 only | `funded` | 2 |
+| Combined | `public_work` | 2 |
+
+With `public_work`, the last decision slot closes the episode using the last
+accepted contribution's saved members. No new membership window or auction is
+needed for this closing step. It uses accumulated public work and a fresh private
+scratchpad, so former members cannot read a group's newer private discussion.
+Finalizers can still abstain or fail to produce a valid answer. If no accepted
+public work exists, the normal final auction remains available; no arbitrary
+team is chosen to recover an unfunded episode.
+
+The closing step charges no virtual bid and does **not** add a path-credit slot.
+For example, after four accepted contributions, every saved member still receives
+R/4 for each of those contributions. Finalization still costs API tokens and is
+subject to call/provider budgets. Earlier budget-driven termination can use the
+same closing mechanism when no funded team is available.
+
+With two shared-draft passes, every winning member gets a turn in shuffled order
+to extend, correct, reorganize, or retain one current draft. The next speaker sees
+the latest draft and the shared discussion. Null/invalid updates retain the last
+valid draft; older versions remain in the event log. Only the latest draft is
+eligible for intermediate publication. At the deadline, it becomes context for
+the existing final-proposal and selection procedure. No roles or leader are
+assigned. Passes are skipped if needed to preserve finalization calls. This adds
+up to two calls per winning member before finalization; intermediate passes
+replace the ordinary winning-team discussion passes.
+
+The following is an **offline scripted demo**, not new model-performance evidence:
+
+```bash
+.venv/bin/python -m hayekmas.adapters.teams.runtime --config global_configs/teams_priority12_demo.json --out runs/my-priority12-demo --no-plots
+```
+
+Open its `replay.html` to inspect draft versions, public-work finalization, and
+reward accounting. Prior study results are unchanged. These options have not yet
+been evaluated with paid model calls.

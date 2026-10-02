@@ -26,6 +26,13 @@ class TeamAgent(BaseAgent):
         self.trainable_system_prompt = ("Choose actions that improve your future wealth."
                                        if config.objective_mode == "wealth" else
                                        "Choose actions that help the society solve the task successfully.")
+        if config.terminal_policy == "public_work":
+            self.frozen_system_prompt += (
+                " At the deadline, the members of the last accepted contributing team may finalize "
+                "the accumulated public work without a new bid or payment. This closing step earns "
+                "no additional path-credit slot; earlier accepted contributions retain their R/N credit. "
+                "If there is no accepted public work, this closing mechanism does not activate."
+            )
         if config.team_bid_rule == "fixed":
             self.frozen_system_prompt += (
                 f" This experiment uses a fixed total team bid of {config.team_base_bid}, not voluntary bid amounts. "

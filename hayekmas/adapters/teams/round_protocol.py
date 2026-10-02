@@ -146,12 +146,40 @@ def discuss_before_bidding(engine, task, keep_calls):
     return fees
 
 
-def select_action(engine, task, group, members, final):
-    transcript = engine.scratchpads.setdefault(group, [])
+def select_action(engine, task, group, members, final, *, closing_public_work=False):
+    # Historical finalizers may have changed teams. Do not expose the current
+    # occupants' private scratchpad to former members.
+    transcript = [] if closing_public_work else engine.scratchpads.setdefault(group, [])
     candidates = []
+    if engine.config.shared_draft_passes:
+        for turn in range(engine.config.shared_draft_passes):
+            keep = engine.finalization_reserve(len(members)) if final else len(members) + reserve(engine)
+            if engine.remaining_calls() < len(members) + keep:
+                engine.emit("phase_skipped", phase="shared_work", reason="reserved finalization calls")
+                break
+            order = list(members)
+            engine.rng.shuffle(order)
+            for agent in order:
+                current = candidates[-1]["answer"] if candidates else None
+                reply = engine.ask("shared_work", agent, engine.scratchpad(
+                    task, members, transcript, phase="shared_drafting", turn=turn,
+                    shared_draft=current, preparing_final=final, must_finalize=False),
+                    engine.config.solution_tokens)
+                message = reply.get("message", "")
+                if isinstance(message, str) and message:
+                    transcript.append({"author": agent.name, "text": message})
+                    engine.broadcast(agent, members, message, "team")
+                answer = reply.get("candidate")
+                if isinstance(answer, str) and answer.strip():
+                    engine.record_candidate(agent, members, candidates, answer, False)
+                elif answer is not None:
+                    engine.invalid(agent, "shared_work", "invalid draft; previous draft retained")
+        # Only the current version is eligible; superseded drafts remain in logs.
+        candidates = candidates[-1:]
+
     if final:
         candidates = engine.finalize(members, task, transcript, candidates, "end of episode")
-    else:
+    elif not engine.config.shared_draft_passes:
         for turn in range(engine.config.discussion_turns):
             order = list(members)
             engine.rng.shuffle(order)
@@ -249,11 +277,17 @@ def run_episode(engine, env, *, formation=True, reflection=True, training=True):
         # Every round starts with public membership discussion, then private team work.
         discussion_reserve = (len(engine.agents) * (2 if engine.config.coordination_fee_lambda > 0 else 1)
                               if engine.compact_rounds else 0)
-        formation_window(engine, task, formation,
+        final = step == engine.config.max_steps - 1
+        closing_public_work = engine.config.terminal_policy == "public_work" and final and bool(path)
+        formation_window(engine, task, formation and not closing_public_work,
                          keep_calls=len(engine.agents) * engine.bidding_turns(engine.config.max_team_size)
                          + reserve(engine) + discussion_reserve)
         final = step == engine.config.max_steps - 1
-        if engine.remaining_calls() >= auction_calls(engine) + reserve(engine) + discussion_reserve:
+        if closing_public_work:
+            winner = path[-1]["team"]
+            members = tuple(engine.lookup(name) for name in path[-1]["members"])
+            contributions, opening = dict.fromkeys(paid, 0.0), balances(engine)
+        elif engine.remaining_calls() >= auction_calls(engine) + reserve(engine) + discussion_reserve:
             fees = discuss_before_bidding(engine, task, auction_calls(engine) + reserve(engine))
             for name, fee in fees.items():
                 coordination_paid[name] += fee
@@ -275,7 +309,15 @@ def run_episode(engine, env, *, formation=True, reflection=True, training=True):
             winner, members, contributions, opening = None, (), dict(paid), balances(engine)
             contributions = {name: 0.0 for name in contributions}
             final = True
-        if not members and final and not engine.compact_rounds:
+        if not members and final and engine.config.terminal_policy == "public_work" and path:
+            closing_public_work = True
+            winner = path[-1]["team"]
+            members = tuple(engine.lookup(name) for name in path[-1]["members"])
+        if closing_public_work:
+            engine.emit("public_work_finalization", winner=winner,
+                        members=[a.name for a in members], source_step=path[-1]["step"],
+                        bid_charged=0.0, adds_path_credit=False)
+        if not members and final and not engine.compact_rounds and engine.config.terminal_policy == "funded":
             groups = engine.groups()
             winner = engine.rng.choice(sorted(groups))
             members = tuple(groups[winner])
@@ -283,11 +325,12 @@ def run_episode(engine, env, *, formation=True, reflection=True, training=True):
                         members=[agent.name for agent in members], bid_charged=0.0)
         elif not members and final:
             engine.emit("no_submission", reason="no funded, majority-approved team at deadline; abstention respected")
-        action = select_action(engine, task, winner, members, final) if members else None
+        action = select_action(engine, task, winner, members, final, closing_public_work=closing_public_work) if members else None
         if action is not None:
             result = env.apply(action)
-            path.append({"step": step, "team": winner, "members": [agent.name for agent in members],
-                         "final": action.final})
+            if not closing_public_work:
+                path.append({"step": step, "team": winner, "members": [agent.name for agent in members],
+                             "final": action.final})
             if action.final:
                 reward = result
             elif result != 0:
@@ -296,6 +339,7 @@ def run_episode(engine, env, *, formation=True, reflection=True, training=True):
             income, payouts, issued = pay_path(engine, path, reward)
         record = {
             "step": step, "task_id": task["id"], "winner": winner,
+            "closing_public_work": closing_public_work,
             "members": [agent.name for agent in members], "accepted": action is not None,
             "final": bool(action and action.final), "score": env.get_terminal_score(),
             "reward": reward if final else 0.0, "share": reward / len(path) if final and path else 0.0,

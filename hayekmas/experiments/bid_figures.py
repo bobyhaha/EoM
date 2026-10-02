@@ -56,7 +56,7 @@ def plot():
     axes[0].invert_yaxis();axes[1].invert_yaxis();fig.suptitle('Development results — unequal compute; partial coverage explicitly labeled')
     fig.savefig(out/'scores-costs.png',dpi=160);fig.savefig(out/'scores-costs.svg');plt.close(fig)
     phases=[('Membership',['round_membership','round_join']),('Private solving',['round_chat']),('Ballots',['round_commit']),
-            ('Winner work + selection',['round_work','vote']),('Final answer',['finalize']),('Judge',['judge'])]
+            ('Winner work + selection',['round_work','shared_work','vote']),('Final answer',['finalize']),('Judge',['judge'])]
     fig,ax=plt.subplots(figsize=(13,height),constrained_layout=True);left=np.zeros(len(teams))
     for label,keys in phases:
         vals=np.array([sum(t['phase_costs']['phases'].get(k,{}).get('cost_usd',0) for k in keys) for t in teams])

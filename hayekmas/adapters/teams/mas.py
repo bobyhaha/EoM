@@ -589,7 +589,7 @@ class TeamMAS:
 
     def record_candidate(self, agent, members, candidates, answer, final):
         candidate = {
-            "id": f"candidate-{len(candidates)}",
+            "id": f"candidate-{max((int(c['id'].split('-')[-1]) for c in candidates), default=-1) + 1}",
             "author": agent.name,
             "answer": str(answer),
             "final": final,

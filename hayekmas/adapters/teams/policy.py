@@ -57,6 +57,13 @@ INSTRUCTIONS = {
         "The greatest positive team sum wins. Membership, not payment size, determines path credit: "
         "every member of a team that submits accepted work receives R/N for that round at episode end."
     ),
+    "shared_work": (
+        "Work with your teammates on the latest shared draft. Spend your effort solving the problem. "
+        "You may extend, correct, reorganize, or retain the draft as useful; no roles are assigned. "
+        "Return {\"message\":\"brief explanation of your contribution\", \"candidate\":\"complete updated draft or null to retain it\"}. "
+        "Read the current draft and teammates’ messages before updating it. This is preparation; "
+        "a separate finalization step submits the final answer when required."
+    ),
     "round_work": (
         "Use the shared team discussion freely to propose the next public contribution to the solution. "
         'Return {"message":"text", "candidate":"public work or null"}. '
@@ -227,6 +234,9 @@ class DemoPolicy:
             result = {"act": active, "contribution": round(agent.wealth * self.rng.uniform(.03, .12), 6) if active else 0,
                       "reason": "Scripted demo vote: contribute this round." if active else
                                 "Scripted demo vote: let another team contribute this round."}
+            if observation.get("bidding_rule") == "fixed":
+                result.pop("contribution")
+                result["authorize_base_bid"] = active
         elif phase == "formation":
             invitations = observation["invitations"]
             if (
@@ -262,7 +272,7 @@ class DemoPolicy:
                             if phase == "assess_bid" else
                             "Here is my current pledge. Please consider contributing an affordable amount too."),
             }
-        elif phase in {"discuss", "finalize", "draft", "independent_check", "revise", "round_work"}:
+        elif phase in {"discuss", "finalize", "draft", "independent_check", "revise", "round_work", "shared_work"}:
             # Uses only the public problem, never the environment's hidden answer.
             problem = observation["task"]["problem"]
             try:

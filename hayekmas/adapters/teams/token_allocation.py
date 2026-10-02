@@ -6,10 +6,10 @@ from copy import deepcopy
 PHASE_REASONING = {
     "round_membership": "none", "round_join": "none", "round_commit": "none",
     "coordinate": "none", "vote": "none", "reflect": "none",
-    "round_chat": "medium", "round_work": "high", "finalize": "high",
+    "round_chat": "medium", "round_work": "high", "shared_work": "high", "finalize": "high",
     "inspect": "medium", "improve": "medium", "birth_good": "medium", "birth_bad": "medium",
 }
-SOLVING_PHASES = {"round_chat", "round_work", "finalize", "discuss", "draft", "independent_check", "review", "revise", "solve"}
+SOLVING_PHASES = {"shared_work", "round_chat", "round_work", "finalize", "discuss", "draft", "independent_check", "review", "revise", "solve"}
 
 
 def control_observation(engine, phase, agent, observation):
