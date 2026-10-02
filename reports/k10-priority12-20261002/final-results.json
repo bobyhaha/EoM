@@ -1,0 +1,260 @@
+{
+  "total_usd": 6.142600315000001,
+  "reserved_usd": 0.0,
+  "episodes": 30,
+  "rows": [
+    {
+      "condition": "Original EoM",
+      "mean_all_zero_unanswered": 0.2041666666666667,
+      "mean_scored_only": 0.30625,
+      "answers": 4,
+      "episodes": 6,
+      "cost_usd": 0.041244909999999996,
+      "cost_per_episode": 0.006874151666666666
+    },
+    {
+      "condition": "Team baseline",
+      "mean_all_zero_unanswered": 0.4175,
+      "mean_scored_only": 0.4175,
+      "answers": 6,
+      "episodes": 6,
+      "cost_usd": 1.2859833,
+      "cost_per_episode": 0.21433055
+    },
+    {
+      "condition": "Finalization fix",
+      "mean_all_zero_unanswered": 0.44249999999999995,
+      "mean_scored_only": 0.4425,
+      "answers": 6,
+      "episodes": 6,
+      "cost_usd": 1.1499282549999998,
+      "cost_per_episode": 0.19165470916666663
+    },
+    {
+      "condition": "Shared drafting",
+      "mean_all_zero_unanswered": 0.453,
+      "mean_scored_only": 0.45299999999999996,
+      "answers": 6,
+      "episodes": 6,
+      "cost_usd": 1.942717285,
+      "cost_per_episode": 0.3237862141666667
+    },
+    {
+      "condition": "Both fixes",
+      "mean_all_zero_unanswered": 0.49833333333333335,
+      "mean_scored_only": 0.49833333333333335,
+      "answers": 6,
+      "episodes": 6,
+      "cost_usd": 1.7227265649999999,
+      "cost_per_episode": 0.28712109416666665
+    }
+  ],
+  "details": [
+    {
+      "condition": "Original EoM",
+      "seed": 7,
+      "scores": [
+        null,
+        0.395,
+        0.12
+      ],
+      "answers": 2,
+      "cost_usd": 0.02142084
+    },
+    {
+      "condition": "Original EoM",
+      "seed": 17,
+      "scores": [
+        null,
+        0.55,
+        0.16
+      ],
+      "answers": 2,
+      "cost_usd": 0.01982407
+    },
+    {
+      "condition": "Team baseline",
+      "seed": 7,
+      "scores": [
+        0.6,
+        0.611,
+        0.12
+      ],
+      "answers": 3,
+      "cost_usd": 0.616513575
+    },
+    {
+      "condition": "Team baseline",
+      "seed": 17,
+      "scores": [
+        0.475,
+        0.579,
+        0.12
+      ],
+      "answers": 3,
+      "cost_usd": 0.669469725
+    },
+    {
+      "condition": "Finalization fix",
+      "seed": 7,
+      "scores": [
+        0.625,
+        0.55,
+        0.12
+      ],
+      "answers": 3,
+      "cost_usd": 0.5714344
+    },
+    {
+      "condition": "Finalization fix",
+      "seed": 17,
+      "scores": [
+        0.6,
+        0.6,
+        0.16
+      ],
+      "answers": 3,
+      "cost_usd": 0.578493855
+    },
+    {
+      "condition": "Shared drafting",
+      "seed": 7,
+      "scores": [
+        0.6,
+        0.583,
+        0.2
+      ],
+      "answers": 3,
+      "cost_usd": 1.05286091
+    },
+    {
+      "condition": "Shared drafting",
+      "seed": 17,
+      "scores": [
+        0.6,
+        0.575,
+        0.16
+      ],
+      "answers": 3,
+      "cost_usd": 0.889856375
+    },
+    {
+      "condition": "Both fixes",
+      "seed": 7,
+      "scores": [
+        0.65,
+        0.65,
+        0.12
+      ],
+      "answers": 3,
+      "cost_usd": 0.7886285
+    },
+    {
+      "condition": "Both fixes",
+      "seed": 17,
+      "scores": [
+        0.8,
+        0.65,
+        0.12
+      ],
+      "answers": 3,
+      "cost_usd": 0.934098065
+    }
+  ],
+  "behavior": [
+    {
+      "condition": "Team baseline",
+      "entirely_solo_episodes": 1,
+      "multi_member_wins": 31,
+      "auctions": 60,
+      "departures": 5,
+      "invalid_decisions": 6,
+      "no_submission_rounds": 0,
+      "unpaid_closures": 0
+    },
+    {
+      "condition": "Finalization fix",
+      "entirely_solo_episodes": 1,
+      "multi_member_wins": 19,
+      "auctions": 54,
+      "departures": 0,
+      "invalid_decisions": 3,
+      "no_submission_rounds": 0,
+      "unpaid_closures": 6
+    },
+    {
+      "condition": "Shared drafting",
+      "entirely_solo_episodes": 0,
+      "multi_member_wins": 37,
+      "auctions": 60,
+      "departures": 0,
+      "invalid_decisions": 3,
+      "no_submission_rounds": 9,
+      "unpaid_closures": 0
+    },
+    {
+      "condition": "Both fixes",
+      "entirely_solo_episodes": 0,
+      "multi_member_wins": 20,
+      "auctions": 54,
+      "departures": 0,
+      "invalid_decisions": 5,
+      "no_submission_rounds": 9,
+      "unpaid_closures": 6
+    }
+  ],
+  "phase_costs": [
+    {
+      "condition": "Original EoM",
+      "wakeup": 0.019416259999999987,
+      "solve": 0.018479075,
+      "judge": 0.003349575
+    },
+    {
+      "condition": "Team baseline",
+      "round_membership": 0.31371088500000016,
+      "round_join": 0.011181624999999999,
+      "round_chat": 0.5248759149999996,
+      "round_commit": 0.11519512500000009,
+      "round_work": 0.22902982499999996,
+      "vote": 0.060072049999999995,
+      "finalize": 0.026313575000000002,
+      "judge": 0.0056042999999999996
+    },
+    {
+      "condition": "Finalization fix",
+      "round_membership": 0.2876515250000001,
+      "round_chat": 0.47060645499999976,
+      "round_commit": 0.10684549999999997,
+      "round_work": 0.20059292499999995,
+      "vote": 0.04749697500000001,
+      "finalize": 0.02369945,
+      "judge": 0.006187425,
+      "round_join": 0.006848
+    },
+    {
+      "condition": "Shared drafting",
+      "round_membership": 0.3129815450000002,
+      "round_join": 0.011839075000000001,
+      "round_chat": 0.903492315,
+      "round_commit": 0.11262825000000012,
+      "shared_work": 0.48666010000000026,
+      "vote": 0.064498075,
+      "finalize": 0.044430125,
+      "judge": 0.0061878
+    },
+    {
+      "condition": "Both fixes",
+      "round_membership": 0.286960845,
+      "round_join": 0.009270575,
+      "round_chat": 0.7915526699999998,
+      "round_commit": 0.10588562500000007,
+      "shared_work": 0.43600992499999963,
+      "vote": 0.051022175000000024,
+      "finalize": 0.035557325,
+      "judge": 0.006467425000000001
+    }
+  ],
+  "source_fingerprints_unchanged": true,
+  "note": "Original no-answer scores remain null in source; all-episode summary explicitly assigns zero to unanswered episodes."
+}
