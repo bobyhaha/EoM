@@ -71,6 +71,7 @@ def replay_data(engine, status):
         "condition": engine.config.condition,
         "interaction_protocol": engine.config.interaction_protocol,
         "round_schedule": engine.config.round_schedule,
+        "token_profile": engine.config.token_profile,
         "coordination_fee_lambda": engine.config.coordination_fee_lambda,
         "bidding_mode": engine.config.bidding_mode,
         "collaboration_mode": engine.config.collaboration_mode,

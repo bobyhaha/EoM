@@ -22,9 +22,10 @@ INSTRUCTIONS = {
         "Use JSON null to stay solo. You cannot be added without your acceptance. No further invitation pass follows."
     ),
     "round_commit": (
+        "Make a brief decision from the completed team discussion; do not solve the problem again here. "
         "The private discussion is complete. Cast ONE binding vote on whether your TEAM should act this round, "
         "and authorize only your own contribution. Other current ballots are hidden. Return "
-        '{"act":true, "contribution":number, "reason":"short explanation"}. '
+        '{"act":true, "contribution":number, "reason":"at most 12 words"}. '
         "A strict majority of all members must vote yes; ties and invalid ballots do not activate the team. "
         "act=false sets your own contribution to zero. You may vote yes with zero money. If the team abstains, "
         "all pledges are canceled. Otherwise its bid is the sum of members' valid personal pledges; only a "
@@ -162,6 +163,12 @@ class ModelPolicy:
         self.client.MAX_EMPTY_RETRIES = 1
 
     def respond(self, phase, agent, observation, max_tokens):
+        options = {}
+        if self.client.api_name == "openrouter":
+            options["kind"] = phase
+            effort = getattr(agent, "phase_reasoning_efforts", {}).get(phase)
+            if effort is not None:
+                options["reasoning_effort"] = effort
         return self.client.generate(
             json.dumps(
                 {"instruction": INSTRUCTIONS[phase], "observation": observation},
@@ -171,6 +178,7 @@ class ModelPolicy:
             ),
             system_prompt=agent.get_system_prompt(),
             max_tokens=max_tokens,
+            **options,
         )
 
 

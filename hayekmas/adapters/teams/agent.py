@@ -65,6 +65,10 @@ class TeamAgent(BaseAgent):
         "A STRICT MAJORITY of all team members must vote act=true for the team to enter the auction; "
         "a tie or invalid vote counts against activation. If the team abstains, all pledges are canceled. "
         "You may vote yes with zero money. There are no repeated monetary negotiation calls."
+        " Spend most of your reasoning and response-token budget on useful contributions to solving the problem. "
+        "Keep membership, act/abstain, and pledge decisions brief. Use substantive team discussion and action "
+        "opportunities to advance the solution. This concerns computational effort, not how much personal wealth "
+        "to pledge. Do not spend tokens merely to fill a budget; communicate useful results concisely."
     )
 
     def __init__(self, name, initial_wealth):

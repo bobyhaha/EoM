@@ -152,7 +152,12 @@ class ExperimentPolicy:
 
         def generate():
             if self.native:
-                return self.native.generate(prompt, system_prompt=system_prompt, max_tokens=cap)
+                options = {}
+                if getattr(self.native, "api_name", None) == "openrouter":
+                    options["kind"] = kind
+                    if kind == "judge" and self.config.token_profile == "solve_first":
+                        options["reasoning_effort"] = "medium"
+                return self.native.generate(prompt, system_prompt=system_prompt, max_tokens=cap, **options)
             if kind == "judge":
                 raise ValueError("Scripted demo cannot grade scientific rubrics")
             problem = json.loads(prompt)["task"]["problem"]

@@ -37,6 +37,10 @@ class TeamMAS:
             if config.interaction_protocol == "rounds":
                 agent.frozen_system_prompt = (agent.COMPACT_ROUND_SYSTEM_PROMPT if config.round_schedule == "compact"
                                               else agent.ROUND_SYSTEM_PROMPT)
+            if config.token_profile == "solve_first":
+                from .token_allocation import PHASE_REASONING
+
+                agent.phase_reasoning_efforts = dict(PHASE_REASONING)
             self.population.add_agent(agent)
         self.round = 0
         self.step = None
@@ -144,6 +148,17 @@ class TeamMAS:
     def ask(self, phase, agent, observation, max_tokens=None):
         cap = max_tokens or self.config.action_tokens
         observation = {**observation, "you": {"name": agent.name, "wealth": agent.wealth, "team": agent.team_tag}}
+        if self.config.token_profile == "solve_first":
+            if phase in {"round_membership", "round_join", "round_commit"}:
+                from .token_allocation import control_observation
+
+                observation = control_observation(self, phase, agent, observation)
+            if phase == "round_chat":
+                cap = self.config.discussion_tokens
+            elif phase == "round_commit":
+                cap = min(cap, 96)
+            elif phase == "vote":
+                cap = min(cap, 64)
         if self.calls >= self.config.max_calls:
             raise BudgetExceeded(f"Decision call budget {self.config.max_calls} exhausted")
         prompt = dumps({"instruction": INSTRUCTIONS[phase], "observation": observation})
@@ -162,6 +177,8 @@ class TeamMAS:
             strategy=agent.trainable_system_prompt,
             input_tokens=input_tokens,
             output_limit=cap,
+            **({"reasoning_effort": agent.phase_reasoning_efforts.get(phase)}
+               if self.config.token_profile == "solve_first" else {}),
         )
         response = self.policy.respond(phase, agent, observation, cap)
         if not isinstance(response, str):
@@ -207,7 +224,12 @@ class TeamMAS:
         self.reference_input_tokens += count
         self.requested_output_tokens += self.config.judge_tokens
         self.emit("judge_request", input_tokens=count, output_limit=self.config.judge_tokens)
-        response = self.policy.client.generate(prompt, max_tokens=self.config.judge_tokens)
+        options = {}
+        if getattr(self.policy.client, "api_name", None) == "openrouter":
+            options["kind"] = "judge"
+            if self.config.token_profile == "solve_first":
+                options["reasoning_effort"] = "medium"
+        response = self.policy.client.generate(prompt, max_tokens=self.config.judge_tokens, **options)
         self.emit("judge_response", response=response)
         return response
 

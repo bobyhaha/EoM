@@ -8,13 +8,24 @@ from hayekmas.experiments.population_study import KS, estimate, prepare, prior_s
 
 class PopulationStudyTests(unittest.TestCase):
     def test_compact_cost_preserves_winning_work_and_full_reference_estimate(self):
-        compact, full = estimate(10)["teams"], estimate(10, schedule="full")["teams"]
+        compact, full = estimate(10, token_profile="standard")["teams"], estimate(10, schedule="full")["teams"]
         self.assertAlmostEqual(full["usd"], 51.25935)
         for phase in ("winning_work", "votes", "final_proposals", "judge"):
             self.assertEqual(compact["phases"][phase], full["phases"][phase])
         self.assertEqual(compact["phases"]["act_and_pledge"]["calls"], 5900)
         self.assertEqual(compact["phases"]["invitation_replies"]["calls"], 2950)
         self.assertLess(compact["usd"], full["usd"] * .6)
+
+    def test_solve_first_spends_majority_on_solving_in_every_prepared_scenario(self):
+        for k in KS:
+            for scenario in ("low", "central", "high"):
+                new = estimate(k, scenario)
+                old = estimate(k, scenario, token_profile="standard")
+                self.assertEqual(new["original"], old["original"])
+                self.assertEqual(new["teams"]["calls"], old["teams"]["calls"])
+                self.assertGreater(new["teams"]["solving_share"], .6)
+                self.assertLess(new["teams"]["phases"]["act_and_pledge"]["usd"], old["teams"]["phases"]["act_and_pledge"]["usd"])
+                self.assertGreater(new["teams"]["phases"]["winning_work"]["usd"], old["teams"]["phases"]["winning_work"]["usd"])
 
     def test_estimates_increase_with_population_and_context(self):
         for arm in ("original", "teams"):
@@ -55,5 +66,9 @@ class PopulationStudyTests(unittest.TestCase):
             for path in (root / "cells").glob("*.json"):
                 cell = json.loads(path.read_text())
                 self.assertEqual(cell["budget"], {"execution_authorized": False, "allocated_usd": 0})
+                if cell["arm"] == "teams":
+                    self.assertEqual(cell["team_config"]["token_profile"], "solve_first")
+                    self.assertEqual(cell["team_config"]["bid_tokens"], 96)
+                    self.assertEqual(cell["team_config"]["solution_tokens"], 16384)
             with self.assertRaises(FileExistsError):
                 prepare(root)

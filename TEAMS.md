@@ -147,12 +147,68 @@ With lambda=0, compact uses **3k + I** calls before each winning action: k
 membership proposals, I invitation replies (0 through k), k private messages
 and k combined act/pledge ballots. At k=10 that is 30–40 rather than 80. The
 central estimate assumes I=0.5k, not a measured switching rate. One seed of 40
-training plus 19 test tasks at ten rounds projects about $29 for teams rather
-than $51 under the prior full schedule, before a 20% allowance; original EoM
-remains about $4. Winning-team work, final proposals and judging budgets are
-preserved. No savings are assumed from abstention or caching. These estimates
+training plus 19 test tasks at ten rounds projects about $30.39 with the new
+solve-first token allocation (previous compact $28.72; full $51.26), before a
+20% allowance. Original EoM remains about $4. No savings are assumed from abstention or caching. These estimates
 use the stored Luna prices and unmeasured mean token assumptions, not spending
 caps. The generated plan includes exact phase arithmetic and full comparisons.
+
+### Spend computational effort on solving
+
+Every compact team agent receives this system instruction:
+
+> Spend most of your reasoning and response-token budget on useful contributions to solving the problem.
+> Keep membership, act/abstain, and pledge decisions brief.
+
+The prompt clarifies that this concerns computational effort, not the amount of
+personal wealth pledged, and discourages filling the budget with unnecessary
+text. It does not assign any agent a role or change the wealth/reward objective.
+
+The current demo and study explicitly set `token_profile: "solve_first"` and:
+
+| Phase | Output cap per call | OpenRouter reasoning effort |
+|---|---:|---|
+| Membership / invitation reply | 192 | none |
+| Act vote and own pledge | 96 | none |
+| Private problem-solving discussion | 2,048 | medium |
+| Winning public work and complete final proposals | 16,384 | high |
+| Candidate-selection vote | 64 | none |
+
+The prepared study's solving cap doubles from 8,192 to 16,384; its overall
+input context limit increases to 262,144 so long candidates still fit in team
+discussion/voting. The 8,192-token grader budget is unchanged. Original EoM
+settings are unchanged; this comparison is not matched in compute or effort.
+
+Act/pledge prompts contain the latest current-round message from each teammate,
+team balances, identity and decision rules. They do not resend the complete
+problem or old public solution. The complete serialized input, including system
+and learned strategy instructions, is capped at 3,072 reference tokens.
+Membership prompts use bounded public-work and profile excerpts with a 6,144
+input-token limit. All roster identities, memberships, balances and invitation
+IDs are preserved. Truncation is labeled; the original audit log is retained.
+If required fields alone exceed a cap, stop before a paid call. No extra LLM
+summary call is used. These smaller views provide less detail for partner
+selection; substantive work still sees the full problem and bounded shared state.
+
+The `standard` profile preserves the previous allocation for ablations. It is
+the general configuration default; use the updated demo or prepared cell specs
+to select solve-first. Both profiles use the brief-budget system guidance.
+
+OpenRouter requests now explicitly set the phase effort and record phase,
+output cap, confirmed cost, and reasoning-token usage when provided. The model
+must support the requested efforts; the client does not silently fall back.
+Other providers retain their provider-specific reasoning behavior. Provider
+`max_tokens` can cover reasoning and visible output together; a 16,384-token cap
+is not a promise of 16,384 visible answer tokens. See the
+[OpenRouter reasoning documentation](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens).
+
+`usage.json` includes provider `phase_costs`. Its solving share includes private
+problem-solving discussion, winning public work and final proposals; selection
+votes and grading remain separate. Unknown reasoning counts stay unknown, and
+unresolved cost reservations are separate from confirmed charges. The central
+k=10 plan allocates about **78%** to these solving opportunities, including
+about **53%** to winning public work and final proposals alone. These are
+planning assumptions, not proof of useful work or guaranteed actual spending.
 
 We expect substantive reasoning and answer checking to influence task score
 more directly than repeated membership/bidding administration, but this has

@@ -6,6 +6,12 @@
   "teams": {
     "interaction_protocol": "rounds",
     "round_schedule": "compact",
+    "token_profile": "solve_first",
+    "action_tokens": 192,
+    "bid_tokens": 96,
+    "discussion_tokens": 2048,
+    "solution_tokens": 16384,
+    "context_tokens": 262144,
     "condition": "dynamic",
     "num_agents": 6,
     "rounds": 3,

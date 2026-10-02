@@ -6,6 +6,10 @@ import math
 class TeamConfig:
     interaction_protocol: str = "legacy"
     round_schedule: str = "compact"
+    token_profile: str = "standard"
+    discussion_tokens: int = 2048
+    formation_context_tokens: int = 6144
+    pledge_context_tokens: int = 3072
     coordination_fee_lambda: float = 0.0
     condition: str = "dynamic"
     seed: int = 7
@@ -42,6 +46,10 @@ class TeamConfig:
             raise ValueError("interaction_protocol must be legacy or rounds")
         if self.round_schedule not in {"compact", "full"}:
             raise ValueError("round_schedule must be compact or full")
+        if self.token_profile not in {"standard", "solve_first"}:
+            raise ValueError("token_profile must be standard or solve_first")
+        if self.token_profile == "solve_first" and (self.interaction_protocol != "rounds" or self.round_schedule != "compact"):
+            raise ValueError("solve_first token allocation requires compact round teaming")
         if self.interaction_protocol == "rounds" and (
             self.bidding_mode != "negotiated" or self.collaboration_mode != "discussion"
             or not self.finalization_enabled
@@ -70,10 +78,13 @@ class TeamConfig:
                 value = getattr(self, f.name)
                 if type(value) is not int or value < (0 if f.name == "seed" else 1):
                     raise ValueError(f"{f.name} must be a positive integer (seed may be zero)")
+        if min(self.formation_context_tokens, self.pledge_context_tokens) < 1024:
+            raise ValueError("Control context budgets must be at least 1024 tokens")
         if (
             min(
                 self.action_tokens,
                 self.bid_tokens,
+                self.discussion_tokens,
                 self.solution_tokens,
                 self.judge_tokens,
                 self.inspect_tokens,

@@ -43,6 +43,20 @@ SCENARIOS = {
                  reflection_fraction=.5, invitation_reply_fraction=1, wake_fraction=1, trials=2, birth_fraction=1),
 }
 
+# Separate team-only assumptions; upstream and reference-baseline budgets stay
+# unchanged. These are planned mean tokens, not claims that larger caps are used.
+SOLVE_FIRST_SCENARIOS = {
+    "low": dict(formation_base=1500, roster_per_agent=12, control_output=40, bid_input=768, bid_output=32,
+                chat_input=4000, chat_output=512, work_input=12000, work_output=3000,
+                final_input=16000, final_output=6000),
+    "central": dict(formation_base=2200, roster_per_agent=16, control_output=64, bid_input=1280, bid_output=48,
+                    chat_input=8000, chat_output=1024, work_input=16000, work_output=6000,
+                    final_input=24000, final_output=10000),
+    "high": dict(formation_base=4000, roster_per_agent=16, control_output=128, bid_input=2900, bid_output=80,
+                 chat_input=14000, chat_output=1536, work_input=24000, work_output=10000,
+                 final_input=32000, final_output=14000),
+}
+
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -53,11 +67,14 @@ def priced(calls, inputs, outputs):
             "usd": calls * (inputs * PRICE["input_per_million"] + outputs * PRICE["output_per_million"]) / 1e6}
 
 
-def estimate(k, scenario="central", *, steps=10, train=40, test=19, schedule="compact"):
+def estimate(k, scenario="central", *, steps=10, train=40, test=19, schedule="compact", token_profile=None):
     """One seed; all steps used, average winning team size three (cap four)."""
     s, episodes, m = SCENARIOS[scenario], train + test, 3
     if schedule not in {"compact", "full"}:
         raise ValueError("Unknown round schedule")
+    token_profile = token_profile or ("solve_first" if schedule == "compact" else "standard")
+    if token_profile not in {"standard", "solve_first"} or (token_profile == "solve_first" and schedule != "compact"):
+        raise ValueError("Invalid token profile for schedule")
     roster = s["roster_per_agent"] * k
     team = {
         "membership_actions": priced(episodes * steps * 3 * k, s["formation_base"] + roster, s["control_output"]),
@@ -82,6 +99,19 @@ def estimate(k, scenario="central", *, steps=10, train=40, test=19, schedule="co
             "private_discussion": priced(episodes * steps * k, s["chat_input"], s["chat_output"]),
             "act_and_pledge": priced(episodes * steps * k, s["bid_input"], s["bid_output"]),
         })
+        if token_profile == "solve_first":
+            p = SOLVE_FIRST_SCENARIOS[scenario]
+            membership_input = min(6144, p["formation_base"] + p["roster_per_agent"] * k)
+            team.update({
+                "membership_proposals": priced(episodes * steps * k, membership_input, p["control_output"]),
+                "invitation_replies": priced(episodes * steps * k * s["invitation_reply_fraction"],
+                                             membership_input, p["control_output"]),
+                "act_and_pledge": priced(episodes * steps * k, p["bid_input"], p["bid_output"]),
+                "private_discussion": priced(episodes * steps * k, p["chat_input"], p["chat_output"]),
+                "winning_work": priced(episodes * (steps - 1) * 2 * m, p["work_input"], p["work_output"]),
+                "votes": priced(episodes * steps * m, p["work_input"] + 2000, 20),
+                "final_proposals": priced(episodes * m, p["final_input"], p["final_output"]),
+            })
     trials = train * s["trials"] + test
     original = {
         "wakeups": priced(trials * steps * k * s["wake_fraction"], s["chat_input"] / 2, 60),
@@ -89,9 +119,13 @@ def estimate(k, scenario="central", *, steps=10, train=40, test=19, schedule="co
         "judge": priced(trials, s["judge_input"], s["judge_output"]),
         "mutations": priced(train * k * s["birth_fraction"], s["work_input"], s["work_output"]),
     }
-    return {arm: {"phases": phases, **{key: math.fsum(p[key] for p in phases.values())
+    result = {arm: {"phases": phases, **{key: math.fsum(p[key] for p in phases.values())
                                       for key in ("calls", "input_tokens", "output_tokens", "usd")}}
             for arm, phases in (("original", original), ("teams", team))}
+    solving = math.fsum(team[p]["usd"] for p in ("private_discussion", "winning_work", "final_proposals"))
+    result["teams"]["solving_usd"] = solving
+    result["teams"]["solving_share"] = solving / result["teams"]["usd"]
+    return result
 
 
 def reference_baselines(scenario="central", test=19):
@@ -155,18 +189,21 @@ def prepare(destination):
                                         for arm in ("original", "teams")) + reference["calls"]}
     cells = []
     for k in KS:
-        team_config = TeamConfig(interaction_protocol="rounds", round_schedule="compact", coordination_fee_lambda=0.0,
+        team_config = TeamConfig(interaction_protocol="rounds", round_schedule="compact", token_profile="solve_first",
+                                 coordination_fee_lambda=0.0,
                                  num_agents=k, rounds=40, max_steps=10,
                                  formation_turns=3, discussion_turns=2, bidding_turns=2, max_team_size=4,
-                                 action_tokens=1024, solution_tokens=8192, judge_tokens=8192,
+                                 action_tokens=192, bid_tokens=96, discussion_tokens=2048,
+                                 solution_tokens=16384, judge_tokens=8192,
                                  inspect_tokens=1024, update_tokens=1024, summary_tokens=512,
-                                 environment_tokens=16384, evidence_tokens=8192, context_tokens=131072,
+                                 environment_tokens=16384, evidence_tokens=8192, context_tokens=262144,
                                  max_calls=2_000_000)
         for arm in ("original", "teams"):
             spec = {"schema": "population-study-cell-v1", "status": "prepared_not_authorized_to_run",
                     "arm": arm, "k": k, "seeds": [7, 17, 29], "initial_review_scope": "one seed (7)",
                     "training_tasks": 40, "test_tasks": 19, "max_steps": 10,
-                    "model": PRICE["model"], "solver_reasoning": "medium", "control_reasoning": "none",
+                    "model": PRICE["model"], "solver_reasoning": "high" if arm == "teams" else "medium",
+                    "control_reasoning": "none", "team_discussion_reasoning": "medium" if arm == "teams" else None,
                     "dataset_sha256": dataset_hashes,
                     "budget": {"execution_authorized": False, "allocated_usd": 0},
                     "team_config": asdict(team_config) if arm == "teams" else None,
@@ -181,6 +218,8 @@ def prepare(destination):
                     "evaluation": "Fresh copy of final 40-task checkpoint for every test. Original eval freezes wealth and prompts; "
                     "teams retain within-episode auctions/membership/rewards but discard all test state afterward. No test reflection.",
                     "required_prelaunch_checks": ["Construct exactly k agents; verify unique identities and upstream role coverage.",
+                                                  "Honor team PHASE_REASONING settings, phase output caps and control input limits; "
+                                                  "record provider-confirmed cost and reasoning tokens per phase.",
                                                   "Assert k agents at every task boundary; stop on failed native replenishment.",
                                                   "Reserve worst-case next-request cost in restart-safe per-cell and global ledgers.",
                                                   "Verify source and dataset hashes; do not reuse checkpoints trained under old team rules.",
@@ -213,6 +252,8 @@ def prepare(destination):
                 "Same rubric threshold 0.5; report full continuous scores too. This is an oracle success metric, "
                 "not an implemented best-answer selector, and has different training exposure.",
             "comparison_limits": ["Same tasks/model/step ceiling and k at test time; actual tokens and dollars differ.",
+                                  "Team solve-first uses high reasoning and 16,384 output caps for public work/final proposals; "
+                                  "the original baseline remains unchanged. This is not a matched-compute comparison.",
                                   "Native roles/evolution/rubric-assisted mutation differ from role-free team reflection.",
                                   "Training means economic/strategy adaptation, not model-weight fine tuning.",
                                   "These 19 test tasks have been inspected before; label this a development comparison.",
@@ -225,10 +266,23 @@ def prepare(destination):
             "metrics": ["paired task score and completion rate", "pass rate at fixed threshold", "billed and reserved cost",
                         "request/token counts by phase", "team activation votes and abstentions", "team size and membership switches per round", "membership reasons",
                         "pledges, payments and path credits per agent", "actual strategy edits and population changes"],
-            "pricing": PRICE, "cost_scenarios": SCENARIOS, "estimates": estimates, "totals": totals,
+            "pricing": PRICE, "cost_scenarios": SCENARIOS, "solve_first_scenarios": SOLVE_FIRST_SCENARIOS,
+            "estimates": estimates, "totals": totals,
+            "token_allocation": {"profile": "solve_first", "solving_phases": ["private_discussion", "winning_work", "final_proposals"],
+                                 "goal": "Most planned model cost funds substantive problem-solving opportunities.",
+                                 "limits": "Caps are ceilings, not spending targets. Phase labels measure opportunities, not usefulness. "
+                                 "Actual shares require billed usage; no accuracy improvement is established.",
+                                 "act_pledge": "96 output tokens, reasoning none, input at most 3072 reference tokens, "
+                                 "using latest team messages and balances instead of the full task/history.",
+                                 "membership": "192 output tokens; reasoning none; input at most 6144 reference tokens with "
+                                 "bounded public-work/profile excerpts and complete roster identities.",
+                                 "private_discussion": "2048 output tokens; medium reasoning; full task and shared solution.",
+                                 "public_work_and_final": "16384 output tokens; high reasoning; no assigned roles.",
+                                 "selection": "64 output tokens; reasoning none; candidate text retained."},
             "prior_spending": prior_spend(),
             "schedule_comparison": {str(k): {"full": estimate(k, schedule="full")["teams"],
-                                             "compact": estimates["central"][str(k)]["teams"]} for k in KS},
+                                             "compact": estimate(k, token_profile="standard")["teams"],
+                                             "solve_first": estimates["central"][str(k)]["teams"]} for k in KS},
             "value_ablation_plan": [
                 "Measure final environment score and completion per dollar, not amplified agent wealth.",
                 "Compare compact and full schedules on paired training tasks/seeds; the comparison bundles call schedule, "
@@ -241,7 +295,8 @@ def prepare(destination):
             "estimate_limits": "Scenario calculations, not confidence intervals or spending guarantees. Assume ten rounds "
                 "with an active winning team every round. Compact uses one membership proposal, one private message and "
                 "one act/pledge ballot per agent; invitation reply fractions are 0.2/0.5/1.0 in low/central/high scenarios "
-                "and are unmeasured assumptions. No abstention or cache discount. Winning work remains two turns. A 20% planning "
+                "and are unmeasured assumptions. Solve-first token means are listed separately; output means include "
+                "provider-billed reasoning. No abstention or cache discount. Winning work remains two turns. A 20% planning "
                 "allowance covers some retries/corrections, not an absolute bound. Calibrate on training tasks before launch.",
             "runtime": f"At the old team's median 1.85 seconds between request starts, the k=100 compact team cell alone "
                 f"projects roughly {estimates['central']['100']['teams']['calls'] * 1.85 / 86400:.1f} days per seed if kept sequential. "
@@ -252,6 +307,7 @@ def prepare(destination):
             "source_sha256": {str(p.relative_to(REPO)): sha(p) for p in sorted((REPO / "hayekmas").rglob("*.py"))}}
     write_json(destination / "plan.json", plan)
     write_json(destination / "cost-estimate.json", {"pricing": PRICE, "assumptions": SCENARIOS,
+                                                  "solve_first_assumptions": SOLVE_FIRST_SCENARIOS,
                                                   "cells": estimates, "totals": totals})
     shutil.copy2(__file__, destination / "estimator-source.py")
     render(destination, plan)
@@ -298,32 +354,40 @@ These are scenario estimates, not measured costs or spending authorization.</sma
     html += '<p>The compact schedule uses 3k + I calls before the winning action: k membership proposals, I valid invitation '
     html += 'replies (0 ≤ I ≤ k), k private discussion messages, and k combined act/pledge ballots. No assigned leader. '
     html += 'A strict majority activates each team; only members can authorize their own money. '
-    html += 'At k=10 this is 30–40 calls per round, down from 80. Winning-team reasoning and final-answer budgets are preserved. '
-    html += 'Membership prompts still grow with the roster.</p>'
-    before = plan['schedule_comparison']['10']['full']['usd']
-    after = plan['schedule_comparison']['10']['compact']['usd']
+    html += 'At k=10 this is 30–40 calls per round, down from 80. The solve-first allocation keeps the same number of calls, '
+    html += 'bounds control context and doubles public-work/final-proposal output caps from 8,192 to 16,384 tokens.</p>'
+    before = plan['schedule_comparison']['10']['compact']['usd']
+    after = plan['schedule_comparison']['10']['solve_first']['usd']
     html += f'<p>k=10 team cell, central estimate: <strong>${before:.2f} → ${after:.2f}</strong> '
-    html += '(40 training + 19 test tasks; one seed; before allowance). These are projections, not measured savings.</p>'
-    full = plan['schedule_comparison']['10']['full']['phases']
-    compact = plan['schedule_comparison']['10']['compact']['phases']
+    html += '(previous compact → solve-first; 40 training + 19 test tasks; one seed; before allowance). These are projections.</p>'
+    allocation = plan['schedule_comparison']['10']['solve_first']
+    html += f'<div class="card"><strong>{allocation["solving_share"]:.0%} of planned k=10 team cost funds problem-solving calls</strong>'
+    html += f'<p>${allocation["solving_usd"]:.2f} for substantive private discussion, winning public work and complete final proposals. '
+    html += 'Selection votes are counted separately. Actual billed shares and usefulness still need measurement.</p></div>'
+    html += '<p>Every compact team agent is told: “Spend most of your reasoning and response-token budget on useful contributions '
+    html += 'to solving the problem. Keep membership, act/abstain, and pledge decisions brief.” This concerns computation, not money pledged.</p>'
+    html += '<ul>' + ''.join(f'<li>{escape(plan["token_allocation"][key])}</li>'
+                           for key in ('act_pledge', 'membership', 'private_discussion', 'public_work_and_final', 'selection')) + '</ul>'
+    full = plan['schedule_comparison']['10']['compact']['phases']
+    compact = plan['schedule_comparison']['10']['solve_first']['phases']
     cost_rows = [
-        ('Formation and public messages', ['membership_actions', 'opening_discussion'],
+        ('Formation and public messages', ['membership_proposals', 'invitation_replies'],
          ['membership_proposals', 'invitation_replies']),
         ('Private pre-bid discussion', ['private_discussion'], ['private_discussion']),
-        ('Bidding / act decision', ['bid_negotiation'], ['act_and_pledge']),
+        ('Bidding / act decision', ['act_and_pledge'], ['act_and_pledge']),
         ('Winning work + answer proposals + selection', ['winning_work', 'final_proposals', 'votes'],
          ['winning_work', 'final_proposals', 'votes']),
         ('Grading + reflection', ['judge', 'reflection_choices', 'reflection_edits'],
          ['judge', 'reflection_choices', 'reflection_edits']),
     ]
-    html += '<div class="scroll"><table><thead><tr><th>k=10 phase</th><th>Previous full</th><th>Compact</th></tr></thead><tbody>'
+    html += '<div class="scroll"><table><thead><tr><th>k=10 phase</th><th>Previous compact</th><th>Solve-first</th></tr></thead><tbody>'
     for label, old_keys, new_keys in cost_rows:
         old_cost = math.fsum(full[p]['usd'] for p in old_keys)
         new_cost = math.fsum(compact[p]['usd'] for p in new_keys)
         html += f'<tr><td>{label}</td><td>${old_cost:.2f}</td><td>${new_cost:.2f}</td></tr>'
     html += '</tbody></table></div>'
-    html += '<h2>What is worth spending on?</h2><p>Working hypothesis: preserve substantive winning-team reasoning and '
-    html += 'answer checking; remove repeated administration first. An equal R/N payout is an incentive rule, '
+    html += '<h2>What is worth spending on?</h2><p>Working hypothesis: prioritize substantive reasoning and '
+    html += 'answer checking. An equal R/N payout is an incentive rule, '
     html += 'not evidence that each accepted round was equally useful. No paid accuracy result is available for this schedule.</p><ul>'
     html += ''.join(f'<li>{escape(item)}</li>' for item in plan['value_ablation_plan']) + '</ul>'
     for k in KS:

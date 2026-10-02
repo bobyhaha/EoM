@@ -36,6 +36,8 @@ class OpenRouterClient(LLMClient):
         self.blocked = False
 
     def usage(self):
+        from .token_allocation import phase_costs
+
         return {
             "max_usd": self.budget["max_usd"],
             "reported_cost_usd": math.fsum(r.get("cost_usd", 0) for r in self.records),
@@ -44,19 +46,25 @@ class OpenRouterClient(LLMClient):
             "prompt_tokens": sum(r.get("prompt_tokens", 0) for r in self.records),
             "completion_tokens": sum(r.get("completion_tokens", 0) for r in self.records),
             "blocked": self.blocked,
+            "phase_costs": phase_costs(self.records),
         }
 
     def record(self, event, record):
         if self.sink:
             self.sink({"event": event, **record})
 
-    def _generate_impl(self, prompt, system_prompt=None, max_tokens=None, temperature=None, stop=None, **kwargs):
+    def _generate_impl(self, prompt, system_prompt=None, max_tokens=None, temperature=None, stop=None,
+                       reasoning_effort=None, kind="unknown", **kwargs):
         if self.blocked:
             raise SpendLimitExceeded(
                 "An earlier request has uncertain or unexpectedly high cost; inspect api_usage.jsonl"
             )
         if kwargs:
             raise ValueError("Unsupported OpenRouter generation options")
+        if reasoning_effort not in {None, "none", "minimal", "low", "medium", "high", "xhigh", "max"}:
+            raise ValueError("Unsupported reasoning effort")
+        if not isinstance(kind, str) or not kind:
+            raise ValueError("Request kind must be nonempty text")
         max_tokens = max_tokens or self.default_max_tokens
         messages = ([{"role": "system", "content": system_prompt}] if system_prompt else []) + [
             {"role": "user", "content": prompt}
@@ -71,7 +79,8 @@ class OpenRouterClient(LLMClient):
         usage = self.usage()
         if usage["reported_cost_usd"] + usage["reserved_unconfirmed_usd"] + reserve > self.budget["max_usd"]:
             raise SpendLimitExceeded("Next request's cost reservation exceeds this run's USD budget")
-        record = {"request": len(self.records) + 1, "reserved_usd": reserve, "status": "pending"}
+        record = {"request": len(self.records) + 1, "reserved_usd": reserve, "status": "pending",
+                  "kind": kind, "reasoning_effort": reasoning_effort, "max_tokens": max_tokens}
         self.records.append(record)
         self.record("api_reserved", record)  # Persist BEFORE sending a potentially billable request.
         payload = {
@@ -95,6 +104,8 @@ class OpenRouterClient(LLMClient):
             del payload["temperature"]
         if stop:
             payload["stop"] = stop
+        if reasoning_effort is not None:
+            payload["reasoning"] = {"effort": reasoning_effort}
         try:
             response = requests.post(
                 self.URL,
@@ -122,6 +133,9 @@ class OpenRouterClient(LLMClient):
                 value = native.get(key)
                 if type(value) is int and value >= 0:
                     record[key] = value
+            reasoning = (native.get("completion_tokens_details") or {}).get("reasoning_tokens")
+            if type(reasoning) is int and reasoning >= 0:
+                record["reasoning_tokens"] = reasoning
             self.record("api_charged", record)
             if cost > reserve + 1e-9:
                 raise SpendLimitExceeded("Reported cost exceeded the reservation; stopping to review pricing")
