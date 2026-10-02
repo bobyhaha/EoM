@@ -39,6 +39,7 @@ def configure_agent(engine, agent):
 
 def birth(engine, source, kind, reason):
     from .mas import BudgetExceeded
+    from .openrouter import SpendLimitExceeded
 
     cap = engine.config.num_agents * engine.config.population_cap_multiplier
     if len(engine.agents) >= cap:
@@ -60,9 +61,14 @@ def birth(engine, source, kind, reason):
         )
     try:
         decision = engine.ask(f"birth_{kind}", source, {"mutation_specification": prompt}, engine.config.update_tokens)
-    except BudgetExceeded:
+    except (BudgetExceeded, SpendLimitExceeded):
         raise
     except Exception as exc:
+        # A provider may raise a transport/parsing error after reserving money.
+        # Its blocked state means unresolved spending, not a recoverable mutation.
+        client = getattr(engine.policy, "client", None)
+        if getattr(client, "blocked", False) or getattr(getattr(client, "native", None), "blocked", False):
+            raise
         engine.emit("birth_failed", parent=source.name, birth_kind=kind, error_type=type(exc).__name__)
         return False
     text = decision.get("strategy")

@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 VISIBLE = {
+    "evaluation_reset",
     "agent_born", "agent_removed", "population_rent", "population_evolved", "birth_skipped", "birth_failed",
     "decision_round_started", "membership_window", "membership_committed", "membership_decision", "activation",
     "path_reward", "finalization_recovery", "selection_fallback",

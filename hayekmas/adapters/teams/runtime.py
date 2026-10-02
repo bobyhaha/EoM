@@ -93,13 +93,30 @@ def run(raw, *, out=None, plots=True):
         try:
             engine = TeamMAS(cfg, policy, emit)
             write_replay(engine, destination)
-            for task in tasks[: cfg.rounds]:
+            # Keep a pristine reference; each test gets a disposable copy. The
+            # simple runner starts untrained; the dedicated evaluator can supply
+            # a trained source. Only audit/usage counters span independent tests.
+            source = engine
+            testing = raw.get("split", "train") == "test"
+            for index, task in enumerate(tasks[: cfg.rounds]):
+                if testing:
+                    from .evaluation import evaluation_copy
+                    previous = engine
+                    engine = evaluation_copy(source, cfg.seed + index, policy)
+                    engine.config = cfg
+                    engine.round = index
+                    engine.events, engine.metrics = previous.events, previous.metrics
+                    for counter in ("calls", "requested_output_tokens", "reference_input_tokens", "invalid_actions"):
+                        setattr(engine, counter, getattr(previous, counter))
+                    engine.event_sink = emit
+                    engine.emit("evaluation_reset", agents=engine.state()["agents"],
+                                reason="fresh source snapshot; previous test feedback discarded")
                 env = (
                     ResearchTaskEnv(task, cfg.reward, engine.judge)
                     if environment == "researchworld"
                     else ExactTaskEnv(task, cfg.reward)
                 )
-                engine.run_one_episode(env, training=raw.get("split", "train") == "train")
+                engine.run_one_episode(env, training=not testing, reflection=not testing)
                 write_replay(engine, destination)
             summary = analyze(engine, destination, plots=plots and raw.get("plots", True))
             write_json(destination / "population.json", engine.state())

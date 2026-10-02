@@ -954,3 +954,17 @@ are left for post-hoc analysis; the current features do not prove specialization
 Tests cover the economic ledger, voluntary membership, bounded negotiation,
 independent ownership of commitments, observation isolation, reflection,
 reproducibility, artifacts, interruption, and safe rendering of agent text.
+
+### Evaluation and repair safeguards
+
+The simple launcher with `split: "test"` restores its initial untrained population
+before every test. Use the dedicated evaluator for a trained checkpoint. Only
+audit events and usage counters span tests; each reset is visible in the replay.
+The final population/accounting file describes the last disposable test episode,
+while metrics and API usage cover the complete run.
+
+Research and exact-task environments expose references only through the internal
+training-repair accessor. Public tasks, solving observations, and test adaptation
+do not receive the reference. Financial budget stops and blocked-provider errors
+propagate from mutation calls and mark the run interrupted; they are not silently
+counted as ordinary failed births.

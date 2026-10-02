@@ -157,6 +157,14 @@ assert.equal($('event-slider').value,'1');
 $('play').click();
 width=330;resize();
 for(const node of document.querySelectorAll('.node'))assert.ok(parseFloat(node.style.left)>0&&parseFloat(node.style.left)<width);
+for(let ri=0;ri<payload.rounds.length;ri++){
+ const r=payload.rounds[ri], resetIndex=r.events.findIndex(e=>e.event==='evaluation_reset');
+ if(resetIndex<0)continue;
+ input('round-select',ri,'change');seek(resetIndex+1);
+ for(const a of r.events[resetIndex].agents){
+  assert.equal(document.querySelector(`[data-agent="${a.name}"] small`).textContent,a.wealth.toFixed(2),'Test reset restores visible wealth');
+ }
+}
 if(payload.evolution_enabled){
  for(let ri=0;ri<payload.rounds.length;ri++){
   const r=payload.rounds[ri];

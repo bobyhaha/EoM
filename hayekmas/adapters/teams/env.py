@@ -59,6 +59,10 @@ class ExactTaskEnv(BaseEnv):
     def get_task_description(self):
         return self.task.problem
 
+    def get_correct_answer(self):
+        """Training repair reference; never included in task.public()."""
+        return str(self.task.answer)
+
     def get_state_description(self):
         return json.dumps({"steps": self.action_history}, ensure_ascii=False)
 
@@ -120,6 +124,10 @@ class ResearchTaskEnv(BaseEnv):
 
     def get_task_description(self):
         return self.native.get_task_description()
+
+    def get_correct_answer(self):
+        """Forward the reference for training-only repair, not solver observations."""
+        return self.native.get_correct_answer()
 
     def get_state_description(self):
         return self.native.state
