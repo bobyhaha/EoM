@@ -20,7 +20,7 @@ from .campaign_client import CampaignClient, CampaignStop, atomic_json
 def run(root, key, deadline):
     root.mkdir(parents=True, exist_ok=False)
     raw = json.loads(Path('global_configs/train_research.json').read_text())
-    spec = json.loads(Path('runs/population-study-evolution-f2dbe94/cells/original-k10.json').read_text())
+    spec = json.loads(Path('global_configs/k10_bid_ablation.json').read_text())
     for section, overrides in spec['original_overrides'].items():
         raw['mas'][section].update(overrides)
     cfg = load_research_runtime_config(raw)

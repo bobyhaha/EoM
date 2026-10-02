@@ -33,7 +33,18 @@ extension also compares against a direct single agent and independent pass@k
 on the bundled FrontierScience-Research tasks; see the scientific comparison
 commands in **[TEAMS.md](TEAMS.md)**.
 
-### Current original-EoM versus teams campaign
+### k=10 funding and objective ablation
+
+The October 1 mechanism study compares wealth/society objectives with
+voluntary/fixed team bids on three matched development tasks. It uses fresh
+populations, ten decision rounds, and no population evolution. Separate
+follow-ups evaluate auction feedback, membership clarification and a shorter
+horizon; references include original EoM, independent samples and answer
+selection. See [TEAMS.md](TEAMS.md#k10-funding-ablation) for the exact rules,
+bounded launch command, and result/replay paths. This mechanism study does not
+replace the full training-and-held-out-evaluation protocol.
+
+### Earlier original-EoM versus teams campaign
 
 The 12-hour GPT-6 Luna campaign saves everything under
 `runs/eom-vs-teams-12h/`. Its saved deadline is September 30, 2026 at

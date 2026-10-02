@@ -43,6 +43,33 @@ def grade_ranges(grades):
     return list(grouped.values())
 
 
+def reference_comparison(extra):
+    rows = []
+    original = extra.get('original', {})
+    if len(original.get('results', [])) == 3:
+        rows.append({'label':'Original EoM reference', 'scores':[r['score'] for r in original['results']],
+                     'cost_usd':original['usage']['cost_usd']})
+    independent = extra.get('independent', {})
+    first = [r for r in independent.get('results', []) if r['sample']==1]
+    if len(first)==3:
+        rows.append({'label':'Single agent (prespecified sample1)', 'scores':[r['score'] for r in first],
+                     'cost_usd':sum(r['cost_usd'] for r in first)})
+    stats = extra.get('independent_statistics', [])
+    if len(stats)==3 and all(r['n']==10 for r in stats):
+        cost = sum(r['cost_usd'] for r in independent['results'])
+        rows.append({'label':'Independent samples (mean over 10/task)', 'scores':[r['mean_score'] for r in stats],
+                     'cost_usd':cost})
+        rows.append({'label':'Oracle best of 10 (not a selector)', 'scores':[r['best_score'] for r in stats],
+                     'cost_usd':cost})
+    selected = independent.get('selected_results', [])
+    if len(selected)==3 and all(r.get('score') is not None for r in selected):
+        rows.append({'label':'Independent 10 + reference-free selector', 'scores':[r['score'] for r in selected],
+                     'cost_usd':independent['usage']['cost_usd']})
+    for row in rows:
+        row['mean_score'] = statistics.mean(row['scores'])
+    return rows
+
+
 def collect_team(label, folder, rule):
     results = [json.loads(p.read_text()) for p in sorted(folder.glob('*/result.json'))]
     trajectories = [analyze(p.parent, rule) for p in sorted(folder.glob('*/events.jsonl'))]
@@ -52,8 +79,21 @@ def collect_team(label, folder, rule):
     wins = Counter()
     sizes = Counter()
     quotes = []
+    skipped_invitations = solo_after_leave = teamed_after_leave = 0
+    membership_windows = unchanged_membership_windows = 0
     for path in sorted(folder.glob('*/events.jsonl')):
-        for e in records(path):
+        events = records(path)
+        committed = {e['step']:e['membership'] for e in events if e['event']=='membership_committed'}
+        openings = {e['step']:e['membership'] for e in events if e['event']=='membership_window'}
+        membership_windows += len(committed)
+        unchanged_membership_windows += sum(membership == openings.get(step) for step,membership in committed.items())
+        for e in events:
+            skipped_invitations += e['event']=='invitation_skipped'
+            if e['event']=='left' and e['step'] in committed:
+                if committed[e['step']].get(e['agent']) is None:
+                    solo_after_leave += 1
+                else:
+                    teamed_after_leave += 1
             if e['event'] == 'auction':
                 auctions += 1
                 if e['winner'] is not None:
@@ -79,6 +119,9 @@ def collect_team(label, folder, rule):
             'auctions':auctions,'funded':funded,'funded_fraction':funded/auctions if auctions else None,
             'winning_size_counts':dict(sizes), 'paid_winner_slots':paid_slots,'unpaid_winner_slots':unpaid_slots,
             'joins':sum(t['joins'] for t in trajectories), 'leaves':sum(t['leaves'] for t in trajectories),
+            'skipped_invitations':skipped_invitations, 'solo_after_leave':solo_after_leave,
+            'teamed_after_leave':teamed_after_leave,
+            'membership_windows':membership_windows, 'unchanged_membership_windows':unchanged_membership_windows,
             'verification_issues':[x for t in trajectories for x in t['verification_issues']],
             'phase_costs':phase_costs(list(usage.values())), 'representative_ballot_candidates':quotes,
             'tasks':[{k:r[k] for k in ('task_id','score','has_final_answer','cost_usd')} for r in results]}
@@ -89,6 +132,8 @@ def collect():
     teams = [collect_team(cell, ROOT/cell, rule) for cell,(_,rule) in plan['cells'].items()]
     for label, folder, rule in [
         ('wealth-voluntary-feedback',RUNS/'k10-feedback-3h-20261001/wealth-voluntary-feedback','voluntary'),
+        ('membership-clarity-v1 / interrupted',RUNS/'k10-membership-clarity-20261001/wealth-voluntary-feedback-membership','voluntary'),
+        ('wealth-voluntary-feedback-membership-v2',RUNS/'k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership','voluntary'),
         ('society-fixed-3rounds',RUNS/'k10-short-rounds-20261001/society-fixed-3rounds','fixed')]:
         if (folder/'status.json').exists():teams.append(collect_team(label,folder,rule))
     repeatroot=RUNS/'k10-ablation-seed17-20261001'
@@ -107,6 +152,7 @@ def collect():
     extra['grade_ranges'] = grade_ranges(extra.get('regrades', {}).get('grades', []))
     receipts=[t['usage'] for t in teams]+[v['usage'] for k,v in extra.items() if isinstance(v,dict) and 'usage' in v]
     data={'generated_at':time.time(),'deadline':plan['deadline'],'teams':teams,'references':extra,
+          'reference_comparison':reference_comparison(extra),
           'total_confirmed_usd':sum(v['cost_usd'] for v in receipts),
           'total_reserved_usd':sum(v['unconfirmed_usd'] for v in receipts)}
     atomic_json(ROOT/'analysis.json',data)
@@ -132,7 +178,10 @@ body{font:16px/1.6 system-ui;max-width:1150px;margin:45px auto;padding:0 25px;co
     for t in data['teams']:
         rows.append([t['label'],t['status'],str(t['n'])+'/3',', '.join(fmt(x) for x in t['scores']),fmt(t['mean_completed_score']),str(t['submitted'])+'/'+str(t['n']),str(t['passed'])+'/'+str(t['n']),str(t['funded'])+'/'+str(t['auctions']),f'${t["usage"]["cost_usd"]:.4f}'])
     html+=table(['Condition','Status','Tasks','Scores P / B / C','Mean','Answers','Passes','Funded auctions','USD'],rows)
+    html+='<img src="figures/scores-costs.png" alt="Completed-task score means and confirmed inference costs by condition">'
     html+='<h2>Original EoM and independent samples</h2><p>The original reference uses the unchanged HayekMAS engine and five upstream research roles instantiated twice, with fresh untrained populations in evaluation mode. Native individual fixed bids, wakeups, and early finalization remain. It uses 8192 output tokens with medium reasoning versus 16384/high for team work, so it is a reference, not a compute-matched causal comparison. Its economics are frozen in evaluation, whereas team economics operate within each disposable episode.</p>'
+    html+=table(['Reference','Scores P / B / C','Mean','USD including evaluation'],[[r['label'],', '.join(fmt(s) for s in r['scores']),fmt(r['mean_score']),f'${r["cost_usd"]:.5f}'] for r in data['reference_comparison']])
+    html+='<p>These rows reuse the same independent sample cohort and are not additional spending. Sample1 costs cover only those three answers and their grades. Independent mean and oracle costs cover all thirty answers and grades. Selector costs additionally include the reference-free selection calls. An oracle score is an analysis using the grades, not an executable answer-selection system.</p><img src="figures/reference-comparison.png" alt="Scores and log-scale costs for completed team conditions and references">'
     original=data['references'].get('original',{})
     html+=table(['Task','Score','Steps','USD'],[[r['task_id'],fmt(r['score']),r['steps'],f'${r["cost_usd"]:.4f}'] for r in original.get('results',[])])
     html+='<p>The independent baseline generates ten separate answers per task at 16384/high, without communication or access to other answers. Sample1 is the prespecified single-agent result. Pass@k is 1 − C(n−c,k)/C(n,k), where c is the number of judge-passing samples among n completed samples. This is an oracle success estimate, not a working selector, and judge calls are included in cost.</p>'
@@ -145,11 +194,14 @@ body{font:16px/1.6 system-ui;max-width:1150px;margin:45px auto;padding:0 25px;co
     html+='<h3>Repeated scoring of unchanged answers</h3><p>Each available primary, feedback, and original-reference answer is graded twice more with the same grading prompt and settings. Primary grades stay unchanged. Ranges describe grading variation, not confidence intervals; zero-answer cases require no judge call.</p>'
     html+=table(['Condition / task','Primary','Repeat scores','Range'],[[' / '.join(Path(r['source']).parts[-3:-1]),fmt(r['primary']),', '.join(fmt(s) for s in r['repeats']),f'{r["min"]:.3f}–{r["max"]:.3f}'] for r in data['references'].get('grade_ranges',[])])
     html+='<h2>Agent behavior and economic verification</h2><img src="figures/physics-membership.png" alt="Physics membership and funding by agent and decision round">'
+    html+='<p>Additional membership timelines: <a href="figures/biology-membership.png">biology, seed7</a> · <a href="figures/chemistry-membership.png">chemistry, seed7</a> · <a href="figures/physics-membership-seed17.png">physics, seed17</a> · <a href="figures/biology-membership-seed17.png">biology, seed17</a> · <a href="figures/chemistry-membership-seed17.png">chemistry, seed17</a>. White cells denote rounds not yet observed. Full dialogue appears in each task’s replay.</p>'
     html+=table(['Condition','Joins','Leaves','Winning team sizes: rounds','Paying / nonpaying winner slots','Verification issues'],[[t['label'],t['joins'],t['leaves'],t['winning_size_counts'],f'{t["paid_winner_slots"]} / {t["unpaid_winner_slots"]}',len(t['verification_issues'])] for t in data['teams']])
     html+='<p>A nonpaying member can still contribute intellectual work; this count alone is not evidence of shirking. Membership counts describe behavior in this protocol, not proof that the resulting teams are optimal. All agents share the same model and initial strategy; there are no assigned specialist roles in team conditions.</p>'
+    html+=table(['Condition','Skipped invitations','Left and ended membership window solo','Left and ended membership window teamed','Unchanged membership windows'],[[t['label'],t['skipped_invitations'],t['solo_after_leave'],t['teamed_after_leave'],f'{t["unchanged_membership_windows"]}/{t["membership_windows"]}'] for t in data['teams']])
+    html+='<p>These are recorded operation counts, not inferred intentions. Skipped invitations include recipients remaining in a team or inviter teams reaching capacity. Leaving and ending solo can be a deliberate choice. The membership-clarification condition changes only explanations of existing operations on top of factual auction feedback; it does not add a new admission operation.</p>'
     html+='<p>Independent event checks verify bid sums, majority activation, explicit fixed-price consent, winner eligibility, per-agent balance changes, transfers to historical previous winners, and R/N reward credits to the membership saved at submission. The mechanism passed 142 team tests at launch, including new consent and affordability checks. Repeated grades test the same model’s scoring variability; they are not independent expert verification.</p>'
     html+='<h2>Where inference cost went</h2><img src="figures/phase-costs.png" alt="Inference cost by phase">'
-    html+=table(['Condition','Requests','Problem-solving share of billed cost','Pending reservation'],[[t['label'],t['usage']['requests'],fmt(t['phase_costs']['solving_share_of_confirmed_cost']),f'${t["usage"]["unconfirmed_usd"]:.5f}'] for t in data['teams']])
+    html+=table(['Condition','Requests','Problem-solving share of billed cost','Pending reservation'],[[t['label'],t['usage']['requests'],f'{t["phase_costs"]["solving_share_of_confirmed_cost"]:.1%}' if t['phase_costs']['solving_share_of_confirmed_cost'] is not None else 'n/a',f'${t["usage"]["unconfirmed_usd"]:.5f}'] for t in data['teams']])
     html+='<p>Problem-solving includes private discussion, winner work, and final-answer generation. A high share does not guarantee useful public progress: unselected private reasoning still costs tokens. Budget ceilings are safety limits, not equal-spend constraints; the actual compute differs across conditions.</p>'
     html+='<h2>Findings, failures, and recommendations</h2>'+discussion
     html+='<h2>Limits of the evidence</h2><ul><li>Only three previously available development tasks; no population training, no fresh held-out efficacy claim.</li><li>Few scheduling seeds, stochastic provider outputs, and the same model used to solve and judge. Repeat grades cannot establish scientific correctness.</li><li>The fixed-price package changes both amount selection and who authorizes payment. It does not isolate the numeric effect of a bid floor.</li><li>Fresh populations and rent=0 do not test long-term bankruptcy selection or the k-to-2k growth policy.</li><li>Early pilots, the feedback experiment, and the three-round experiment have different designs and are not pooled into the primary factorial means.</li></ul>'

@@ -31,11 +31,11 @@ def prepare(root, deadline, *, seed=7, cell_cap=20):
     root.mkdir(parents=True, exist_ok=False)
     dataset = Path('third_party/benchmarks/frontier-science-research/data/research_train.jsonl')
     tasks = load_tasks(dataset, 'train')[:3]
-    config = json.loads(Path('runs/population-study-evolution-f2dbe94/cells/teams-k10.json').read_text())['team_config']
+    config = json.loads(Path('global_configs/k10_bid_ablation.json').read_text())['team_config']
     config.update(rounds=1, evolution_enabled=False, seed=seed)
     plan = {'deadline': deadline, 'started_at': time.time(), 'cells': CELLS, 'cell_cap_usd': cell_cap,
             'total_partitioned_cap_usd': 4 * cell_cap, 'user_max_usd': 100,
-            'budget_note': 'Four disjoint $20 ledgers cap this study at $80; prior pilots remain below $2. No automatic expansion.',
+            'budget_note': f'Four disjoint ${cell_cap:g} ledgers cap this launch at ${4*cell_cap:g}. Other launches require their own aggregate budget accounting. No automatic expansion.',
             'tasks': [t.id for t in tasks], 'dataset': str(dataset),
             'dataset_sha256': hashlib.sha256(dataset.read_bytes()).hexdigest(), 'config': config,
             'model': 'openai/gpt-6-luna', 'seed': seed,
@@ -170,16 +170,23 @@ if __name__ == '__main__':
     parser.add_argument('--cell', choices=CELLS)
     parser.add_argument('--launch', action='store_true')
     parser.add_argument('--deadline', type=float)
+    parser.add_argument('--hours', type=float, help='Relative deadline for a fresh launch; exclusive with --deadline')
+    parser.add_argument('--seed', type=int, default=7)
+    parser.add_argument('--cell-cap', type=float, default=20, help='USD ceiling per condition; four disjoint ledgers')
     parser.add_argument('--report', action='store_true')
     args = parser.parse_args()
     root = args.root.resolve()
     if args.report:
         print(json.dumps(report(root)))
     elif args.launch:
+        if args.hours is not None:
+            if args.deadline is not None or not 0 < args.hours <= 3:
+                raise SystemExit('Use either --deadline or --hours; hours must be positive and at most 3')
+            args.deadline = time.time() + args.hours * 3600
         if not args.deadline or args.deadline <= time.time():
             raise SystemExit('Future explicit deadline required')
         key = os.environ.get('OPENROUTER_API_KEY') or getpass.getpass('OpenRouter API key (hidden): ')
-        prepare(root, args.deadline)
+        prepare(root, args.deadline, seed=args.seed, cell_cap=args.cell_cap)
         children = []
         for cell in CELLS:
             with (root / cell / 'worker.log').open('w') as log:

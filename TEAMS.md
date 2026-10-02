@@ -7,7 +7,59 @@ It implements the narrow prototype from the
 the supplied implementation notes, and the subsequent requirements for
 **communicated contribution decisions** and a **shared team scratchpad**.
 
-## Population evolution (current study)
+## k=10 funding ablation
+
+The October 1 funding study uses fresh populations on three development tasks,
+not the full population-training protocol below. It crosses `objective_mode`
+(`wealth` or `society`) with `team_bid_rule` (`voluntary` or `fixed`). Agents
+have no assigned roles. Each task starts with ten agents; evolution and
+reflection are disabled, the horizon is ten rounds, and lambda is zero.
+The exact reproducible defaults are in
+[`global_configs/k10_bid_ablation.json`](global_configs/k10_bid_ablation.json).
+
+A voluntary team bid is the sum of individually authorized pledges. With the
+fixed rule, `act=true` and `authorize_base_bid=true` authorize a maximum charge
+of `team_base_bid * bid_cost_rate`. A strict majority must consent and be able
+to afford that maximum. The actual total bid, 0.1 by default, is shared equally
+among consenting yes voters if the team wins. Other members pay zero. Tied teams
+are selected by the seeded lottery. This is a fixed-price consent mechanism,
+not an automatic subsidy or a minimum added to voluntary pledges.
+
+To launch a new four-condition study from the repository directory:
+
+```bash
+.venv/bin/python -m hayekmas.experiments.bid_ablation \
+  --launch --root runs/my-k10-study --hours 3 --seed 7 --cell-cap 2
+```
+
+The example allows at most $2 per condition, $8 for this launch. These are
+ceilings, not spending targets; separate launches need separate aggregate
+budget accounting. The program uses `OPENROUTER_API_KEY` when set, otherwise
+asks for it without echoing it. It refuses to overwrite an existing study or
+automatically restart a paid cell. Use a new output directory for each run.
+The launcher snapshots the resolved protocol and source hashes in `plan.json`;
+the bundled training dataset supplies the same three task IDs for all cells.
+
+Inspect `index.html`, per-task `replay.html`, `events.jsonl`, `result.json`, and
+the per-condition request and cost ledgers. To serve a study locally:
+
+```bash
+.venv/bin/python -m http.server 8790 --bind 127.0.0.1 --directory runs/my-k10-study
+```
+
+Open `http://127.0.0.1:8790/`. Use another port if this session's server is
+already running. The replay exposes membership, bids, payment transfers,
+public work, private team messages, and historical reward credits. A
+`STOP` file in the study directory prevents subsequent provider calls;
+an already-started call may finish. Interrupted tasks are not scored as zero.
+
+The session also includes separately labeled feedback, membership-clarification,
+and three-round follow-ups, independent samples and reference-free selection,
+an original-engine reference, and repeated grading. These are not pooled into
+the primary factorial comparison. The fixed-bid mechanism does not by itself
+establish a solution-quality advantage over single agents or original EoM.
+
+## Population evolution (prepared full study)
 
 The prepared study now uses **k initial agents and a 2k living-population cap**
 for both original EoM and teams. Enable the team extension with:

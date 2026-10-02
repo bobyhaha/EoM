@@ -18,6 +18,10 @@ def upper_bound(primary):
         'k10-feedback-3h-20261001/wealth-voluntary-feedback', 'k10-short-rounds-20261001/society-fixed-3rounds',
         'k10-original-reference-20261001', 'k10-independent-20261001', 'k10-regrade-20261001',
         'k10-society-prompt-20261001', 'k10-pilot-20261001')]
+    for name in ('k10-membership-clarity-20261001', 'k10-membership-clarity-v2-20261001'):
+        membership = Path('runs')/name/'wealth-voluntary-feedback-membership'
+        if (membership/'status.json').exists():
+            sources.append(membership)
     rows=[]
     for p in sources:
         if not (p/'status.json').exists():
