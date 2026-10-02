@@ -7,6 +7,80 @@ It implements the narrow prototype from the
 the supplied implementation notes, and the subsequent requirements for
 **communicated contribution decisions** and a **shared team scratchpad**.
 
+## Population evolution (current study)
+
+The prepared study now uses **k initial agents and a 2k living-population cap**
+for both original EoM and teams. Enable the team extension with:
+
+```json
+{
+  "interaction_protocol": "rounds",
+  "condition": "dynamic",
+  "evolution_enabled": true,
+  "num_agents": 10,
+  "population_cap_multiplier": 2,
+  "birth_interval": 5,
+  "num_births_per_interval": 2,
+  "p_a": 0.0,
+  "p_b": 1.0,
+  "periodical_good_p": 0.5,
+  "rent": 0.0,
+  "rent_interval": 5
+}
+```
+
+After each training episode, settle historical R/N-per-member credit and optional
+reflection, charge configured rent when due, then remove agents with **wealth < 0**.
+Zero wealth alone is not bankruptcy. With affordable pledges, nonnegative task
+rewards and rent=0, team bankruptcy may never occur. We do not introduce an
+unrequested failure penalty or silently treat zero as bankruptcy.
+
+For each bankruptcy, use the upstream p_a/p_b alternatives: mutate the richest
+survivor, repair the removed agent using available training failure context, or
+make no birth. Every five completed training tasks, attempt two additional births,
+independently choosing success mutation or failure repair with probability 0.5.
+All births share the 2k cap; a full population causes skips without a model call.
+Prepared study membership-context limits scale to max(6144, 128*k) reference
+tokens so identities for up to 2k agents fit; money ballots remain at 3072.
+No minimum-population replenishment is configured. An empty population stops.
+
+Mutation reuses the upstream good/bad birth specifications through the bounded
+team policy client (JSON strategy response, update_tokens cap, medium reasoning
+in solve-first). It updates only editable strategies; it never assigns specialist
+roles or changes the model weights. Malformed/short strategies fall back to the
+source prompt; provider failures are logged without minting a child. New agents
+have unique names, recorded ancestry and fresh initial wealth. They start solo,
+receive no historical credit, and must obtain consent to join teams. Existing
+members keep their historical payments even if their team later dissolves.
+
+Birth endowments, rent and signed removed balances have separate accounting
+entries; initial endowments are not rewards. Replays show births, removals,
+population counts and strategy inheritance. Checkpoints support changed population
+sizes and continue agent naming/RNG state. Test copies and `training=False` disable
+rent, births, removals and reflection. Runtime `split: "test"` selects this mode;
+test auctions and rewards still operate inside the disposable episode.
+
+This shares population evolution mechanisms but is **not an exact reproduction**
+of original HayekMAS: teams do not replay completed tasks after bankruptcy or
+preserve specialist roles. Original EoM retains these native behaviors. Report
+actual population counts, turnover and spending alongside task scores.
+
+The offline estimator models successful +2 periodic growth every five training
+tasks up to 2k, with separate assumed replacement-mutation calls; it also stores
+an at-cap cost sensitivity. Final test populations may differ between arms.
+Old fixed-population estimates and old checkpoints are not valid substitutes.
+No paid runs are launched by preparation. To prepare and inspect locally:
+
+```bash
+.venv/bin/python -m hayekmas.adapters.teams.runtime --config global_configs/teams_rounds_demo.json --out runs/my-evolution-demo --no-plots
+.venv/bin/python -m hayekmas.experiments.population_study --out runs/my-evolution-study
+```
+
+The scripted demo starts with six agents; after task five there are eight, and
+after task ten there are ten (cap twelve). It validates mechanics, not emergence.
+Evolution defaults to false for compatibility with archived protocols/configs;
+it is explicitly enabled in the current round demo and prepared team study cells.
+
 ## New protocol: teams within each decision round
 
 Use `teams.interaction_protocol: "rounds"`, with `round_schedule: "compact"`
@@ -469,8 +543,8 @@ recovery through the HTTP client and native research grader, payment accounting,
 checkpoint continuation, abstention, malformed outputs and tight call budgets.
 
 No team treasury, salaries, contracts, kicking, permanent functional role labels,
-diversity reward, rent, or birth/death evolution is enabled. These decisions
-keep the first experiment focused on teams and individual strategy updates.
+diversity reward, rent, or birth/death evolution was enabled in that legacy experiment.
+The current round-team study enables the population evolution described above.
 
 ### Experimental sealed bids and reviewed answers
 

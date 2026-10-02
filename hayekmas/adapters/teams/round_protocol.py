@@ -222,7 +222,10 @@ def pay_path(engine, path, reward):
     return income, payouts, issued
 
 
-def run_episode(engine, env, *, formation=True, reflection=True):
+def run_episode(engine, env, *, formation=True, reflection=True, training=True):
+    if not engine.agents:
+        raise RuntimeError("Population is empty; no agents can act")
+    episode_event_start = len(engine.events)
     env.initialize()
     task = env.task.public()
     engine.previous_winner, engine.previous_members = None, ()
@@ -344,6 +347,15 @@ def run_episode(engine, env, *, formation=True, reflection=True):
         "bid_burn_total": engine.bid_burn_total, "reflection_burn_total": engine.reflection_burn_total,
         "reward_total": engine.reward_total, "invalid_actions": engine.invalid_actions,
     }
+    if training and engine.config.evolution_enabled:
+        from .evolution import evolve
+        metric["population_before_evolution"] = len(engine.agents)
+        evolve(engine, env, episode_event_start)
+        metric["population_size"] = len(engine.agents)
+        metric["wealth"] = balances(engine)
+        metric["membership"] = membership(engine)
+        metric["team_sizes"] = [len(group) for group in engine.groups().values()]
+        metric["evolution_accounting"] = engine.state()["accounting"]
     engine.metrics.append(metric)
     engine.emit("round_complete", metrics=metric, agents=engine.state()["agents"],
                 teams=[asdict(team) for team in engine.team_manager.active_teams(engine.round)])

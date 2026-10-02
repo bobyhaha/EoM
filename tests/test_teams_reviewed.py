@@ -239,7 +239,8 @@ class ReviewedTests(unittest.TestCase):
         trace = {"metrics": e.metrics, "events": e.events, "state": e.state()}
         for config in (trace["state"]["config"], trace["events"][0]["config"]):
             for key in ("bidding_mode", "collaboration_mode", "bid_tokens", "interaction_protocol", "coordination_fee_lambda", "round_schedule",
-                        "token_profile", "discussion_tokens", "formation_context_tokens", "pledge_context_tokens"):
+                        "token_profile", "discussion_tokens", "formation_context_tokens", "pledge_context_tokens", "evolution_enabled", "population_cap_multiplier", "birth_interval",
+                        "num_births_per_interval", "p_a", "p_b", "periodical_good_p", "rent", "rent_interval"):
                 config.pop(key)
         self.assertEqual(hashlib.sha256(json.dumps(trace, sort_keys=True).encode()).hexdigest(),
                          "eb70de17b906daf50e9047b66957cb5d5f6ca30377400c6f46e10634b14f8678")

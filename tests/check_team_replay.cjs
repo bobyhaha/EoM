@@ -102,7 +102,7 @@ if(payload.interaction_protocol==='rounds') {
     assert.equal(document.querySelector(`[data-agent="${name}"] small`).textContent,wealth.toFixed(2));
   assert.match($('events').textContent,/R\/N to each member/);
   const decisions=payload.rounds.reduce((sum,r)=>sum+r.events.filter(e=>e.event==='settlement').length,0);
-  assert.equal(document.querySelectorAll('#membership thead th').length,decisions+2,'Timeline contains each decision round');
+  assert.equal(document.querySelectorAll('#membership thead th').length,decisions+2+(payload.evolution_enabled?payload.rounds.length:0),'Timeline contains each decision round and evolution boundary');
   seek(0);
   const historicalTeam=round.events.find(e=>e.event==='team_message'&&e.channel==='pre_bid').team;
   // Some traces identify a discussion by group rather than team; its member snapshot is authoritative.
@@ -157,6 +157,22 @@ assert.equal($('event-slider').value,'1');
 $('play').click();
 width=330;resize();
 for(const node of document.querySelectorAll('.node'))assert.ok(parseFloat(node.style.left)>0&&parseFloat(node.style.left)<width);
+if(payload.evolution_enabled){
+ for(let ri=0;ri<payload.rounds.length;ri++){
+  const r=payload.rounds[ri];
+  input('round-select',ri,'change');
+  for(let ei=0;ei<r.events.length;ei++){
+   const e=r.events[ei];if(!['agent_born','agent_removed'].includes(e.event))continue;
+   seek(ei);assert.equal(Boolean(document.querySelector(`[data-agent="${e.agent}"]`)),e.event==='agent_removed');
+   seek(ei+1);assert.equal(Boolean(document.querySelector(`[data-agent="${e.agent}"]`)),e.event==='agent_born');
+   if(e.event==='agent_born'){
+    document.querySelector(`[data-agent="${e.agent}"]`).click();
+    assert.ok(document.getElementById('agent-detail').textContent.includes(e.agent));
+    assert.ok(!document.getElementById('agent-detail').innerHTML.includes('NaN'));
+   }
+  }
+ }
+}
 assert.deepEqual(errors,[]);
 dom.window.close();
 // A new completed task must not drag a live viewer to the end or rebuild its transcript.

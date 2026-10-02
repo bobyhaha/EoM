@@ -65,6 +65,16 @@ class TeamMAS:
         self.reflection_burn_total = 0.0
         self.coordination_burn_total = 0.0
         self.initial_total = config.num_agents * config.initial_wealth
+        self.birth_endowment_total = 0.0
+        self.removed_wealth_total = 0.0
+        self.rent_burn_total = 0.0
+        self.next_agent_number = config.num_agents
+        self.retired_agents = []
+        self.training = True
+        if config.evolution_enabled:
+            from .evolution import configure_agent
+            for agent in self.agents:
+                configure_agent(self, agent)
         if config.condition == "random_fixed":
             shuffled = list(self.agents)
             self.rng.shuffle(shuffled)
@@ -715,17 +725,19 @@ class TeamMAS:
     def assert_accounting(self):
         total = math.fsum(a.wealth for a in self.agents)
         expected = (self.initial_total + self.reward_total - self.bid_burn_total
-                    - self.reflection_burn_total - self.coordination_burn_total)
+                    - self.reflection_burn_total - self.coordination_burn_total
+                    + self.birth_endowment_total - self.removed_wealth_total - self.rent_burn_total)
         if any(not math.isfinite(a.wealth) or a.wealth < -1e-9 for a in self.agents):
             raise AssertionError("Negative or nonfinite personal wealth")
         if not math.isclose(total, expected, rel_tol=1e-10, abs_tol=1e-8):
             raise AssertionError(f"Ledger mismatch: {total} != {expected}")
 
-    def run_one_episode(self, env, *, formation=True, reflection=True):
+    def run_one_episode(self, env, *, formation=True, reflection=True, training=None):
+        training = self.training if training is None else training
         if self.config.interaction_protocol == "rounds":
             from .round_protocol import run_episode
 
-            return run_episode(self, env, formation=formation, reflection=reflection)
+            return run_episode(self, env, formation=formation, reflection=reflection and training, training=training)
         env.initialize()
         self.step = None
         self.previous_winner, self.previous_members = None, ()
@@ -899,11 +911,15 @@ class TeamMAS:
                     "team": a.team_tag,
                     "strategy": a.trainable_system_prompt,
                     "summary": a.summary,
+                    **({"parent": a.parent_agent_name, "spawn_method": a.spawn_method,
+                        "tasks_lived": a.tasks_lived} if self.config.evolution_enabled else {}),
                 }
                 for a in self.agents
             ],
             "accounting": {
                 "initial": self.initial_total,
+                **({"birth_endowments": self.birth_endowment_total, "removed_wealth": self.removed_wealth_total,
+                    "rent_burned": self.rent_burn_total} if self.config.evolution_enabled else {}),
                 "rewards": self.reward_total,
                 "bids_spent": self.bid_paid_total,
                 "bids_transferred": self.bid_transfer_total,
@@ -912,6 +928,7 @@ class TeamMAS:
                 **({"coordination_spent": self.coordination_burn_total}
                    if self.config.interaction_protocol == "rounds" else {}),
             },
+            **({"retired_agents": self.retired_agents} if self.config.evolution_enabled else {}),
             "usage": {
                 "decision_calls": self.calls,
                 "requested_output_token_ceiling": self.requested_output_tokens,

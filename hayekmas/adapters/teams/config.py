@@ -40,8 +40,27 @@ class TeamConfig:
     summary_tokens: int = 192
     context_tokens: int = 8192
     max_calls: int = 10000
+    evolution_enabled: bool = False
+    population_cap_multiplier: int = 2
+    birth_interval: int = 5
+    num_births_per_interval: int = 2
+    p_a: float = 0.0
+    p_b: float = 1.0
+    periodical_good_p: float = 0.5
+    rent: float = 0.0
+    rent_interval: int = 5
 
     def __post_init__(self):
+        if type(self.evolution_enabled) is not bool:
+            raise ValueError("evolution_enabled must be boolean")
+        if self.evolution_enabled and (self.interaction_protocol != "rounds" or self.condition != "dynamic"):
+            raise ValueError("Population evolution requires dynamic round teaming")
+        for name in ("p_a", "p_b", "periodical_good_p"):
+            value = getattr(self, name)
+            if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1:
+                raise ValueError(f"{name} must be a finite probability")
+        if self.p_a + self.p_b > 1:
+            raise ValueError("p_a + p_b must not exceed 1")
         if self.interaction_protocol not in {"legacy", "rounds"}:
             raise ValueError("interaction_protocol must be legacy or rounds")
         if self.round_schedule not in {"compact", "full"}:
@@ -65,7 +84,7 @@ class TeamConfig:
             raise ValueError("reviewed collaboration requires finalization_enabled")
         if self.condition not in {"individual", "random_fixed", "self_selected_fixed", "dynamic"}:
             raise ValueError("Unknown team condition")
-        for name in ("initial_wealth", "reward", "reflection_cost", "bid_cost_rate", "coordination_fee_lambda"):
+        for name in ("initial_wealth", "reward", "reflection_cost", "bid_cost_rate", "coordination_fee_lambda", "rent"):
             value = getattr(self, name)
             if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
                 raise ValueError(f"{name} must be finite and nonnegative")
@@ -76,7 +95,7 @@ class TeamConfig:
         for f in fields(self):
             if f.type is int:
                 value = getattr(self, f.name)
-                if type(value) is not int or value < (0 if f.name == "seed" else 1):
+                if type(value) is not int or value < (0 if f.name in {"seed", "birth_interval", "num_births_per_interval", "rent_interval"} else 1):
                     raise ValueError(f"{f.name} must be a positive integer (seed may be zero)")
         if min(self.formation_context_tokens, self.pledge_context_tokens) < 1024:
             raise ValueError("Control context budgets must be at least 1024 tokens")

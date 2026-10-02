@@ -246,7 +246,8 @@ class FinalizationCompatibilityTests(unittest.TestCase):
         # New opt-in fields only add configuration metadata to legacy traces.
         for config in (trace["state"]["config"], trace["events"][0]["config"]):
             for key in ("bidding_mode", "collaboration_mode", "bid_tokens", "interaction_protocol", "coordination_fee_lambda", "round_schedule",
-                        "token_profile", "discussion_tokens", "formation_context_tokens", "pledge_context_tokens"):
+                        "token_profile", "discussion_tokens", "formation_context_tokens", "pledge_context_tokens", "evolution_enabled", "population_cap_multiplier", "birth_interval",
+                        "num_births_per_interval", "p_a", "p_b", "periodical_good_p", "rent", "rent_interval"):
                 config.pop(key)
         digest = hashlib.sha256(json.dumps(trace, sort_keys=True).encode()).hexdigest()
         # Captured from the unmodified engine before implementing finalization.

@@ -128,6 +128,47 @@ def estimate(k, scenario="central", *, steps=10, train=40, test=19, schedule="co
     return result
 
 
+def estimate_growing(k, scenario="central", *, steps=10, train=40, test=19, at_cap=False):
+    """Budget scenario: +2 births every 5 tasks, capped at 2k, plus replacement-call allowance.
+
+    Population path assumes successful births and no net attrition. Replacement
+    rates remain assumptions; this is not an accuracy or spending guarantee.
+    at_cap is a conservative population sensitivity, not a hard dollar ceiling.
+    """
+    phases = {"original": {}, "teams": {}}
+    population = k
+    trajectory = []
+    periodic_births = 0
+    for task in range(train + test):
+        training = task < train
+        size = 2 * k if at_cap else population
+        trajectory.append(size)
+        row = estimate(size, scenario, steps=steps, train=int(training), test=int(not training))
+        for arm in phases:
+            for phase, amounts in row[arm]["phases"].items():
+                target = phases[arm].setdefault(phase, dict.fromkeys(amounts, 0.0))
+                for key, value in amounts.items():
+                    target[key] += value
+        if training and (task + 1) % 5 == 0:
+            count = min(2, 2 * k - population)
+            population += count
+            periodic_births += count
+    s = SCENARIOS[scenario]
+    training_agent_tasks = sum(trajectory[:train])
+    phases["original"]["periodic_mutations"] = priced(periodic_births, s["work_input"], s["work_output"])
+    phases["teams"]["birth_mutations"] = priced(
+        periodic_births + training_agent_tasks * s["birth_fraction"], 8000, 1024)
+    result = {arm: {"phases": ps, **{key: math.fsum(p[key] for p in ps.values())
+                                   for key in ("calls", "input_tokens", "output_tokens", "usd")}}
+              for arm, ps in phases.items()}
+    solving = math.fsum(phases["teams"][p]["usd"] for p in ("private_discussion", "winning_work", "final_proposals"))
+    result["teams"].update(solving_usd=solving, solving_share=solving / result["teams"]["usd"])
+    result["population_assumption"] = {"initial": k, "cap": 2*k, "counts_before_tasks": trajectory,
+                                       "periodic_births": periodic_births, "at_cap_sensitivity": at_cap,
+                                       "replacement_calls_per_agent_task": s["birth_fraction"]}
+    return result
+
+
 def reference_baselines(scenario="central", test=19):
     s = SCENARIOS[scenario]
     # One pool of 100 independent samples/task supplies single-agent and every
@@ -177,7 +218,7 @@ def prepare(destination):
     if {t.id for t in tasks["train"]} & {t.id for t in tasks["test"]}:
         raise ValueError("Training/test task overlap")
     dataset_hashes = {split: sha(dataset / f"research_{split}.jsonl") for split in tasks}
-    estimates = {s: {str(k): estimate(k, s) for k in KS} for s in SCENARIOS}
+    estimates = {s: {str(k): estimate_growing(k, s) for k in KS} for s in SCENARIOS}
     totals = {}
     for s, rows in estimates.items():
         core = math.fsum(v[arm]["usd"] for v in rows.values() for arm in ("original", "teams"))
@@ -190,8 +231,8 @@ def prepare(destination):
     cells = []
     for k in KS:
         team_config = TeamConfig(interaction_protocol="rounds", round_schedule="compact", token_profile="solve_first",
-                                 coordination_fee_lambda=0.0,
-                                 num_agents=k, rounds=40, max_steps=10,
+                                 coordination_fee_lambda=0.0, evolution_enabled=True, population_cap_multiplier=2,
+                                 num_agents=k, rounds=40, max_steps=10, formation_context_tokens=max(6144, 128*k),
                                  formation_turns=3, discussion_turns=2, bidding_turns=2, max_team_size=4,
                                  action_tokens=192, bid_tokens=96, discussion_tokens=2048,
                                  solution_tokens=16384, judge_tokens=8192,
@@ -210,17 +251,20 @@ def prepare(destination):
                     "original_initialization": {"agents_per_role": k // 5,
                                                 "method": "Fresh instances of each of the five upstream research roles; unique IDs and names."}
                     if arm == "original" else None,
-                    "original_overrides": {"engine": {"min_num_agents": k, "max_num_agents": k,
+                    "original_overrides": {"engine": {"min_num_agents": 0, "max_num_agents": 2*k,
+                                                       "birth_interval": 5, "num_births_per_interval": 2,
+                                                       "rent": 0, "max_trials_per_episode": 2,
                                                        "max_steps_per_episode": 10},
+                                           "evolution": {"p_a": 0.0, "p_b": 1.0, "periodical_good_p": 0.5},
                                            "wakeup": {"wakeup_model": None, "wakeup_parallel_enabled": False},
                                            "evaluation": {"periodic_test_enabled": False}}
                     if arm == "original" else None,
                     "evaluation": "Fresh copy of final 40-task checkpoint for every test. Original eval freezes wealth and prompts; "
-                    "teams retain within-episode auctions/membership/rewards but discard all test state afterward. No test reflection.",
+                    "teams retain within-episode auctions/membership/rewards but discard all test state afterward. No test reflection or population evolution (training=False).",
                     "required_prelaunch_checks": ["Construct exactly k agents; verify unique identities and upstream role coverage.",
                                                   "Honor team PHASE_REASONING settings, phase output caps and control input limits; "
                                                   "record provider-confirmed cost and reasoning tokens per phase.",
-                                                  "Assert k agents at every task boundary; stop on failed native replenishment.",
+                                                  "Start with k agents, cap both arms at 2k; record births/deaths/counts. Stop if population becomes empty.",
                                                   "Reserve worst-case next-request cost in restart-safe per-cell and global ledgers.",
                                                   "Verify source and dataset hashes; do not reuse checkpoints trained under old team rules.",
                                                   "Use a new launcher with this schema; the legacy campaign hard-codes population/budget settings."]}
@@ -243,18 +287,19 @@ def prepare(destination):
                                  "Future positive-fee studies need extra cost estimates for consent calls."},
             "reward": "Grade the final answer once. N counts accepted public actions including finalization. "
                       "Every saved member receives R/N for each contributed round; no team-size division.",
-            "population_interpretation": "k is the number of agents at task boundaries. Teams keep k throughout. "
-                "Original EoM uses its existing min/max bounds, bankruptcy and replenishment with k initial agents; "
-                "within-training-trial population can temporarily fall below k. This is a controlled configuration "
-                "variant, not an exact reproduction of the paper's initial population. No checkpoint cloning/upsampling.",
+            "population_interpretation": "k is the initial population; both arms cap living agents at 2k. Both attempt two births every five training "
+                "tasks, with p_a=0, p_b=1, periodic good probability=0.5 and rent=0. Team removals occur only after "
+                "settlement; newborns start solo. No minimum-population replenishment is requested. Native original "
+                "role preservation and bankruptcy-triggered trial replay remain; teams have neither. "
+                "Counts can differ across arms and need reporting at every task. Evaluation disables evolution.",
             "baselines": "In addition to eight trained cells, one pool of 100 independent zero-shot answers per test "
                 "supplies single-agent and pass@10/20/50/100 estimates. Report success using 1-C(100-c,k)/C(100,k). "
                 "Same rubric threshold 0.5; report full continuous scores too. This is an oracle success metric, "
                 "not an implemented best-answer selector, and has different training exposure.",
-            "comparison_limits": ["Same tasks/model/step ceiling and k at test time; actual tokens and dollars differ.",
+            "comparison_limits": ["Same tasks/model/step ceiling and initial k, cap 2k; final populations, tokens and dollars may differ.",
                                   "Team solve-first uses high reasoning and 16,384 output caps for public work/final proposals; "
                                   "the original baseline remains unchanged. This is not a matched-compute comparison.",
-                                  "Native roles/evolution/rubric-assisted mutation differ from role-free team reflection.",
+                                  "Both arms evolve editable strategies; native roles and bankruptcy replay differ from role-free episode-boundary team evolution. Team nonnegative rewards and affordable pledges with rent=0 may produce no bankruptcies.",
                                   "Training means economic/strategy adaptation, not model-weight fine tuning.",
                                   "These 19 test tasks have been inspected before; label this a development comparison.",
                                   "No causal claim about communication alone; reward, selection and finalization also differ.",
@@ -268,6 +313,9 @@ def prepare(destination):
                         "pledges, payments and path credits per agent", "actual strategy edits and population changes"],
             "pricing": PRICE, "cost_scenarios": SCENARIOS, "solve_first_scenarios": SOLVE_FIRST_SCENARIOS,
             "estimates": estimates, "totals": totals,
+            "growth_budget_assumption": "Successful +2 periodic births every 5 tasks until 2k, no net attrition; "
+                "additional mutation-call allowance uses assumed replacement rates. Costs are scenarios, not hard caps.",
+            "at_cap_cost_sensitivity": {str(k): estimate_growing(k, at_cap=True) for k in KS},
             "token_allocation": {"profile": "solve_first", "solving_phases": ["private_discussion", "winning_work", "final_proposals"],
                                  "goal": "Most planned model cost funds substantive problem-solving opportunities.",
                                  "limits": "Caps are ceilings, not spending targets. Phase labels measure opportunities, not usefulness. "
@@ -275,14 +323,14 @@ def prepare(destination):
                                  "act_pledge": "96 output tokens, reasoning none, input at most 3072 reference tokens, "
                                  "using latest team messages and balances instead of the full task/history.",
                                  "membership": "192 output tokens; reasoning none; input at most 6144 reference tokens with "
-                                 "bounded public-work/profile excerpts and complete roster identities.",
+                                 "bounded public-work/profile excerpts and complete roster identities; input cap scales to max(6144, 128*k) to accommodate 2k agents.",
                                  "private_discussion": "2048 output tokens; medium reasoning; full task and shared solution.",
                                  "public_work_and_final": "16384 output tokens; high reasoning; no assigned roles.",
                                  "selection": "64 output tokens; reasoning none; candidate text retained."},
             "prior_spending": prior_spend(),
             "schedule_comparison": {str(k): {"full": estimate(k, schedule="full")["teams"],
                                              "compact": estimate(k, token_profile="standard")["teams"],
-                                             "solve_first": estimates["central"][str(k)]["teams"]} for k in KS},
+                                             "solve_first": estimate(k)["teams"]} for k in KS},
             "value_ablation_plan": [
                 "Measure final environment score and completion per dollar, not amplified agent wealth.",
                 "Compare compact and full schedules on paired training tasks/seeds; the comparison bundles call schedule, "
@@ -338,7 +386,7 @@ table{border-collapse:collapse;width:100%}td,th{padding:12px;text-align:left;bor
 .scroll{overflow:auto}select{font:inherit;padding:5px;background:#263649;color:white}#total{font-size:30px;color:#8bdccc}
 li{margin-bottom:8px}.bar{height:18px;background:#8bdccc;border-radius:3px;min-width:2px}figure{margin:12px 0}
 </style><body><p class="badge">PREPARED ONLY · NO PAID RUNS LAUNCHED</p>
-<h1>Population size: 10, 20, 50, 100</h1><p>Same 40 training tasks and 19 test tasks for each trained system.
+<h1>Initial population: 10, 20, 50, 100 · cap 2k</h1><p>Both arms start at k and may grow to 2k. Two births are attempted every five training tasks. Same 40 training tasks and 19 test tasks for each trained system.
 One round ends after the winning team's public action. One final answer receives one grade.
 Coordination fee λ = 0 for this first study; fee ablations are deferred.</p>
 <div class="flow">'''
@@ -351,19 +399,20 @@ These are scenario estimates, not measured costs or spending authorization.</sma
 <h2>Per population, one seed</h2><p class="muted">Central estimate (low–high); raw model cost before the shared allowance and reference baselines.</p>
 <div class="scroll"><table><thead><tr><th>k</th><th>Original EoM variant</th><th>Round teams</th><th>Team requests</th><th>Cell specs</th></tr></thead><tbody>'''
     html += ''.join(rows) + '</tbody></table></div><h2>Why the team estimate grows</h2>'
-    html += '<p>The compact schedule uses 3k + I calls before the winning action: k membership proposals, I valid invitation '
-    html += 'replies (0 ≤ I ≤ k), k private discussion messages, and k combined act/pledge ballots. No assigned leader. '
+    html += '<p>The compact schedule uses 3n + I calls before the winning action, where n is the CURRENT living population: n membership proposals, I valid invitation '
+    html += 'replies (0 ≤ I ≤ n), n private discussion messages, and n combined act/pledge ballots. No assigned leader. '
     html += 'A strict majority activates each team; only members can authorize their own money. '
-    html += 'At k=10 this is 30–40 calls per round, down from 80. The solve-first allocation keeps the same number of calls, '
+    html += 'Starting at k=10 this is 30–40 calls per round; at the 20-agent cap it is 60–80. The solve-first allocation keeps the same number of calls, '
     html += 'bounds control context and doubles public-work/final-proposal output caps from 8,192 to 16,384 tokens.</p>'
     before = plan['schedule_comparison']['10']['compact']['usd']
     after = plan['schedule_comparison']['10']['solve_first']['usd']
-    html += f'<p>k=10 team cell, central estimate: <strong>${before:.2f} → ${after:.2f}</strong> '
+    html += f'<p>Historical fixed-10-agent team allocation, central estimate: <strong>${before:.2f} → ${after:.2f}</strong> '
     html += '(previous compact → solve-first; 40 training + 19 test tasks; one seed; before allowance). These are projections.</p>'
-    allocation = plan['schedule_comparison']['10']['solve_first']
+    allocation = plan['estimates']['central']['10']['teams']
     html += f'<div class="card"><strong>{allocation["solving_share"]:.0%} of planned k=10 team cost funds problem-solving calls</strong>'
     html += f'<p>${allocation["solving_usd"]:.2f} for substantive private discussion, winning public work and complete final proposals. '
     html += 'Selection votes are counted separately. Actual billed shares and usefulness still need measurement.</p></div>'
+    html += '<p>' + escape(plan['growth_budget_assumption']) + '</p>'
     html += '<p>Every compact team agent is told: “Spend most of your reasoning and response-token budget on useful contributions '
     html += 'to solving the problem. Keep membership, act/abstain, and pledge decisions brief.” This concerns computation, not money pledged.</p>'
     html += '<ul>' + ''.join(f'<li>{escape(plan["token_allocation"][key])}</li>'

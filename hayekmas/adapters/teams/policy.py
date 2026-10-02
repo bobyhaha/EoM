@@ -8,6 +8,8 @@ from hayekmas.utils.llm import LLMConfig, get_llm_client
 
 
 INSTRUCTIONS = {
+    "birth_good": 'Create a concise transferable variation of the source strategy. Follow the mutation specification in the observation. Return {"strategy":"new editable strategy"}. Never modify immutable rules or assign a fixed role.',
+    "birth_bad": 'Repair a general weakness using the supplied failure context and mutation specification. Return {"strategy":"new editable strategy"}. Do not memorize task-specific answers, modify immutable rules, or assign a fixed role.',
     "round_membership": (
         "Briefly discuss next-round membership with the population and make one proposal. Return "
         '{"leave":false, "invite":"agent name or null", "message":"short public message", "reason":"short reason"}. '
@@ -191,7 +193,9 @@ class DemoPolicy:
         self.rng = random.Random(seed)
 
     def respond(self, phase, agent, observation, max_tokens):
-        if phase == "coordinate":
+        if phase in {"birth_good", "birth_bad"}:
+            result = {"strategy": "Check assumptions and verify intermediate results before committing to a conclusion."}
+        elif phase == "coordinate":
             result = {"participate": True, "reason": "The planned collaboration is worth the announced fee."}
         elif phase == "reflect":
             result = {"reflect": observation["round"] > 0 and observation["round"] % 4 == 0}

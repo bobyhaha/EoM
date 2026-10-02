@@ -23,13 +23,13 @@ def gini(values):
 def analyze(engine, out, plots=True):
     out = Path(out)
     metrics, events = engine.metrics, engine.events
-    names = [a.name for a in engine.agents]
+    names = sorted({n for row in metrics for key in ("wealth", "paid") for n in row[key]})
     previous = None
     for row in metrics:
         row["wealth_gini"] = gini(row["wealth"].values())
         row["contribution_gini"] = gini(row["contributions"].values())
         current = row["membership"]
-        row["membership_turnover"] = (sum(current[n] != previous[n] for n in names) / len(names)) if previous else 0.0
+        row["membership_turnover"] = (sum(current.get(n, "absent") != previous.get(n, "absent") for n in names) / max(1, len(names))) if previous else 0.0
         previous = current
     write_json(out / "metrics.json", metrics)
     features = []
@@ -46,16 +46,16 @@ def analyze(engine, out, plots=True):
                 "mean_message_tokens": statistics.mean(engine.tokens.count(e["text"]) for e in messages)
                 if messages
                 else 0,
-                "mean_contribution_fraction": statistics.mean(row["contribution_fraction"][name] for row in metrics)
+                "mean_contribution_fraction": statistics.mean(row["contribution_fraction"].get(name, 0) for row in metrics)
                 if metrics
                 else 0,
                 "invitations": sum(e["event"] == "invited" and e["from"] == name for e in events),
                 "leaves": sum(e["event"] == "left" and e["agent"] == name and e["team"] is not None for e in events),
                 "reflections": sum(e["event"] == "reflection_paid" and e["agent"] == name for e in events),
-                "bids_paid": sum(row["paid"][name] for row in metrics),
-                "bid_income": sum(row["bid_income"][name] for row in metrics),
-                "reward_income": sum(row["reward_income"][name] for row in metrics),
-                "final_wealth": engine.lookup(name).wealth,
+                "bids_paid": sum(row["paid"].get(name, 0) for row in metrics),
+                "bid_income": sum(row["bid_income"].get(name, 0) for row in metrics),
+                "reward_income": sum(row["reward_income"].get(name, 0) for row in metrics),
+                "final_wealth": engine.lookup(name).wealth if engine.lookup(name) else None,
             }
         )
     with (out / "agent_features.csv").open("w", newline="", encoding="utf-8") as stream:
@@ -115,23 +115,23 @@ def render_plots(engine, edges, out):
     import numpy as np
 
     metrics = engine.metrics
-    names = [a.name for a in engine.agents]
+    names = sorted({n for row in metrics for key in ("wealth", "paid") for n in row[key]})
     rounds = [row["round"] for row in metrics]
     fig, axes = plt.subplots(2, 2, figsize=(14, 10), constrained_layout=True)
     fig.suptitle(f"EoM teams · {engine.config.condition} · {engine.policy.label}", fontsize=17)
     for i, name in enumerate(names):
         axes[0, 0].plot(
-            rounds, [row["wealth"][name] for row in metrics], label=name, color=plt.get_cmap("tab20")(i % 20)
+            rounds, [row["wealth"].get(name, float("nan")) for row in metrics], label=name, color=plt.get_cmap("tab20")(i % 20)
         )
     axes[0, 0].set(title="Individual wealth", xlabel="Episode", ylabel="Wealth")
     axes[0, 0].legend(fontsize=7, ncol=3)
     tags = sorted({tag for row in metrics for tag in row["membership"].values() if tag})
     colors = {tag: i + 1 for i, tag in enumerate(tags)}
-    grid = np.array([[colors.get(row["membership"][name], 0) for row in metrics] for name in names])
+    grid = np.array([[colors.get(row["membership"][name], 0) if name in row["membership"] else float("nan") for row in metrics] for name in names])
     axes[0, 1].imshow(grid, aspect="auto", interpolation="nearest", cmap="tab20", vmin=0, vmax=max(1, len(tags)))
     axes[0, 1].set(title="Membership (0 = independent)", xlabel="Episode", yticks=range(len(names)), yticklabels=names)
     axes[0, 1].tick_params(axis="y", labelsize=7)
-    fractions = np.array([[row["contribution_fraction"][name] for row in metrics] for name in names])
+    fractions = np.array([[row["contribution_fraction"].get(name, 0) for row in metrics] for name in names])
     heat = axes[1, 0].imshow(fractions, aspect="auto", interpolation="nearest", cmap="Blues", vmin=0, vmax=1)
     axes[1, 0].set(title="Final pledge / opening wealth", xlabel="Episode", yticks=range(len(names)), yticklabels=names)
     axes[1, 0].tick_params(axis="y", labelsize=7)

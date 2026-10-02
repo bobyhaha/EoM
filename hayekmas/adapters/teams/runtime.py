@@ -69,7 +69,7 @@ def run(raw, *, out=None, plots=True):
         "task_ids": [task.id for task in tasks[: cfg.rounds]],
         "budget": raw.get("budget"),
         "status": "running",
-        "note": "No birth/death, rent, team treasury or diversity reward. "
+        "note": "Optional episode-boundary population evolution; no team treasury or diversity reward. "
         "Reviewed collaboration assigns temporary draft/check/revise duties; discussion mode does not.",
     }
     write_json(destination / "manifest.json", manifest)
@@ -99,7 +99,7 @@ def run(raw, *, out=None, plots=True):
                     if environment == "researchworld"
                     else ExactTaskEnv(task, cfg.reward)
                 )
-                engine.run_one_episode(env)
+                engine.run_one_episode(env, training=raw.get("split", "train") == "train")
                 write_replay(engine, destination)
             summary = analyze(engine, destination, plots=plots and raw.get("plots", True))
             write_json(destination / "population.json", engine.state())
@@ -107,14 +107,14 @@ def run(raw, *, out=None, plots=True):
             # A separate event stream per agent facilitates post-hoc behavior coding.
             agent_dir = destination / "agents"
             agent_dir.mkdir()
-            for agent in engine.agents:
-                with (agent_dir / f"{agent.name}.jsonl").open("w", encoding="utf-8") as target:
+            for name in [a.name for a in engine.agents] + [a["name"] for a in engine.retired_agents]:
+                with (agent_dir / f"{name}.jsonl").open("w", encoding="utf-8") as target:
                     for event in engine.events:
                         involved = [event.get(k) for k in ("agent", "author", "sender", "recipient", "from", "to")]
                         involved += event.get("members", [])
                         involved += list(event.get("credits", {}))
                         involved += list(event.get("contributions", {}))
-                        if agent.name in involved:
+                        if name in involved:
                             target.write(dumps(event) + "\n")
             manifest["status"] = "complete"
             write_replay(engine, destination, "complete")

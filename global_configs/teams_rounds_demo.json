@@ -14,13 +14,15 @@
     "context_tokens": 262144,
     "condition": "dynamic",
     "num_agents": 6,
-    "rounds": 3,
+    "rounds": 10,
     "max_steps": 4,
     "formation_turns": 3,
     "discussion_turns": 2,
     "bidding_turns": 2,
     "reward": 12,
     "max_calls": 3000,
-    "coordination_fee_lambda": 0.0
+    "coordination_fee_lambda": 0.0,
+    "evolution_enabled": true,
+    "population_cap_multiplier": 2
   }
 }

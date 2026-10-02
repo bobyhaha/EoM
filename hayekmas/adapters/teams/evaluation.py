@@ -194,6 +194,7 @@ def evaluation_copy(source, seed, policy):
     clone.population, clone.team_manager, clone.public_summaries, clone.inboxes = deepcopy(
         (source.population, source.team_manager, source.public_summaries, source.inboxes)
     )
+    clone.training = False
     clone.invitations = clone.team_manager.invitations
     clone.invitations.clear()
     clone.initial_total = math.fsum(agent.wealth for agent in clone.agents)

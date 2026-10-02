@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 VISIBLE = {
+    "agent_born", "agent_removed", "population_rent", "population_evolved", "birth_skipped", "birth_failed",
     "decision_round_started", "membership_window", "membership_committed", "membership_decision", "activation",
     "path_reward", "finalization_recovery", "selection_fallback",
     "coordination_fee", "coordination_decision", "team_activation", "invitation_skipped",
@@ -78,6 +79,11 @@ def replay_data(engine, status):
         "planned_rounds": engine.config.rounds,
         "initial_wealth": engine.config.initial_wealth,
         "initial_roster": engine.events[0]["roster"],
+        "evolution_enabled": engine.config.evolution_enabled,
+        "population_cap": engine.config.num_agents * engine.config.population_cap_multiplier,
+        "all_roster": engine.events[0]["roster"] + [
+            {"name": e["agent"], "wealth": e["initial_wealth"], "team": None}
+            for e in engine.events if e["event"] == "agent_born"],
         "initial_agents": engine.events[0].get("agents"),
         "rounds": rounds,
     }

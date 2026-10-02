@@ -67,8 +67,13 @@ class PopulationStudyTests(unittest.TestCase):
                 cell = json.loads(path.read_text())
                 self.assertEqual(cell["budget"], {"execution_authorized": False, "allocated_usd": 0})
                 if cell["arm"] == "teams":
+                    self.assertTrue(cell["team_config"]["evolution_enabled"])
+                    self.assertEqual(cell["team_config"]["population_cap_multiplier"], 2)
                     self.assertEqual(cell["team_config"]["token_profile"], "solve_first")
                     self.assertEqual(cell["team_config"]["bid_tokens"], 96)
                     self.assertEqual(cell["team_config"]["solution_tokens"], 16384)
+                else:
+                    self.assertEqual(cell["original_overrides"]["engine"]["max_num_agents"], 2*cell["k"])
+                    self.assertEqual(cell["original_overrides"]["engine"]["min_num_agents"], 0)
             with self.assertRaises(FileExistsError):
                 prepare(root)
