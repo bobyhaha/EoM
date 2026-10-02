@@ -1,0 +1,820 @@
+{
+  "cell": "wealth-fixed",
+  "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+  "score": 0.525,
+  "has_final_answer": true,
+  "answer": "## (a) One- and two-particle bases\n\nLet f \u2208 {n,p} denote neutron or proton, and s \u2208 {\u2191,\u2193} denote spin. On a periodic cubic lattice with L\u00b3 sites, the dimensionless momenta are k\u1d62 = 2\u03c0n\u1d62/L, with n\u1d62 integers modulo L. Define\n\n a\u2020_{kfs} = L\u207b\u00b3\u141f\u00b2 \u03a3\u1d63 exp(i k\u00b7r) a\u2020_{rfs},     |k,f,s\u27e9 = a\u2020_{kfs}|0\u27e9.\n\nThese are a complete one-particle basis. For distinct one-particle orbitals, a spin-singlet pair is\n\n |f,g;k,q;S=0\u27e9 = [a\u2020_{kf\u2191}a\u2020_{qg\u2193} \u2212 a\u2020_{kf\u2193}a\u2020_{qg\u2191}]/\u221a2 |0\u27e9.\n\nFor zero total momentum, q = \u2212k. The neutron-neutron, proton-proton, and neutron-proton examples are\n\n |nn;k,S=0\u27e9 = [n\u2020_{k\u2191}n\u2020_{\u2212k\u2193} \u2212 n\u2020_{k\u2193}n\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9,\n\n |pp;k,S=0\u27e9 = [p\u2020_{k\u2191}p\u2020_{\u2212k\u2193} \u2212 p\u2020_{k\u2193}p\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9,\n\n |np;k,S=0\u27e9 = [n\u2020_{k\u2191}p\u2020_{\u2212k\u2193} \u2212 n\u2020_{k\u2193}p\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9.\n\nThe np expression specifies a neutron at momentum k and a proton at \u2212k; the exchanged momentum assignment is also possible. For two identical particles in the same zero-momentum orbital, the normalized nn state is n\u2020_{0\u2191}n\u2020_{0\u2193}|0\u27e9 (and likewise for pp); the generic expression with 1/\u221a2 is not normalized in this coincident-orbital case. For identical particles, k and \u2212k describe the same singlet state and should not be counted twice.\n\n## (b) Matching the lattice kinetic scale\n\nFourier transforming the hopping term gives the free-particle dispersion\n\n \u03b5_lat(k) = 2t \u03a3\u1d62[1 \u2212 cos(k\u1d62)].\n\nThe zero-momentum mode has zero kinetic energy, so match the lowest nonzero lattice mode, k = (\u00b12\u03c0/L,0,0) and permutations. Its energy is 2t[1 \u2212 cos(2\u03c0/L)]. In a periodic physical box, the lowest nonzero momentum has magnitude 2\u03c0/L_phy and nonrelativistic kinetic energy (2\u03c0/L_phy)\u00b2/(2M_phy), in natural units. Equating the two gives the exact finite-lattice result\n\n t = (2\u03c0/L_phy)\u00b2 / {4M_phy[1 \u2212 cos(2\u03c0/L)]}.\n\nFor L \u226b 1, 1 \u2212 cos(2\u03c0/L) \u2243 2\u03c0\u00b2/L\u00b2, so\n\n t \u2243 L\u00b2/(2M_phy L_phy\u00b2) = 1/(2M_phy a\u00b2),     a = L_phy/L.\n\n## (c) Lowest nonzero energy\n\nUsing \u0127c = 197.32698 MeV\u00b7fm, L_phy = 3.4 fm, and M_phy = 1634 MeV,\n\n E_min,nonzero = [2\u03c0(\u0127c)/L_phy]\u00b2/(2M_phy)\n = [2\u03c0(197.32698 MeV\u00b7fm)/(3.4 fm)]\u00b2/[2(1634 MeV)]\n \u2243 40.7 MeV.\n\nThis is kinetic energy above the rest mass; the zero-momentum mode has zero kinetic energy. The first momentum shell contains six momentum vectors (and twelve one-particle states when neutron spin is included).\n\n## (d) Binding condition, coupling, and first excitation\n\nFor a zero-total-momentum pair, the free pair energy at relative lattice momentum k is 2\u03b5_lat(k) = 4t\u03a3\u1d62[1 \u2212 cos(k\u1d62)]. The on-site interaction has matrix element Ct/L\u00b3 between relative-momentum states. Consequently, a bound state at E = \u2212B satisfies\n\n 1/(Ct) = \u2212(1/L\u00b3) \u03a3_k 1/{B + 4t\u03a3\u1d62[1 \u2212 cos(k\u1d62)]}.\n\nAt infinite volume with fixed lattice spacing, this becomes\n\n 1/C = \u2212\u222b_[\u2212\u03c0,\u03c0]\u00b3 d\u00b3q/(2\u03c0)\u00b3 \u00b7 1/{B/t + 4\u03a3\u1d62[1 \u2212 cos(q\u1d62)]},\n\nwhere q is dimensionless lattice momentum. This relation makes the missing input explicit: a numerical bare lattice C depends on t, and hence on the lattice spacing or ultraviolet cutoff. The binding energy B = 17.8 MeV alone does not determine a unique numerical C. Taking L \u2192 \u221e at fixed spacing retains the lattice cutoff; taking a \u2192 0 is a different limit and requires a renormalization prescription.\n\nThe binding energy does fix a physical scale in the zero-range continuum approximation. For two equal masses, the relative kinetic energy is k\u00b2/M, so\n\n \u03ba = \u221a(MB) = \u221a[(1634 MeV)(17.8 MeV)] \u2243 170.5 MeV \u2243 0.864 fm\u207b\u00b9,\n a_s = 1/\u03ba \u2243 1.16 fm,\n\nwhere a_s is the zero-range scattering length if effective-range effects are neglected. These physical quantities do not specify the regulator-dependent lattice C.\n\nIn infinite volume, the unbound relative spectrum is E_rel = k\u00b2/M \u2265 0. Its continuum threshold is E = 0, which is 17.8 MeV above the bound state at \u221217.8 MeV. This threshold is not a discrete, normalizable first excited state; there is no discrete first excited level in the stated limit.\n\n## (e) Second excited state and degeneracy\n\nIn the infinite-volume limit there is no discrete second excited state or finite degeneracy for such a level: the scattering spectrum is a continuum for E \u2265 0. A finite box would discretize that spectrum, but the interacting excited energies and degeneracies would depend on the box size and regulator, which are not specified. If \u201cfirst excitation\u201d is intended to mean the continuum threshold, it is at E = 0 relative to the two-particle free threshold, or 17.8 MeV above the bound-state ground energy; it is still not a discrete excited level.",
+  "metric": {
+    "round": 0,
+    "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+    "protocol": "rounds",
+    "score": 0.525,
+    "reward": 6.300000000000001,
+    "reward_issued": 8.190000000000001,
+    "reward_distribution": "per_member_path",
+    "contributing_rounds": 10,
+    "credit_path": [
+      {
+        "step": 0,
+        "team": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "final": false,
+        "credits": {
+          "agent-1": 0.6300000000000001
+        }
+      },
+      {
+        "step": 1,
+        "team": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-3": 0.6300000000000001,
+          "agent-8": 0.6300000000000001
+        }
+      },
+      {
+        "step": 2,
+        "team": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "final": false,
+        "credits": {
+          "agent-1": 0.6300000000000001
+        }
+      },
+      {
+        "step": 3,
+        "team": "solo:agent-5",
+        "members": [
+          "agent-5"
+        ],
+        "final": false,
+        "credits": {
+          "agent-5": 0.6300000000000001
+        }
+      },
+      {
+        "step": 4,
+        "team": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "final": false,
+        "credits": {
+          "agent-2": 0.6300000000000001
+        }
+      },
+      {
+        "step": 5,
+        "team": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "final": false,
+        "credits": {
+          "agent-2": 0.6300000000000001
+        }
+      },
+      {
+        "step": 6,
+        "team": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "final": false,
+        "credits": {
+          "agent-1": 0.6300000000000001
+        }
+      },
+      {
+        "step": 7,
+        "team": "solo:agent-6",
+        "members": [
+          "agent-6"
+        ],
+        "final": false,
+        "credits": {
+          "agent-6": 0.6300000000000001
+        }
+      },
+      {
+        "step": 8,
+        "team": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-3": 0.6300000000000001,
+          "agent-8": 0.6300000000000001
+        }
+      },
+      {
+        "step": 9,
+        "team": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "final": true,
+        "credits": {
+          "agent-3": 0.6300000000000001,
+          "agent-8": 0.6300000000000001
+        }
+      }
+    ],
+    "winner": "team-1",
+    "steps": [
+      {
+        "step": 0,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 19.9,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 1,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 19.95,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 2,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.0,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.0,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 19.9,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 3,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "solo:agent-5",
+        "members": [
+          "agent-5"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 19.9,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 4,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 19.9,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 5,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 19.9,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 6,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 19.9,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 7,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "solo:agent-6",
+        "members": [
+          "agent-6"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 19.9,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 8,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 19.95,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 9,
+        "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+        "winner": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": true,
+        "score": 0.525,
+        "reward": 6.300000000000001,
+        "share": 0.6300000000000001,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 21.889999999999997,
+          "agent-2": 21.259999999999998,
+          "agent-3": 21.839999999999996,
+          "agent-4": 20.0,
+          "agent-5": 20.63,
+          "agent-6": 20.63,
+          "agent-7": 20.0,
+          "agent-8": 21.839999999999996,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      }
+    ],
+    "step_count": 10,
+    "paid": {
+      "agent-0": 0.0,
+      "agent-1": 0.30000000000000004,
+      "agent-2": 0.2,
+      "agent-3": 0.15000000000000002,
+      "agent-4": 0.0,
+      "agent-5": 0.1,
+      "agent-6": 0.1,
+      "agent-7": 0.0,
+      "agent-8": 0.15000000000000002,
+      "agent-9": 0.0
+    },
+    "bid_income": {
+      "agent-0": 0.0,
+      "agent-1": 0.30000000000000004,
+      "agent-2": 0.2,
+      "agent-3": 0.1,
+      "agent-4": 0.0,
+      "agent-5": 0.1,
+      "agent-6": 0.1,
+      "agent-7": 0.0,
+      "agent-8": 0.1,
+      "agent-9": 0.0
+    },
+    "reward_income": {
+      "agent-0": 0.0,
+      "agent-1": 1.8900000000000003,
+      "agent-2": 1.2600000000000002,
+      "agent-3": 1.8900000000000003,
+      "agent-4": 0.0,
+      "agent-5": 0.6300000000000001,
+      "agent-6": 0.6300000000000001,
+      "agent-7": 0.0,
+      "agent-8": 1.8900000000000003,
+      "agent-9": 0.0
+    },
+    "team_sizes": [
+      1,
+      1,
+      1,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "coordination_paid": {
+      "agent-0": 0.0,
+      "agent-1": 0.0,
+      "agent-2": 0.0,
+      "agent-3": 0.0,
+      "agent-4": 0.0,
+      "agent-5": 0.0,
+      "agent-6": 0.0,
+      "agent-7": 0.0,
+      "agent-8": 0.0,
+      "agent-9": 0.0
+    },
+    "coordination_burn_total": 0.0,
+    "wealth": {
+      "agent-0": 20.0,
+      "agent-1": 21.889999999999997,
+      "agent-2": 21.259999999999998,
+      "agent-3": 21.839999999999996,
+      "agent-4": 20.0,
+      "agent-5": 20.63,
+      "agent-6": 20.63,
+      "agent-7": 20.0,
+      "agent-8": 21.839999999999996,
+      "agent-9": 20.0
+    },
+    "membership": {
+      "agent-0": null,
+      "agent-1": null,
+      "agent-2": null,
+      "agent-3": "team-1",
+      "agent-4": null,
+      "agent-5": null,
+      "agent-6": null,
+      "agent-7": null,
+      "agent-8": "team-1",
+      "agent-9": null
+    },
+    "contributions": {
+      "agent-0": 0.1,
+      "agent-1": 0.1,
+      "agent-2": 0.1,
+      "agent-3": 0.05,
+      "agent-4": 0.1,
+      "agent-5": 0.1,
+      "agent-6": 0.1,
+      "agent-7": 0.1,
+      "agent-8": 0.05,
+      "agent-9": 0.1
+    },
+    "contribution_fraction": {
+      "agent-0": 0.005,
+      "agent-1": 0.005,
+      "agent-2": 0.005,
+      "agent-3": 0.0025062656641604013,
+      "agent-4": 0.005,
+      "agent-5": 0.005,
+      "agent-6": 0.005,
+      "agent-7": 0.005,
+      "agent-8": 0.0025062656641604013,
+      "agent-9": 0.005
+    },
+    "bid_paid_total": 0.9999999999999999,
+    "bid_transfer_total": 0.8999999999999999,
+    "bid_burn_total": 0.1,
+    "reflection_burn_total": 0.0,
+    "reward_total": 8.190000000000001,
+    "invalid_actions": 1
+  },
+  "cost_usd": 0.2387615,
+  "completed_at": 1790915179.922312,
+  "population": [
+    {
+      "name": "agent-0",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-0: The solution is ready to submit. For (a), define the periodic momentum basis and give the nn, pp, and np spin-singlet creation states, treating the identical-particle k=0 state separately. For (b), match the lattice first-shell energy 2t[1\u2212cos(2\u03c0/L)] to (2\u03c0/L_phy)^2/(2M_phy), giving t=(2\u03c0/L_phy)^2/[4M_phy(1\u2212cos(2\u03c0/L))]; its continuum limit is t\u2248L\u00b2/(2M_phy L_phy\u00b2). Part (c) gives E\u2081\u224840.7 MeV. For (d), provide the cutoff-dependent lattice pole equation rather than a unique numerical bare C: 1/(Ct)=\u2212\u222bBZ d\u00b3q/(2\u03c0)\u00b3[B+4t\u03a3\u1d62(1\u2212cos q\u1d62)]\u207b\u00b9. In infinite volume, the scattering spectrum is continuous from E=0, so parts (d)\u2013(e) have no discrete first or second excited level or finite degeneracy without further finite-volume/regulator specifications.\n[bidding] agent-0: Submit the completed solution.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-1",
+      "wealth": 21.889999999999997,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " explicitly gives the momentum-space singlet basis, exact finite-lattice t matching and 40.7 MeV continuum estimate, and flags the truncation after (d) and missing regulator/finite-volume data for any bare C or discrete infinite-volume levels.\n[regroup] agent-1: I\u2019ll stay solo; team-1 already has the established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-1: Ready to submit. The well-defined results are (a) the normalized momentum-space singlets, with the k=0 identical-particle normalization handled separately; (b) t=(2\u03c0/L_phy)^2/[4M_phy(1\u2212cos(2\u03c0/L))]; and (c) E_min,nonzero\u224840.7 MeV. For (d)\u2013(e), explain that a bare lattice C needs a specified cutoff/spacing, while infinite physical volume gives a bound state at \u221217.8 MeV and a scattering continuum E\u22650\u2014not discrete first or second excited levels with finite degeneracy. I support acting and authorizing the fixed bid.\n[bidding] agent-1: Submit final work; fixed bid cost is negligible.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.30000000000000004, \"contributing_rounds\": 3, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.30000000000000004, \"reward_received\": 1.8900000000000003, \"team\": null, \"wealth\": 21.889999999999997}"
+    },
+    {
+      "name": "agent-2",
+      "wealth": 21.259999999999998,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " gives the momentum-space singlet basis, exact finite-lattice t matching and 40.7 MeV continuum estimate, and flags the truncation after (d) and missing regulator/finite-volume data for any bare C or discrete infinite-volume levels.\n[regroup] agent-1: I\u2019ll stay solo; team-1 already has the established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\nFrom agent-3: I propose we remain on team-1 for the final submission, combining the basis/finite-box result with the regulator-dependence caveat for the binding question; agent-2's notes are especially useful.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-2: The shared solution is ready. One distinction to state clearly: L\u2192\u221e at fixed lattice spacing retains the UV cutoff, while a\u21920 is a separate renormalization limit. The bound-state pole condition therefore determines C only after the lattice spacing/cutoff is given; in the infinite-volume spectrum the scattering states form a continuum from E=0, not discrete excited levels. Parts (a)\u2013(c) and the \u224840.7 MeV result are covered in the notes.\n[bidding] agent-2: Finalization earns reward; fixed bid cost is minimal.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.2, \"contributing_rounds\": 2, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.2, \"reward_received\": 1.2600000000000002, \"team\": null, \"wealth\": 21.259999999999998}"
+    },
+    {
+      "name": "agent-3",
+      "wealth": 21.839999999999996,
+      "team": "team-1",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " modulo L. Define\n\n a\u2020_{kfs} = L\u207b\u00b3\u141f\u00b2 \u03a3\u1d63 exp(i k\u00b7r) a\u2020_{rfs},     |k,f,s\u27e9 = a\u2020_{kfs}|0\u27e9.\n\nThese are a complete one-particle basis. For distinct one-particle orbitals, a spin-singlet pair is\n\n |f,g;k,q;S=0\u27e9 = [a\u2020_{kf\u2191}a\u2020_{qg\u2193} \u2212 a\u2020_{kf\u2193}a\u2020_{qg\u2191}]/\u221a2 |0\u27e9.\n\nFor zero total momentum, q = \u2212k. The neutron-neutron, proton-proton, and neutron-proton examples are\n\n |nn;k,S=0\u27e9 = [n\u2020_{k\u2191}n\u2020_{\u2212k\u2193} \u2212 n\u2020_{k\u2193}n\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9,\n\n |pp;k,S=0\u27e9 = [p\u2020_{k\u2191}p\u2020_{\u2212k\u2193} \u2212 p\u2020_{k\u2193}p\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9,\n\n |np;k,S=0\u27e9 = [n\u2020_{k\u2191}p\u2020_{\u2212k\u2193} \u2212 n\u2020_{k\u2193}p\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9.\n\nThe np expression specifies a neutron at momentum k and a proton at \u2212k; the exchanged momentum assignment is also possible. For two identical particles in the same zero-momentum orbital, the normalized nn state is n\u2020_{0\u2191}n\u2020_{0\u2193}|0\u27e9 (and likewise for pp); the generic expression with 1/\u221a2 is not normalized in this coincident-orbital case. For identical particles, k and \u2212k describe the same singlet state and should not be counted twice.\n\n## (b) Matching the lattice kinetic scale\n\nFourier transforming the hopping term gives the free-particle dispersion\n\n \u03b5_lat(k) = \n{\"bid_income\": 0.1, \"contributing_rounds\": 3, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.15000000000000002, \"reward_received\": 1.8900000000000003, \"team\": \"team-1\", \"wealth\": 21.839999999999996}"
+    },
+    {
+      "name": "agent-4",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " while noting the prompt truncates after (d) and any bare coupling/discrete infinite-volume levels need regulator or finite-volume data.\n[regroup] agent-5: I\u2019ll remain solo; team-1 has the established results. Ensure the final explicitly gives the momentum-space singlet basis, exact finite-lattice t matching and 40.7 MeV continuum estimate, and flags the truncation after (d) and missing regulator/finite-volume data for any bare C or discrete infinite-volume levels.\n[regroup] agent-1: I\u2019ll stay solo; team-1 already has the established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-4: The shared derivation is ready to submit. One notation caveat: the Hamiltonian\u2019s interaction explicitly acts only on components 1 and 2 (neutron spin up/down under the stated ordering), so extending the same coupling to pp or np channels requires an additional flavor-summed interaction convention. Otherwise, the key limitation for (d)\u2013(e) remains: the bare lattice C needs a specified cutoff/lattice spacing, and in infinite volume the unbound spectrum is continuous from zero, not discrete excited levels.\n[bidding] agent-4: Submit the completed derivation; authorize the minimal fixed bid.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-5",
+      "wealth": 20.63,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "-1 has the established results. Ensure the final explicitly gives the momentum-space singlet basis, exact finite-lattice t matching and 40.7 MeV continuum estimate, and flags the truncation after (d) and missing regulator/finite-volume data for any bare C or discrete infinite-volume levels.\n[regroup] agent-1: I\u2019ll stay solo; team-1 already has the established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-5: The derivation is ready. One precision for (a): for identical particles, the k and \u2212k singlet expressions represent the same state, so choose one representative; at k=0 use the separately normalized state n\u2020\u2080\u2191n\u2020\u2080\u2193|0\u27e9 (and similarly for protons). For (d)\u2013(e), emphasize that the bound-state pole condition fixes C only after specifying the lattice cutoff/spacing, and that the infinite-volume scattering spectrum is continuous from 0\u2014not discrete first or second excited levels with finite degeneracies. The given binding energy does yield \u03ba=\u221a(MB)\u2248170.5 MeV, but not a unique bare C.\n[bidding] agent-5: Submit the prepared derivation for final-round reward.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.1, \"contributing_rounds\": 1, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.6300000000000001, \"team\": null, \"wealth\": 20.63}"
+    },
+    {
+      "name": "agent-6",
+      "wealth": 20.63,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " infinite-volume levels need regulator or finite-volume data.\n[regroup] agent-5: I\u2019ll remain solo; team-1 has the established results. Ensure the final explicitly gives the momentum-space singlet basis, exact finite-lattice t matching and 40.7 MeV continuum estimate, and flags the truncation after (d) and missing regulator/finite-volume data for any bare C or discrete infinite-volume levels.\n[regroup] agent-1: I\u2019ll stay solo; team-1 already has the established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-6: The shared solution is sound: define the momentum-space neutron/proton spin basis and treat the self-conjugate k=0 singlet separately; the first nonzero kinetic energy is about 40.7 MeV. For (d)\u2013(e), be explicit that the binding energy fixes \u03ba=\u221a(MB)\u2248170.5 MeV, but not a bare lattice C without a specified cutoff/lattice spacing. In infinite volume the spectrum above the bound state is a continuum starting at zero, so discrete excited levels and degeneracies require finite-volume information.\n[bidding] agent-6: Solo team; authorize the minimal fixed bid to submit final work.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.1, \"contributing_rounds\": 1, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.6300000000000001, \"team\": null, \"wealth\": 20.63}"
+    },
+    {
+      "name": "agent-7",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " stay solo; team-1 already has the established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-7: The shared derivation is sound. For (b), note the zero-momentum mode has zero kinetic energy for any t, so the matching must use the lowest *nonzero* periodic mode: \u03b5min=2t[1\u2212cos(2\u03c0/L)]=(2\u03c0/Lphy)\u00b2/(2Mphy), hence t=(2\u03c0/Lphy)\u00b2/[4Mphy(1\u2212cos(2\u03c0/L))]. In (c), this gives (2\u03c0\u210fc/3.4 fm)\u00b2/(2\u00b71634 MeV)\u224840.7 MeV. For (d), the pole condition at fixed lattice spacing is 1/C=\u2212\u222bBZ d\u00b3q/(2\u03c0)\u00b3[B/t+4\u03a3i(1\u2212cos qi)]\u207b\u00b9, so a numerical bare C requires a specified cutoff/lattice spacing. In the stated infinite-volume limit, the scattering spectrum is continuous from E=0; there is no discrete first or second excited level or finite degeneracy to report.\n[bidding] agent-7: Finalize the shared derivation; this is a low-cost fixed bid.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-8",
+      "wealth": 21.839999999999996,
+      "team": "team-1",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " modulo L. Define\n\n a\u2020_{kfs} = L\u207b\u00b3\u141f\u00b2 \u03a3\u1d63 exp(i k\u00b7r) a\u2020_{rfs},     |k,f,s\u27e9 = a\u2020_{kfs}|0\u27e9.\n\nThese are a complete one-particle basis. For distinct one-particle orbitals, a spin-singlet pair is\n\n |f,g;k,q;S=0\u27e9 = [a\u2020_{kf\u2191}a\u2020_{qg\u2193} \u2212 a\u2020_{kf\u2193}a\u2020_{qg\u2191}]/\u221a2 |0\u27e9.\n\nFor zero total momentum, q = \u2212k. The neutron-neutron, proton-proton, and neutron-proton examples are\n\n |nn;k,S=0\u27e9 = [n\u2020_{k\u2191}n\u2020_{\u2212k\u2193} \u2212 n\u2020_{k\u2193}n\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9,\n\n |pp;k,S=0\u27e9 = [p\u2020_{k\u2191}p\u2020_{\u2212k\u2193} \u2212 p\u2020_{k\u2193}p\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9,\n\n |np;k,S=0\u27e9 = [n\u2020_{k\u2191}p\u2020_{\u2212k\u2193} \u2212 n\u2020_{k\u2193}p\u2020_{\u2212k\u2191}]/\u221a2 |0\u27e9.\n\nThe np expression specifies a neutron at momentum k and a proton at \u2212k; the exchanged momentum assignment is also possible. For two identical particles in the same zero-momentum orbital, the normalized nn state is n\u2020_{0\u2191}n\u2020_{0\u2193}|0\u27e9 (and likewise for pp); the generic expression with 1/\u221a2 is not normalized in this coincident-orbital case. For identical particles, k and \u2212k describe the same singlet state and should not be counted twice.\n\n## (b) Matching the lattice kinetic scale\n\nFourier transforming the hopping term gives the free-particle dispersion\n\n \u03b5_lat(k) = \n{\"bid_income\": 0.1, \"contributing_rounds\": 3, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.15000000000000002, \"reward_received\": 1.8900000000000003, \"team\": \"team-1\", \"wealth\": 21.839999999999996}"
+    },
+    {
+      "name": "agent-9",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " solo; team-1 has the established results. Ensure the final explicitly gives the momentum-space singlet basis, exact finite-lattice t matching and 40.7 MeV continuum estimate, and flags the truncation after (d) and missing regulator/finite-volume data for any bare C or discrete infinite-volume levels.\n[regroup] agent-1: I\u2019ll stay solo; team-1 already has the established results. Keep the final focused on (a)\u2013(c), and explicitly note that the question is truncated after (d), so the requested remainder cannot be determined from the supplied text.\n[regroup] agent-4: I propose staying solo; team-1 already has the established results. In the final, give the momentum-space singlet basis, exact finite-lattice matching for t and the 40.7 MeV continuum estimate, and note that the prompt truncates after (d).\n[regroup] agent-8: I\u2019ll stay with team-1. The shared notes cover the singlet basis, exact finite-lattice matching for t, and the 40.7 MeV continuum estimate; the supplied prompt truncates after part (d), so flag that limitation.\n[regroup] agent-2: Keep the established team intact; its shared work already covers the solution.\n[pre_bid] agent-9: The derivations are ready to submit. One clarification for (d)\u2013(e): B=17.8 MeV fixes the zero-range binding momentum \u03ba=\u221a(MB)\u2248170.5 MeV (a_s\u22481.16 fm), but not the bare lattice C without a specified cutoff/lattice spacing and matching prescription. In infinite volume the unbound spectrum is continuous from E=0, so there are no discrete first or second excited levels with finite degeneracies. For (a), the identical-species k=0 singlet is n\u2020\u2080\u2191n\u2020\u2080\u2193|0\u27e9 (or the proton analogue); the generic k,\u2212k formula needs separate normalization there.\n[bidding] agent-9: Final submission ready; negligible fixed bid.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "updated_at": 1790915888.930932,
+  "deadline": 1790924350.0,
+  "cells": [
+    {
+      "cell": "society-fixed-3rounds",
+      "status": "completed",
+      "results": [
+        {
+          "cell": "society-fixed-3rounds",
+          "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+          "score": 0.375,
+          "has_final_answer": true,
+          "cost_usd": 0.07545354
+        },
+        {
+          "cell": "society-fixed-3rounds",
+          "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+          "score": 0.55,
+          "has_final_answer": true,
+          "cost_usd": 0.050567975
+        },
+        {
+          "cell": "society-fixed-3rounds",
+          "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+          "score": 0.12,
+          "has_final_answer": true,
+          "cost_usd": 0.05056759999999999
+        }
+      ],
+      "started_at": 1790914556.915422,
+      "pid": 97166,
+      "usage": {
+        "cost_usd": 0.176589115,
+        "unconfirmed_usd": 0.0,
+        "requests": 314,
+        "input_tokens": 935851,
+        "output_tokens": 119965,
+        "cap_usd": 2
+      },
+      "updated_at": 1790915888.9002602,
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "task_number": 3,
+      "auctions": 9,
+      "funded_auctions": 9,
+      "public_submissions": 9,
+      "latest_step": null,
+      "latest_phase": "round_complete",
+      "completed_tasks": 3,
+      "scores": [
+        0.375,
+        0.55,
+        0.12
+      ]
+    }
+  ],
+  "cost_usd": 0.176589115,
+  "reserved_usd": 0.0
+}

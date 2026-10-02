@@ -1,0 +1,40 @@
+{
+  "cell": "wealth-voluntary-feedback",
+  "status": "completed",
+  "results": [
+    {
+      "cell": "wealth-voluntary-feedback",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "score": 0.488,
+      "has_final_answer": true,
+      "cost_usd": 0.247704115
+    },
+    {
+      "cell": "wealth-voluntary-feedback",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "score": 0.675,
+      "has_final_answer": true,
+      "cost_usd": 0.20181044999999997
+    },
+    {
+      "cell": "wealth-voluntary-feedback",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "score": 0.12,
+      "has_final_answer": true,
+      "cost_usd": 0.20043455500000007
+    }
+  ],
+  "started_at": 1790914104.6806378,
+  "pid": 63771,
+  "usage": {
+    "cost_usd": 0.64994912,
+    "unconfirmed_usd": 0.0,
+    "requests": 1054,
+    "input_tokens": 3919200,
+    "output_tokens": 321371,
+    "cap_usd": 5
+  },
+  "updated_at": 1790917768.053872,
+  "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+  "task_number": 3
+}

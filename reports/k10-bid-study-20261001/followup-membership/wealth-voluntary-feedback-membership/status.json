@@ -1,0 +1,19 @@
+{
+  "cell": "wealth-voluntary-feedback-membership",
+  "status": "stopped",
+  "results": [],
+  "started_at": 1790917626.882733,
+  "pid": 32340,
+  "usage": {
+    "cost_usd": 0.07544045,
+    "unconfirmed_usd": 0.0,
+    "requests": 116,
+    "input_tokens": 400496,
+    "output_tokens": 50774,
+    "cap_usd": 2
+  },
+  "updated_at": 1790918164.2204092,
+  "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+  "task_number": 1,
+  "error": "CampaignStop: Study stop requested"
+}

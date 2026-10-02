@@ -16,7 +16,7 @@ def run(root, sources, key, deadline):
     root.mkdir(parents=True, exist_ok=False)
     plan = {'sources': [str(p) for p in sources], 'replicates': 2, 'cap_usd': 1,
             'deadline': deadline, 'declared_at': time.time(),
-            'selection': 'Every completed submitted answer from primary factorial, feedback follow-up, and original reference, regardless of score. Missing answers remain zero without API calls. Interrupted episodes are not scored.',
+            'selection': 'Every completed submitted answer from the declared source directories, regardless of score. Missing answers remain zero without API calls. Interrupted episodes are not scored.',
             'method': 'Repeat the saved successful original judge prompt, with identical system text and reasoning setting. Arm labels are not added to judge prompts. Grades are reported separately; no answer generation or grade replacement.',
             'limitation': 'Same-model grader variability, not independent expert validation. Replicates are not independent research tasks.'}
     atomic_json(root / 'plan.json', plan)

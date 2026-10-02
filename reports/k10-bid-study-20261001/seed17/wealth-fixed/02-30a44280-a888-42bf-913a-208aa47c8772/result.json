@@ -1,0 +1,817 @@
+{
+  "cell": "wealth-fixed",
+  "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+  "score": 0.639,
+  "has_final_answer": true,
+  "answer": "## Strategy to optogenetically control Keap1\u2013Nrf2\n\n### 1. Pathway logic and design principle\nUnder basal conditions, Keap1 acts as a substrate adaptor for the CUL3\u2013RBX1 E3 ubiquitin ligase. A Keap1 dimer recognizes Nrf2 through its ETGE (high-affinity) and DLG (lower-affinity) motifs, positioning Nrf2 for ubiquitination and proteasomal degradation. This keeps Nrf2 abundance and antioxidant-response-element (ARE) transcription relatively low. Oxidative or electrophilic stress can modify reactive Keap1 cysteines and reduce productive Nrf2 ubiquitination. Stabilized Nrf2 accumulates, enters the nucleus, associates with small Maf proteins, and activates ARE-containing genes, including targets such as NQO1 and HMOX1.\n\nA practical bidirectional strategy is to use reversible light-controlled protein recruitment. For gain of function, illumination recruits Keap1 to an inert compartment, reducing the functional cytosolic Keap1 available to engage Nrf2 and CUL3. This is predicted to reduce Nrf2 ubiquitination and degradation, allowing Nrf2 to accumulate and activate ARE genes. For loss of function, use light to promote Nrf2 recruitment to functional Keap1\u2013CUL3, retain Nrf2 in the cytoplasm, or bring a validated inducible degradation module to Nrf2. These are proposed strategies whose effects must be verified experimentally: proximity alone does not guarantee productive ubiquitination, and Keap1 sequestration is useful only if it reduces functional Keap1 available to Nrf2.\n\n### 2. Available optogenetic options\nThese are alternative light-responsive modules; the choice depends on desired reversibility, wavelength, cell type, and construct compatibility.\n\n1. **CRY2\u2013CIB1 light-induced recruitment:** blue light promotes association of CRY2 with CIB1. It can recruit Keap1 to an anchor, recruit Nrf2 to Keap1, or recruit regulators to either protein.\n2. **iLID\u2013SspB recruitment:** blue light exposes an iLID binding site for SspB. It offers a convenient reversible recruitment strategy for Keap1 sequestration or Nrf2 recruitment.\n3. **PhyB\u2013PIF switching:** red/far-red light can switch association states, allowing reversible recruitment. It requires a compatible bilin chromophore and should be checked for cellular suitability.\n4. **LOVTRAP sequestration/release:** a LOV-based switch can control binding to a trapping partner. It can regulate availability or localization of a pathway component, such as Nrf2 or Keap1.\n5. **Light-induced clustering or oligomerization:** for example, CRY2-based clustering can alter localization, accessibility, or activity of a tagged component. Clustering effects are context-dependent and need direct validation.\n6. **Light-controlled nuclear import/export or sequestration:** an optically controlled NLS/NES or nuclear-retention module can increase or decrease nuclear Nrf2 and thus its access to AREs.\n7. **Optogenetic degrons:** light can expose, recruit, or activate a degradation signal to increase turnover of Nrf2 (or, in principle, a pathway component).\n8. **LOV-domain conformational or steric switches:** a light-induced conformational change can expose or mask an interaction surface, such as a binding or localization motif.\n\n### 3. Targets and predicted effects\n- **Keap1\u2013Nrf2 interaction:** Light-driven Keap1 sequestration or disruption of Keap1\u2013Nrf2 binding should reduce productive recognition of Nrf2, decrease its ubiquitination, and increase Nrf2 stability and ARE output. Conversely, promoting productive Keap1\u2013Nrf2 engagement should increase Nrf2 ubiquitination and reduce output, if Keap1\u2013CUL3 function is preserved.\n- **Keap1\u2013CUL3/RBX1 assembly:** Disrupting this ligase assembly should reduce Nrf2 ubiquitination and favor Nrf2 accumulation. Promoting functional assembly can favor Nrf2 turnover. Effects may be broader than Nrf2, so specificity and cell health should be checked.\n- **Nrf2 localization:** Light-controlled cytoplasmic retention or export should reduce nuclear Nrf2 and ARE transcription; light-driven nuclear entry or release from sequestration should increase them. These interventions can change transcription without necessarily changing total Nrf2 abundance.\n- **Nrf2\u2013small Maf interaction or Nrf2\u2013ARE engagement:** Light-induced disruption should decrease ARE transcription even if Nrf2 remains abundant and nuclear. Promoting the interaction could increase transcription if the other components are available.\n- **Nrf2 degradation:** Recruiting a validated light-controlled degron to Nrf2 should reduce Nrf2 abundance and ARE output. The reciprocal effect\u2014stabilizing Nrf2\u2014could be achieved by optically reducing its access to Keap1-dependent degradation.\n- **Keap1 sequestration through a Keap1-binding module:** This may release Nrf2 from Keap1-mediated restraint, but modules such as p62/SQSTM1 require caution because they also affect autophagy.\n\nThe principal manipulated events are protein\u2013protein interactions: Keap1\u2013Nrf2 recognition, Keap1\u2013CUL3 ligase assembly, and Nrf2\u2013small Maf association. Optical control also changes localization or clustering; the downstream consequences can include altered ubiquitination, proteasomal degradation, and transcription.\n\n### 4. Simple quantitative rationale\nA conceptual model makes the predicted direction explicit. Let N be Nrf2 abundance, s its synthesis rate, k\u2080 its Keap1-independent loss rate, kK its Keap1-dependent degradation rate, and u the fraction of functional Keap1 sequestered away from Nrf2 (0 in the dark and approaching 1 with effective sequestration). Then:\n\n dN/dt = s \u2212 [k\u2080 + kK(1 \u2212 u)]N.\n\nAt steady state, setting dN/dt = 0 gives:\n\n N* = s / [k\u2080 + kK(1 \u2212 u)].\n\nAs u increases, Keap1-dependent turnover falls, so this simplified model predicts higher Nrf2 abundance. Conversely, increasing productive Keap1-dependent turnover predicts lower Nrf2. If active nuclear Nrf2 drives a saturating transcriptional response, a conceptual relation is:\n\n T = T\u2080 + T\u2098\u2090\u2093 N\u2099\u207f / (K\u207f + N\u2099\u207f),\n\nwhere T is ARE output, N\u2099 is active nuclear Nrf2, K is the response midpoint, and n describes response steepness. Thus Nrf2 abundance and transcription need not change linearly. These equations are qualitative guides, not assumed parameter values; other turnover routes, localization, and feedback can modify the response.\n\n### 5. Experimental plan and validation\nExpress the chosen optogenetic components at near-endogenous levels where feasible. Compare dark, illuminated, and light-off recovery conditions using calibrated pulses. Include matched-expression controls, light-only controls, interaction-defective constructs, and a control for phototoxicity. Verify that tagged Keap1 retains relevant interaction and redox-sensor functions; Keap1\u2019s reactive cysteines and its dimerization and interaction domains may affect behavior. Measure, in sequence, Keap1 and Nrf2 localization and association; Nrf2 ubiquitination and half-life; total and nuclear Nrf2; an ARE reporter and endogenous targets such as NQO1 and HMOX1; and cellular redox state and viability. A time course after light-off tests reversibility. A mild oxidative challenge, alongside Nrf2-deficient and rescue controls when feasible, can test whether physiological effects depend on Nrf2.\n\n### 6. Consequences for homeostasis\nTransient Nrf2 activation can increase antioxidant and detoxification capacity, lower damaging ROS, and improve protection from oxidative or electrophilic stress. However, excessive or persistent activation can alter redox and metabolic homeostasis and may support survival or therapy resistance in some cancers. Conversely, suppressing Nrf2 can weaken normal-cell stress defenses and increase oxidative injury, although it may be useful in selected Nrf2-dependent tumors. The effect therefore depends on tissue, disease context, baseline pathway activity, and illumination dose and duration. Nrf2-driven antioxidant responses can themselves lower ROS; feedback, potentially including altered KEAP1 expression, may shape recovery after light-off. Monitor ROS or glutathione redox state, viability, and pathway output during illumination and recovery, and use cell-type-specific, time-limited perturbations where possible.\n\n**Uncertainty:** The direction and size of effects depend on whether the engineered interactions preserve native Keap1 and Nrf2 functions, the efficiency of recruitment or sequestration, and the cell\u2019s other Nrf2 turnover and feedback mechanisms. Each optogenetic construct should therefore be treated as a testable perturbation rather than assumed to reproduce the native pathway exactly.",
+  "metric": {
+    "round": 0,
+    "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+    "protocol": "rounds",
+    "score": 0.639,
+    "reward": 7.668,
+    "reward_issued": 9.9684,
+    "reward_distribution": "per_member_path",
+    "contributing_rounds": 10,
+    "credit_path": [
+      {
+        "step": 0,
+        "team": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "final": false,
+        "credits": {
+          "agent-2": 0.7668
+        }
+      },
+      {
+        "step": 1,
+        "team": "solo:agent-6",
+        "members": [
+          "agent-6"
+        ],
+        "final": false,
+        "credits": {
+          "agent-6": 0.7668
+        }
+      },
+      {
+        "step": 2,
+        "team": "solo:agent-4",
+        "members": [
+          "agent-4"
+        ],
+        "final": false,
+        "credits": {
+          "agent-4": 0.7668
+        }
+      },
+      {
+        "step": 3,
+        "team": "team-2",
+        "members": [
+          "agent-1",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-1": 0.7668,
+          "agent-8": 0.7668
+        }
+      },
+      {
+        "step": 4,
+        "team": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "final": false,
+        "credits": {
+          "agent-2": 0.7668
+        }
+      },
+      {
+        "step": 5,
+        "team": "solo:agent-4",
+        "members": [
+          "agent-4"
+        ],
+        "final": false,
+        "credits": {
+          "agent-4": 0.7668
+        }
+      },
+      {
+        "step": 6,
+        "team": "solo:agent-3",
+        "members": [
+          "agent-3"
+        ],
+        "final": false,
+        "credits": {
+          "agent-3": 0.7668
+        }
+      },
+      {
+        "step": 7,
+        "team": "team-3",
+        "members": [
+          "agent-2",
+          "agent-6"
+        ],
+        "final": false,
+        "credits": {
+          "agent-2": 0.7668,
+          "agent-6": 0.7668
+        }
+      },
+      {
+        "step": 8,
+        "team": "team-2",
+        "members": [
+          "agent-1",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-1": 0.7668,
+          "agent-8": 0.7668
+        }
+      },
+      {
+        "step": 9,
+        "team": "solo:agent-9",
+        "members": [
+          "agent-9"
+        ],
+        "final": true,
+        "credits": {
+          "agent-9": 0.7668
+        }
+      }
+    ],
+    "winner": "solo:agent-9",
+    "steps": [
+      {
+        "step": 0,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.1,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.1,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 19.9,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": null,
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": null,
+          "agent-9": null
+        }
+      },
+      {
+        "step": 1,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "solo:agent-6",
+        "members": [
+          "agent-6"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.1,
+          "agent-4": 0.1,
+          "agent-5": 0.05,
+          "agent-6": 0.1,
+          "agent-7": 0.05,
+          "agent-8": 0.1,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 19.9,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": null,
+          "agent-4": null,
+          "agent-5": "team-1",
+          "agent-6": null,
+          "agent-7": "team-1",
+          "agent-8": null,
+          "agent-9": null
+        }
+      },
+      {
+        "step": 2,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "solo:agent-4",
+        "members": [
+          "agent-4"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.1,
+          "agent-4": 0.1,
+          "agent-5": 0.05,
+          "agent-6": 0.1,
+          "agent-7": 0.05,
+          "agent-8": 0.1,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 19.9,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": null,
+          "agent-4": null,
+          "agent-5": "team-1",
+          "agent-6": null,
+          "agent-7": "team-1",
+          "agent-8": null,
+          "agent-9": null
+        }
+      },
+      {
+        "step": 3,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "team-2",
+        "members": [
+          "agent-1",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.1,
+          "agent-4": 0.1,
+          "agent-5": 0.05,
+          "agent-6": 0.1,
+          "agent-7": 0.05,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 19.95,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": null,
+          "agent-4": null,
+          "agent-5": "team-1",
+          "agent-6": null,
+          "agent-7": "team-1",
+          "agent-8": "team-2",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 4,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.1,
+          "agent-4": 0.1,
+          "agent-5": 0.05,
+          "agent-6": 0.1,
+          "agent-7": 0.05,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 19.9,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": null,
+          "agent-4": null,
+          "agent-5": "team-1",
+          "agent-6": null,
+          "agent-7": "team-1",
+          "agent-8": "team-2",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 5,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "solo:agent-4",
+        "members": [
+          "agent-4"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.1,
+          "agent-4": 0.1,
+          "agent-5": 0.05,
+          "agent-6": 0.1,
+          "agent-7": 0.05,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 19.9,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": null,
+          "agent-4": null,
+          "agent-5": "team-1",
+          "agent-6": null,
+          "agent-7": "team-1",
+          "agent-8": "team-2",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 6,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "solo:agent-3",
+        "members": [
+          "agent-3"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.1,
+          "agent-4": 0.1,
+          "agent-5": 0.05,
+          "agent-6": 0.1,
+          "agent-7": 0.05,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 19.9,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": null,
+          "agent-4": null,
+          "agent-5": "team-1",
+          "agent-6": null,
+          "agent-7": "team-1",
+          "agent-8": "team-2",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 7,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "team-3",
+        "members": [
+          "agent-2",
+          "agent-6"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.05,
+          "agent-2": 0.05,
+          "agent-3": 0.1,
+          "agent-4": 0.05,
+          "agent-5": 0.05,
+          "agent-6": 0.05,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 19.95,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 19.95,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": "team-2",
+          "agent-2": "team-3",
+          "agent-3": null,
+          "agent-4": "team-4",
+          "agent-5": "team-4",
+          "agent-6": "team-3",
+          "agent-7": null,
+          "agent-8": "team-2",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 8,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "team-2",
+        "members": [
+          "agent-1",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.05,
+          "agent-3": 0.05,
+          "agent-4": 0.05,
+          "agent-5": 0.05,
+          "agent-6": 0.05,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 19.95,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-5",
+          "agent-1": "team-2",
+          "agent-2": "team-3",
+          "agent-3": "team-5",
+          "agent-4": "team-4",
+          "agent-5": "team-4",
+          "agent-6": "team-3",
+          "agent-7": null,
+          "agent-8": "team-2",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 9,
+        "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+        "winner": "solo:agent-9",
+        "members": [
+          "agent-9"
+        ],
+        "accepted": true,
+        "final": true,
+        "score": 0.639,
+        "reward": 7.668,
+        "share": 0.7668,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.05,
+          "agent-3": 0.05,
+          "agent-4": 0.05,
+          "agent-5": 0.05,
+          "agent-6": 0.05,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 21.5336,
+          "agent-2": 22.3004,
+          "agent-3": 20.7668,
+          "agent-4": 21.5336,
+          "agent-5": 20.0,
+          "agent-6": 21.5336,
+          "agent-7": 20.0,
+          "agent-8": 21.5336,
+          "agent-9": 20.6668
+        },
+        "membership": {
+          "agent-0": "team-5",
+          "agent-1": "team-2",
+          "agent-2": "team-3",
+          "agent-3": "team-5",
+          "agent-4": "team-4",
+          "agent-5": "team-4",
+          "agent-6": "team-3",
+          "agent-7": null,
+          "agent-8": "team-2",
+          "agent-9": null
+        }
+      }
+    ],
+    "step_count": 10,
+    "paid": {
+      "agent-0": 0.0,
+      "agent-1": 0.1,
+      "agent-2": 0.25,
+      "agent-3": 0.1,
+      "agent-4": 0.2,
+      "agent-5": 0.0,
+      "agent-6": 0.15000000000000002,
+      "agent-7": 0.0,
+      "agent-8": 0.1,
+      "agent-9": 0.1
+    },
+    "bid_income": {
+      "agent-0": 0.0,
+      "agent-1": 0.1,
+      "agent-2": 0.25,
+      "agent-3": 0.1,
+      "agent-4": 0.2,
+      "agent-5": 0.0,
+      "agent-6": 0.15000000000000002,
+      "agent-7": 0.0,
+      "agent-8": 0.1,
+      "agent-9": 0.0
+    },
+    "reward_income": {
+      "agent-0": 0.0,
+      "agent-1": 1.5336,
+      "agent-2": 2.3004000000000002,
+      "agent-3": 0.7668,
+      "agent-4": 1.5336,
+      "agent-5": 0.0,
+      "agent-6": 1.5336,
+      "agent-7": 0.0,
+      "agent-8": 1.5336,
+      "agent-9": 0.7668
+    },
+    "team_sizes": [
+      2,
+      2,
+      2,
+      2,
+      1,
+      1
+    ],
+    "coordination_paid": {
+      "agent-0": 0.0,
+      "agent-1": 0.0,
+      "agent-2": 0.0,
+      "agent-3": 0.0,
+      "agent-4": 0.0,
+      "agent-5": 0.0,
+      "agent-6": 0.0,
+      "agent-7": 0.0,
+      "agent-8": 0.0,
+      "agent-9": 0.0
+    },
+    "coordination_burn_total": 0.0,
+    "wealth": {
+      "agent-0": 20.0,
+      "agent-1": 21.5336,
+      "agent-2": 22.3004,
+      "agent-3": 20.7668,
+      "agent-4": 21.5336,
+      "agent-5": 20.0,
+      "agent-6": 21.5336,
+      "agent-7": 20.0,
+      "agent-8": 21.5336,
+      "agent-9": 20.6668
+    },
+    "membership": {
+      "agent-0": "team-5",
+      "agent-1": "team-2",
+      "agent-2": "team-3",
+      "agent-3": "team-5",
+      "agent-4": "team-4",
+      "agent-5": "team-4",
+      "agent-6": "team-3",
+      "agent-7": null,
+      "agent-8": "team-2",
+      "agent-9": null
+    },
+    "contributions": {
+      "agent-0": 0.05,
+      "agent-1": 0.05,
+      "agent-2": 0.05,
+      "agent-3": 0.05,
+      "agent-4": 0.05,
+      "agent-5": 0.05,
+      "agent-6": 0.05,
+      "agent-7": 0.1,
+      "agent-8": 0.05,
+      "agent-9": 0.1
+    },
+    "contribution_fraction": {
+      "agent-0": 0.0025,
+      "agent-1": 0.0025062656641604013,
+      "agent-2": 0.0025,
+      "agent-3": 0.0025,
+      "agent-4": 0.0025,
+      "agent-5": 0.0025,
+      "agent-6": 0.0025,
+      "agent-7": 0.005,
+      "agent-8": 0.0025062656641604013,
+      "agent-9": 0.005
+    },
+    "bid_paid_total": 0.9999999999999999,
+    "bid_transfer_total": 0.8999999999999999,
+    "bid_burn_total": 0.1,
+    "reflection_burn_total": 0.0,
+    "reward_total": 9.9684,
+    "invalid_actions": 4
+  },
+  "cost_usd": 0.17729507500000002,
+  "completed_at": 1790919622.435175,
+  "population": [
+    {
+      "name": "agent-0",
+      "wealth": 20.0,
+      "team": "team-5",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-3: The final response should make the causal chain explicit: light-controlled Keap1 availability changes Keap1\u2013Nrf2 engagement and CUL3\u2013RBX1 ubiquitination, which changes Nrf2 stability, nuclear abundance, ARE transcription, and ultimately redox state. A conceptual model is dN/dt = s \u2212 [k\u2080 + kK(1\u2212u)]N, where u is the fraction of Keap1 sequestered by light; increasing u raises steady-state Nrf2. Emphasize that colocalization alone does not prove degradation, and verify the OFF arm with ubiquitination and half-life measurements. Include the tool options, target/effect map, controls, and time-course/recovery plus homeostasis outcomes already noted.\n[pre_bid] agent-0: The solution is ready to finalize. Make the causal chain explicit: light-controlled Keap1 availability changes Keap1\u2013Nrf2 engagement and CUL3\u2013RBX1-dependent ubiquitination, then Nrf2 stability/localization, ARE transcription, and redox homeostasis. For the OFF arm, preserve Keap1\u2019s functional domains and verify increased Nrf2 ubiquitination and shorter half-life\u2014colocalization alone is insufficient. Include the conceptual steady-state model and distinguish stability targets from nuclear-import or small-Maf/ARE targets; report time-course recovery, feedback, controls, and the six-plus tool classes already listed.\n[bidding] agent-0: Finalize the prepared solution; fixed bid is minimal and reward is shared.\n[bidding] agent-3: Authorize the fixed bid to finalize the accepted solution.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": \"team-5\", \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-1",
+      "wealth": 21.5336,
+      "team": "team-2",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "-7: Teams with prepared submissions should preserve membership and submit this round. Ensure the final answer lists at least six optogenetic tool classes, maps each target to gain/loss of Nrf2 signaling, and explains Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox-homeostasis effects.\n[regroup] agent-3: Stay with team-5 and submit this round. The design should explicitly list six or more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-1: For specificity, include a genetic epistasis test: compare the light response in Nrf2-null cells rescued with wild-type versus a validated Keap1-binding-defective Nrf2 ETGE/DLG mutant, at matched expression. Also avoid spectral crosstalk between actuation and fluorescent reporters/sensors: use compatible reporter wavelengths or separate measurement cohorts, and include light-only controls.\n[pre_bid] agent-8: For clean quantification, avoid spectral crosstalk between the actuator and fluorescent readouts: use compatible reporter/redox-sensor wavelengths or separate actuation and measurement cohorts, and include illuminated actuator-negative controls. A specificity test is Nrf2-null cells rescued at matched expression with wild-type versus validated Keap1-binding-defective ETGE/DLG-mutant Nrf2; this helps establish that the light response depends on the intended Keap1\u2013Nrf2 interface.\n[bidding] agent-1: Final-round work can earn reward; consent to the fixed, minimal bid.\n[bidding] agent-8: Final round; authorize the small fixed bid to submit our accepted work.\nTeam entered; binding pledge 0.05 in round 9.\nReceived 0.05 from solo:agent-9's next bid.\n{\"bid_income\": 0.1, \"contributing_rounds\": 2, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 1.5336, \"team\": \"team-2\", \"wealth\": 21.5336}"
+    },
+    {
+      "name": "agent-2",
+      "wealth": 22.3004,
+      "team": "team-3",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "3: Stay with team-5 and submit this round. The design should explicitly list six or more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-6: Ready to submit. Use reversible light-induced Keap1 sequestration as the preferred gain-of-function design: reducing available Keap1 should lower Nrf2 ubiquitination/degradation, increase nuclear Nrf2, and raise ARE transcription. A conceptual steady state is N* = s/[k\u2080 + kK(1\u2212u)], where u is the fraction of Keap1 sequestered by light. Clearly distinguish stability targets (Keap1\u2013Nrf2/CUL3) from activity targets (NLS/NES and Nrf2\u2013small-Maf/ARE). Include at least six tool classes, light-on/off time courses, specificity controls, and redox/viability measures to assess homeostasis.\n[pre_bid] agent-2: The shared design is ready for final submission. Frame reversible light-induced Keap1 sequestration as the preferred gain-of-function strategy, then contrast loss-of-function options. Explicitly distinguish effects on Nrf2 stability (Keap1\u2013Nrf2/CUL3, ubiquitination, half-life) from effects on nuclear/transcriptional activity (NLS/NES, small-Maf/ARE). Include the conceptual steady-state equation, at least six optogenetic tool classes, and light-on/off specificity and homeostasis measurements. I support submitting.\n[bidding] agent-6: Authorize the fixed bid and submit the completed final answer.\n[bidding] agent-2: Approve final submission; fixed bid is small and accepted work earns reward.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.25, \"contributing_rounds\": 3, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.25, \"reward_received\": 2.3004000000000002, \"team\": \"team-3\", \"wealth\": 22.3004}"
+    },
+    {
+      "name": "agent-3",
+      "wealth": 20.7668,
+      "team": "team-5",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "ogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-3: The final response should make the causal chain explicit: light-controlled Keap1 availability changes Keap1\u2013Nrf2 engagement and CUL3\u2013RBX1 ubiquitination, which changes Nrf2 stability, nuclear abundance, ARE transcription, and ultimately redox state. A conceptual model is dN/dt = s \u2212 [k\u2080 + kK(1\u2212u)]N, where u is the fraction of Keap1 sequestered by light; increasing u raises steady-state Nrf2. Emphasize that colocalization alone does not prove degradation, and verify the OFF arm with ubiquitination and half-life measurements. Include the tool options, target/effect map, controls, and time-course/recovery plus homeostasis outcomes already noted.\n[pre_bid] agent-0: The solution is ready to finalize. Make the causal chain explicit: light-controlled Keap1 availability changes Keap1\u2013Nrf2 engagement and CUL3\u2013RBX1-dependent ubiquitination, then Nrf2 stability/localization, ARE transcription, and redox homeostasis. For the OFF arm, preserve Keap1\u2019s functional domains and verify increased Nrf2 ubiquitination and shorter half-life\u2014colocalization alone is insufficient. Include the conceptual steady-state model and distinguish stability targets from nuclear-import or small-Maf/ARE targets; report time-course recovery, feedback, controls, and the six-plus tool classes already listed.\n[bidding] agent-0: Finalize the prepared solution; fixed bid is minimal and reward is shared.\n[bidding] agent-3: Authorize the fixed bid to finalize the accepted solution.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.1, \"contributing_rounds\": 1, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.7668, \"team\": \"team-5\", \"wealth\": 20.7668}"
+    },
+    {
+      "name": "agent-4",
+      "wealth": 21.5336,
+      "team": "team-4",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " ubiquitination, reversible controls, and redox homeostasis.\n[regroup] agent-7: Teams with prepared submissions should preserve membership and submit this round. Ensure the final answer lists at least six optogenetic tool classes, maps each target to gain/loss of Nrf2 signaling, and explains Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox-homeostasis effects.\n[regroup] agent-3: Stay with team-5 and submit this round. The design should explicitly list six or more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-4: The shared solution is comprehensive. For the final response, organize it around the native causal chain, six-plus optogenetic tool classes, a target-to-effect map for both pathway activation and suppression, protein\u2013protein interaction mechanisms, and homeostatic consequences. Include the conceptual Nrf2 steady-state relation and note that its predictions require experimental validation. I support submitting this round, with controls for light effects, expression level, ubiquitination/half-life, ARE output, and recovery after light-off.\n[pre_bid] agent-5: The shared design is complete and experimentally testable. I support submitting: use reversible light-driven Keap1 sequestration for Nrf2 activation, with a complementary Keap1-recruitment or Nrf2-degron strategy for suppression. Verify causal effects with Nrf2 ubiquitination/half-life, nuclear localization, ARE targets, and light-off recovery; control for light toxicity and altered construct stoichiometry.\n[bidding] agent-5: Support final submission; authorize the fixed bid.\n[bidding] agent-4: Support final submission; authorize the fixed bid.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.2, \"contributing_rounds\": 2, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.2, \"reward_received\": 1.5336, \"team\": \"team-4\", \"wealth\": 21.5336}"
+    },
+    {
+      "name": "agent-5",
+      "wealth": 20.0,
+      "team": "team-4",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "CUL3 ubiquitination, reversible controls, and redox homeostasis.\n[regroup] agent-7: Teams with prepared submissions should preserve membership and submit this round. Ensure the final answer lists at least six optogenetic tool classes, maps each target to gain/loss of Nrf2 signaling, and explains Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox-homeostasis effects.\n[regroup] agent-3: Stay with team-5 and submit this round. The design should explicitly list six or more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-4: The shared solution is comprehensive. For the final response, organize it around the native causal chain, six-plus optogenetic tool classes, a target-to-effect map for both pathway activation and suppression, protein\u2013protein interaction mechanisms, and homeostatic consequences. Include the conceptual Nrf2 steady-state relation and note that its predictions require experimental validation. I support submitting this round, with controls for light effects, expression level, ubiquitination/half-life, ARE output, and recovery after light-off.\n[pre_bid] agent-5: The shared design is complete and experimentally testable. I support submitting: use reversible light-driven Keap1 sequestration for Nrf2 activation, with a complementary Keap1-recruitment or Nrf2-degron strategy for suppression. Verify causal effects with Nrf2 ubiquitination/half-life, nuclear localization, ARE targets, and light-off recovery; control for light toxicity and altered construct stoichiometry.\n[bidding] agent-5: Support final submission; authorize the fixed bid.\n[bidding] agent-4: Support final submission; authorize the fixed bid.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": \"team-4\", \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-6",
+      "wealth": 21.5336,
+      "team": "team-3",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "5 and submit this round. The design should explicitly list six or more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-6: Ready to submit. Use reversible light-induced Keap1 sequestration as the preferred gain-of-function design: reducing available Keap1 should lower Nrf2 ubiquitination/degradation, increase nuclear Nrf2, and raise ARE transcription. A conceptual steady state is N* = s/[k\u2080 + kK(1\u2212u)], where u is the fraction of Keap1 sequestered by light. Clearly distinguish stability targets (Keap1\u2013Nrf2/CUL3) from activity targets (NLS/NES and Nrf2\u2013small-Maf/ARE). Include at least six tool classes, light-on/off time courses, specificity controls, and redox/viability measures to assess homeostasis.\n[pre_bid] agent-2: The shared design is ready for final submission. Frame reversible light-induced Keap1 sequestration as the preferred gain-of-function strategy, then contrast loss-of-function options. Explicitly distinguish effects on Nrf2 stability (Keap1\u2013Nrf2/CUL3, ubiquitination, half-life) from effects on nuclear/transcriptional activity (NLS/NES, small-Maf/ARE). Include the conceptual steady-state equation, at least six optogenetic tool classes, and light-on/off specificity and homeostasis measurements. I support submitting.\n[bidding] agent-6: Authorize the fixed bid and submit the completed final answer.\n[bidding] agent-2: Approve final submission; fixed bid is small and accepted work earns reward.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.15000000000000002, \"contributing_rounds\": 2, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.15000000000000002, \"reward_received\": 1.5336, \"team\": \"team-3\", \"wealth\": 21.5336}"
+    },
+    {
+      "name": "agent-7",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " and maps each target to its effect; emphasize Keap1\u2013Nrf2\u2013CUL3 ubiquitination, reversible controls, and redox homeostasis.\n[regroup] agent-7: Teams with prepared submissions should preserve membership and submit this round. Ensure the final answer lists at least six optogenetic tool classes, maps each target to gain/loss of Nrf2 signaling, and explains Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox-homeostasis effects.\n[regroup] agent-3: Stay with team-5 and submit this round. The design should explicitly list six or more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-7: A useful quantitative summary for the final answer is to model Nrf2 abundance as dN/dt = s \u2212 [k\u2080 + kK(1\u2212u)]N, where s is synthesis, k\u2080 is Keap1-independent turnover, kK is Keap1-dependent degradation, and u is the light-controlled fraction of Keap1 sequestered from Nrf2. At steady state, N* = s/[k\u2080 + kK(1\u2212u)], so light-driven Keap1 sequestration should raise Nrf2; restoring or promoting functional Keap1\u2013Nrf2\u2013CUL3 engagement should lower it. ARE output is likely nonlinear, so measure Nrf2 ubiquitination/half-life, total and nuclear Nrf2, ARE reporter and endogenous targets rather than inferring transcription from abundance. Include light-off recovery and ROS/GSH measurements to capture feedback and homeostasis.\n[bidding] agent-7: Finalize the shared answer; fixed bid is small and accepted work earns reward.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-8",
+      "wealth": 21.5336,
+      "team": "team-2",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "-7: Teams with prepared submissions should preserve membership and submit this round. Ensure the final answer lists at least six optogenetic tool classes, maps each target to gain/loss of Nrf2 signaling, and explains Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox-homeostasis effects.\n[regroup] agent-3: Stay with team-5 and submit this round. The design should explicitly list six or more optogenetic tool classes, map each target to its effect on Nrf2/ARE signaling, and explain Keap1\u2013Nrf2\u2013CUL3 ubiquitination and redox homeostasis.\n[regroup] agent-8: Stay with team-2 and submit the prepared design this round; it covers multiple optogenetic tools, target-specific effects, Keap1\u2013Nrf2\u2013CUL3 ubiquitination, and redox homeostasis.\n[pre_bid] agent-1: For specificity, include a genetic epistasis test: compare the light response in Nrf2-null cells rescued with wild-type versus a validated Keap1-binding-defective Nrf2 ETGE/DLG mutant, at matched expression. Also avoid spectral crosstalk between actuation and fluorescent reporters/sensors: use compatible reporter wavelengths or separate measurement cohorts, and include light-only controls.\n[pre_bid] agent-8: For clean quantification, avoid spectral crosstalk between the actuator and fluorescent readouts: use compatible reporter/redox-sensor wavelengths or separate actuation and measurement cohorts, and include illuminated actuator-negative controls. A specificity test is Nrf2-null cells rescued at matched expression with wild-type versus validated Keap1-binding-defective ETGE/DLG-mutant Nrf2; this helps establish that the light response depends on the intended Keap1\u2013Nrf2 interface.\n[bidding] agent-1: Final-round work can earn reward; consent to the fixed, minimal bid.\n[bidding] agent-8: Final round; authorize the small fixed bid to submit our accepted work.\nTeam entered; binding pledge 0.05 in round 9.\nReceived 0.05 from solo:agent-9's next bid.\n{\"bid_income\": 0.1, \"contributing_rounds\": 2, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 1.5336, \"team\": \"team-2\", \"wealth\": 21.5336}"
+    },
+    {
+      "name": "agent-9",
+      "wealth": 20.6668,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " dimer recognizes Nrf2 through its ETGE (high-affinity) and DLG (lower-affinity) motifs, positioning Nrf2 for ubiquitination and proteasomal degradation. This keeps Nrf2 abundance and antioxidant-response-element (ARE) transcription relatively low. Oxidative or electrophilic stress can modify reactive Keap1 cysteines and reduce productive Nrf2 ubiquitination. Stabilized Nrf2 accumulates, enters the nucleus, associates with small Maf proteins, and activates ARE-containing genes, including targets such as NQO1 and HMOX1.\n\nA practical bidirectional strategy is to use reversible light-controlled protein recruitment. For gain of function, illumination recruits Keap1 to an inert compartment, reducing the functional cytosolic Keap1 available to engage Nrf2 and CUL3. This is predicted to reduce Nrf2 ubiquitination and degradation, allowing Nrf2 to accumulate and activate ARE genes. For loss of function, use light to promote Nrf2 recruitment to functional Keap1\u2013CUL3, retain Nrf2 in the cytoplasm, or bring a validated inducible degradation module to Nrf2. These are proposed strategies whose effects must be verified experimentally: proximity alone does not guarantee productive ubiquitination, and Keap1 sequestration is useful only if it reduces functional Keap1 available to Nrf2.\n\n### 2. Available optogenetic options\nThese are alternative light-responsive modules; the choice depends on desired reversibility, wavelength, cell type, and construct compatibility.\n\n1. **CRY2\u2013CIB1 light-induced recruitment:** blue light promotes association of CRY2 with CIB1. It can recruit Keap1 to an anchor, recruit Nrf2 to Keap1, or recruit regulators to either protein.\n2. **iLID\u2013SspB recruitment:** blue light exposes an iLID binding site for SspB. It offers a convenient reversible recruitment strategy for Keap1 sequestration or Nrf2 recruitment.\n3. **PhyB\u2013PIF switching:** red/far-red light can switch association states, allowing reversible recruitment. It requires a compatible bilin chromophore and should be checked\n{\"bid_income\": 0.0, \"contributing_rounds\": 1, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.7668, \"team\": null, \"wealth\": 20.6668}"
+    }
+  ]
+}

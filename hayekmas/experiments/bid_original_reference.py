@@ -17,7 +17,9 @@ from hayekmas.utils.logger import logger
 from .campaign_client import CampaignClient, CampaignStop, atomic_json
 
 
-def run(root, key, deadline):
+def run(root, key, deadline, *, solver_tokens=8192, solver_reasoning='medium', cap=2):
+    if solver_tokens not in (8192,16384) or solver_reasoning not in ('medium','high') or not 0 < cap <= 2:
+        raise ValueError('Unsupported original-reference settings')
     root.mkdir(parents=True, exist_ok=False)
     raw = json.loads(Path('global_configs/train_research.json').read_text())
     spec = json.loads(Path('global_configs/k10_bid_ablation.json').read_text())
@@ -30,10 +32,11 @@ def run(root, key, deadline):
         state.update(usage=client.usage(), updated_at=time.time())
         atomic_json(root / 'status.json', state)
 
-    client = CampaignClient(key, root, deadline, cap=2, tick=tick)
+    client = CampaignClient(key, root, deadline, cap=cap, tick=tick)
     atomic_json(root / 'plan.json', {'scope': 'Fresh untrained original EoM k10 reference; three matched development tasks; seed7; no cross-task carryover.',
-        'config': asdict(cfg.mas), 'cap_usd': 2, 'deadline': deadline,
-        'comparability': 'Native original loop and fixed individual bids; 8192 medium solver output vs team16384 high. Not compute matched.'})
+        'config': asdict(cfg.mas), 'cap_usd': cap, 'deadline': deadline,
+        'solver_tokens':solver_tokens, 'solver_reasoning':solver_reasoning,
+        'comparability': f'Native original loop and fixed individual bids; {solver_tokens} {solver_reasoning} solver output vs team16384 high. Roles, early stopping and total compute still differ.'})
     logger.configure(verbose=False, log_dir=str(root), profile='original-reference')
     tasks = load_research_tasks([Path('third_party/benchmarks/frontier-science-research/data/research_train.jsonl')], limit=3)
     try:
@@ -46,6 +49,7 @@ def run(root, key, deadline):
             trainer = ResearchTrainer(client, cfg)
             agents = create_research_agents(client) + create_research_agents(client)
             for i, agent in enumerate(agents):
+                agent.backbone_llm = client.as_callable(max_tokens=solver_tokens, reasoning_effort=solver_reasoning, kind='solve')
                 agent.name = f'{agent.name}-reference-{i}'
                 agent.initialize(initial_wealth=cfg.mas.engine.initial_wealth)
                 engine.population.add_agent(agent)
@@ -82,6 +86,9 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--root', type=Path, required=True)
     p.add_argument('--deadline', type=float, required=True)
+    p.add_argument('--solver-tokens', type=int, default=8192, choices=(8192,16384))
+    p.add_argument('--solver-reasoning', default='medium', choices=('medium','high'))
+    p.add_argument('--cap', type=float, default=2)
     a = p.parse_args()
     key = os.environ.get('OPENROUTER_API_KEY') or getpass.getpass('OpenRouter API key (hidden): ')
-    run(a.root.resolve(), key, a.deadline)
+    run(a.root.resolve(), key, a.deadline, solver_tokens=a.solver_tokens, solver_reasoning=a.solver_reasoning, cap=a.cap)

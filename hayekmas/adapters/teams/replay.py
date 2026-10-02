@@ -66,6 +66,25 @@ def replay_data(engine, status):
                 "events": visible_by_round[episode],
             }
         )
+    completed = {item["round"] for item in rounds}
+    # An interrupted episode has no terminal grade, but its recorded actions
+    # must still be available for inspection. Never fabricate round_complete.
+    for episode in sorted(visible_by_round):
+        if episode < 0 or episode in completed:
+            continue
+        agents = engine.state()["agents"]
+        rounds.append({
+            "round": episode,
+            "partial": True,
+            "metrics": {
+                "wealth": {a["name"]: a["wealth"] for a in agents},
+                "membership": {a["name"]: a["team"] for a in agents},
+            },
+            "agents": agents,
+            "teams": [],
+            "events": visible_by_round[episode],
+        })
+    rounds.sort(key=lambda item: item["round"])
     return {
         "schema": 1,
         "status": status,

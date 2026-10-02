@@ -1,0 +1,17 @@
+{
+  "task_ids": [
+    "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+    "30a44280-a888-42bf-913a-208aa47c8772",
+    "7c94f50a-0896-450f-8d55-00c98aca5158"
+  ],
+  "dataset_sha256": "3917c9ca5d3bc28f9c45d2531ad3e0879b420154f48873171f46f22ec3867655",
+  "samples_per_task": 10,
+  "cap_usd": 2,
+  "deadline": 1790924350.0,
+  "model": "openai/gpt-6-luna",
+  "solver_max_tokens": 16384,
+  "solver_reasoning": "high",
+  "judge_max_tokens": 8192,
+  "judge_reasoning": "medium",
+  "interpretation": "No shared state, economics, tools, or access to other samples. First sample is the prespecified single-agent baseline. Pass@k uses judge success >=.5; oracle outcome, not a deployable answer selector. Report partial tasks explicitly; no replacing samples based on scores."
+}

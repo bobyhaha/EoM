@@ -1,0 +1,73 @@
+{
+  "recorded_at": 1790921573.458362,
+  "selection": "Post hoc, after answers and rubric were inspected. Not blinded, not a replacement grade.",
+  "scope": "Zero-total-momentum opposite-spin contact Hamiltonian at fixed physical box. No additional spin/parity projection in the full spectrum calculation.",
+  "single_particle_energy_MeV": 40.69047831939491,
+  "binding_energy_MeV": -17.8,
+  "physical_box_fm": 3.4,
+  "nucleon_mass_MeV": 1634,
+  "matrix": "diag(4*t*sum_alpha(1-cos(2*pi*n_alpha/L)))) + (C*t/L^3)*ones",
+  "coupling_condition": "1/g = sum_n 1/(-17.8-D_n), g=C*t/L^3",
+  "finite_lattice_results": [
+    {
+      "L": 4,
+      "t_MeV": 20.34523915969746,
+      "C": -9.365106028262387,
+      "first_excited_MeV": 25.315659622940956,
+      "first_excited_over_single": 0.6221519300959992,
+      "first_free_shell_MeV": 81.38095663878983,
+      "secular_residual": 0.0,
+      "dense_eigenvalues_first_eight": [
+        -17.799999999999997,
+        25.315659622940945,
+        81.38095663878967,
+        81.38095663878971,
+        81.38095663878975,
+        81.38095663878977,
+        81.3809566387898,
+        112.04906657708472
+      ]
+    },
+    {
+      "L": 12,
+      "t_MeV": 151.85893247226176,
+      "C": -8.457416931592203,
+      "first_excited_MeV": 20.775523108514882,
+      "first_excited_over_single": 0.5105745610911714,
+      "first_free_shell_MeV": 81.38095663878983,
+      "secular_residual": 0.0
+    },
+    {
+      "L": 24,
+      "t_MeV": 597.0867945998142,
+      "C": -8.177331559352913,
+      "first_excited_MeV": 20.842506952833695,
+      "first_excited_over_single": 0.5122207409122349,
+      "first_free_shell_MeV": 81.38095663878983,
+      "secular_residual": 0.0
+    },
+    {
+      "L": 48,
+      "t_MeV": 2378.13085779991,
+      "C": -8.042636216896444,
+      "first_excited_MeV": 21.061946861613748,
+      "first_excited_over_single": 0.5176136465216895,
+      "first_free_shell_MeV": 81.38095663878983,
+      "secular_residual": 0.0
+    },
+    {
+      "L": 96,
+      "t_MeV": 9502.339909769158,
+      "C": -7.97731060582984,
+      "first_excited_MeV": 21.21944421412045,
+      "first_excited_over_single": 0.5214842658658625,
+      "first_free_shell_MeV": 81.38095663878983,
+      "secular_residual": 0.0
+    }
+  ],
+  "sector_caveat": "Five unaffected states refer to the full six-state opposite-spin shell. Restricting to even spatial parity leaves two unaffected states; three full-shell states have odd parity. Sector specification is needed before assigning a strict spin-singlet degeneracy.",
+  "interpretation": "Discrete levels survive L\u2192infinity at fixed physical box. An infinite-volume interpretation changes the limit. This check does not settle all task wording or rubric issues.",
+  "primary_source": "https://doi.org/10.1103/PhysRevC.110.024002",
+  "source_pdf": "https://par.nsf.gov/servlets/purl/10596563",
+  "code_sha256": "aab43cf6edd123aa98d876a78e3d174b34a3ffb7fe22a53ad6a25dae41084a1d"
+}

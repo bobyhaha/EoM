@@ -1,0 +1,19 @@
+{
+  "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+  "selected_sample": 3,
+  "score": 0.579,
+  "reason": "It combines accurate pathway logic\u2014including the distinction between Keap1\u2013Nrf2 binding and productive ubiquitination\u2014with more than six optogenetic options, a broad target-by-target account of effects, explicit gain- and loss-of-function designs, quantitative rationale, and thoughtful homeostasis, feedback, and validation considerations.",
+  "candidate_order": [
+    2,
+    3,
+    5,
+    7,
+    6,
+    10,
+    8,
+    1,
+    4,
+    9
+  ],
+  "raw_selection": "{\"sample\":3,\"reason\":\"It combines accurate pathway logic\u2014including the distinction between Keap1\u2013Nrf2 binding and productive ubiquitination\u2014with more than six optogenetic options, a broad target-by-target account of effects, explicit gain- and loss-of-function designs, quantitative rationale, and thoughtful homeostasis, feedback, and validation considerations.\"}"
+}

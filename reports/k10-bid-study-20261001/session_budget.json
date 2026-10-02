@@ -1,0 +1,17 @@
+{
+  "user_max_usd": 100,
+  "deadline": 1790924350,
+  "partitions": {
+    "primary_4_cells": 80,
+    "feedback": 5,
+    "original_reference": 2,
+    "judge_repeats": 1,
+    "short_rounds": 2,
+    "previous_society_probe": 1,
+    "independent_10_samples": 2
+  },
+  "partition_total_usd": 93,
+  "previous_interrupted_pilot_confirmed_and_reserved_usd": 0.15218272,
+  "additional_allocations_require_rechecking_total": true,
+  "completed_original_reference_actual_usd": 0.02513787
+}

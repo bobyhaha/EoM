@@ -1,0 +1,9 @@
+{
+  "declared_at": 1790916602.442389,
+  "deadline": 1790924350.0,
+  "cap": "Shares existing $2 independent-sampling ledger; not an extra $2.",
+  "method": "After all30 samples complete, shuffle candidate presentation with seed7 and make one reference-free selection call per task. Do not supply judge scores or the reference rubric. Use the existing score only after selection. No retries for choosing a low-scoring answer.",
+  "max_input_tokens": 190000,
+  "max_output_tokens": 4096,
+  "reasoning_effort": "high"
+}

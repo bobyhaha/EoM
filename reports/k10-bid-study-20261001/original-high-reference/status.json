@@ -1,0 +1,38 @@
+{
+  "status": "completed",
+  "results": [
+    {
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "score": 0.8,
+      "has_final_answer": true,
+      "cost_usd": 0.01323125,
+      "steps": 4
+    },
+    {
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "score": 0.55,
+      "has_final_answer": true,
+      "cost_usd": 0.016510745,
+      "steps": 10
+    },
+    {
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "score": 0.12,
+      "has_final_answer": true,
+      "cost_usd": 0.007017954999999999,
+      "steps": 4
+    }
+  ],
+  "started_at": 1790919207.941237,
+  "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+  "task_number": 3,
+  "usage": {
+    "cost_usd": 0.03675995,
+    "unconfirmed_usd": 0.0,
+    "requests": 134,
+    "input_tokens": 212717,
+    "output_tokens": 39303,
+    "cap_usd": 1.0
+  },
+  "updated_at": 1790919715.010726
+}

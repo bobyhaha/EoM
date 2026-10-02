@@ -1,0 +1,40 @@
+{
+  "cell": "wealth-voluntary-feedback-membership",
+  "status": "completed",
+  "results": [
+    {
+      "cell": "wealth-voluntary-feedback-membership",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "score": 0.475,
+      "has_final_answer": true,
+      "cost_usd": 0.26512708
+    },
+    {
+      "cell": "wealth-voluntary-feedback-membership",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "score": 0.25,
+      "has_final_answer": true,
+      "cost_usd": 0.21272122499999996
+    },
+    {
+      "cell": "wealth-voluntary-feedback-membership",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "score": 0.0,
+      "has_final_answer": false,
+      "cost_usd": 0.21633495000000003
+    }
+  ],
+  "started_at": 1790918197.220917,
+  "pid": 75619,
+  "usage": {
+    "cost_usd": 0.694183255,
+    "unconfirmed_usd": 0.0,
+    "requests": 1063,
+    "input_tokens": 4303966,
+    "output_tokens": 313868,
+    "cap_usd": 2
+  },
+  "updated_at": 1790921874.7965472,
+  "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+  "task_number": 3
+}

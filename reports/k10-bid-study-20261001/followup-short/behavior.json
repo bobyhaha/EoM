@@ -1,0 +1,880 @@
+{
+  "audit_version": 2,
+  "updated_at": 1790922705.445279,
+  "cells": {
+    "society-fixed-3rounds": {
+      "tasks": [
+        {
+          "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+          "complete": true,
+          "score": 0.375,
+          "final_answer": true,
+          "auctions": 3,
+          "funded": 3,
+          "positive_pledges": 30,
+          "ballots": 30,
+          "yes_votes": 30,
+          "explicit_consents": 30,
+          "submissions": 3,
+          "joins": 4,
+          "leaves": 0,
+          "invalid_actions": {
+            "round_membership": 2
+          },
+          "verification_issues": [],
+          "repetition_flags": [],
+          "ballot_reasons": [
+            {
+              "step": 0,
+              "agent": "agent-1",
+              "reason": "Authorize the fixed bid to publish the solution and caveats.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-0",
+              "reason": "Small fixed bid supports publishing the team\u2019s useful solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-2",
+              "reason": "Submit the careful solution and flag underdetermined parts rather than inventing values.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-6",
+              "reason": "Authorize the small fixed bid; submit the careful answer noting missing regulator details.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-3",
+              "reason": "Solo team; authorize fixed bid to submit the useful solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-5",
+              "reason": "Consent to the fixed bid; preserve our chance to publish the team solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-4",
+              "reason": "Support submitting the team's technically careful solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-8",
+              "reason": "Consent to fixed bid; our discussion provides useful caveats and results.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-7",
+              "reason": "Consent to the fixed bid; discussion identifies key solution and underdetermination.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-9",
+              "reason": "Solo team; authorize the fixed bid to submit useful work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-0",
+              "reason": "Consent to the fixed bid supports submitting the accepted solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-1",
+              "reason": "Consent to the fixed bid; team work can advance the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-2",
+              "reason": "Authorize the fixed bid; submit the careful, caveated solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-6",
+              "reason": "Authorize the fixed bid to submit our careful, corrected answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-3",
+              "reason": "Consent to the fixed bid; advancing the shared solution is worthwhile.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-4",
+              "reason": "Authorize the small fixed bid; submit the agreed solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-5",
+              "reason": "Support submitting the solution; authorize the small fixed bid.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-8",
+              "reason": "Support the team's technically sound shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-7",
+              "reason": "Authorize the small fixed bid to submit our useful derivation.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-9",
+              "reason": "Authorize the fixed bid to advance the accepted solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-0",
+              "reason": "Authorize the small fixed bid to submit the completed solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-1",
+              "reason": "Authorize the small fixed bid to submit the completed solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-2",
+              "reason": "Finalize the careful solution with cutoff and continuum caveats.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-6",
+              "reason": "Agree; submit the careful solution with cutoff and continuum caveats.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-3",
+              "reason": "Authorize the fixed bid to finalize and publish the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-5",
+              "reason": "Authorize the fixed bid to finalize and publish the team\u2019s work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-4",
+              "reason": "Authorize final submission to secure accepted work and shared reward.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-8",
+              "reason": "Finalize the caveated solution; fixed bid is small and we have it ready.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-7",
+              "reason": "Authorize the fixed bid to submit our caveated derivation.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-9",
+              "reason": "Finalize the shared solution; I consent to the fixed bid.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            }
+          ],
+          "latest": {
+            "event": "round_complete",
+            "step": null,
+            "phase": null
+          }
+        },
+        {
+          "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+          "complete": true,
+          "score": 0.55,
+          "final_answer": true,
+          "auctions": 3,
+          "funded": 3,
+          "positive_pledges": 30,
+          "ballots": 30,
+          "yes_votes": 30,
+          "explicit_consents": 30,
+          "submissions": 3,
+          "joins": 1,
+          "leaves": 0,
+          "invalid_actions": {},
+          "verification_issues": [],
+          "repetition_flags": [],
+          "ballot_reasons": [
+            {
+              "step": 0,
+              "agent": "agent-0",
+              "reason": "Solo team; authorize fixed bid to submit the discussed solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-1",
+              "reason": "Proceed; fixed bid is small, and this work supports the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-2",
+              "reason": "Solo team; consent to fixed bid and advance the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-3",
+              "reason": "Solo team; consent to fixed bid and advance the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-4",
+              "reason": "Authorize the small fixed bid to submit our useful, safety-conscious solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-5",
+              "reason": "Solo team; authorize fixed bid to submit the discussed solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-6",
+              "reason": "Solo team; authorize the fixed bid to submit the discussed solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-7",
+              "reason": "Consent to the fixed bid; publish the discussed optogenetic Nrf2 strategy.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-8",
+              "reason": "Solo team; consent to fixed bid and advance the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-9",
+              "reason": "Solo team; authorize the minimal fixed bid to submit useful work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-0",
+              "reason": "Solo team; authorize the minimal fixed bid to submit useful work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-1",
+              "reason": "Solo team; authorize the small fixed bid to advance the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-2",
+              "reason": "Solo team; consent to the fixed bid and advance the discussed design.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-3",
+              "reason": "Solo team; consent to fixed bid and submit the discussed design.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-4",
+              "reason": "Solo team; authorize the small fixed bid to submit useful work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-5",
+              "reason": "Solo team; authorize the fixed bid to submit useful work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-6",
+              "reason": "Fixed bid is small; submit the useful inducible KEAP1\u2013NRF2 demonstration.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-8",
+              "reason": "Consent to fixed bid; proceed with the team's useful work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-7",
+              "reason": "Authorize fixed bid to submit our collaborative solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-9",
+              "reason": "Consent to the fixed bid; my design discussion advances the solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-0",
+              "reason": "Authorize the minimal fixed bid to submit the discussed final answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-1",
+              "reason": "Authorize the fixed bid to submit the team's final work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-2",
+              "reason": "Final round; consent to the fixed bid and submit the discussed mechanistic guidance.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-3",
+              "reason": "Consent to the fixed bid; submit the discussed final design.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-4",
+              "reason": "Submit the validated design with controls and mechanistic caveats.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-5",
+              "reason": "Consent to fixed bid; finalize the team\u2019s submitted solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-6",
+              "reason": "Final-round action supports accepted work and the shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-7",
+              "reason": "Authorize the fixed bid to submit the final answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-8",
+              "reason": "Authorize the fixed bid to submit and finalize our discussed solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-9",
+              "reason": "I support submitting the solution; the fixed bid is acceptable.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            }
+          ],
+          "latest": {
+            "event": "round_complete",
+            "step": null,
+            "phase": null
+          }
+        },
+        {
+          "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+          "complete": true,
+          "score": 0.12,
+          "final_answer": true,
+          "auctions": 3,
+          "funded": 3,
+          "positive_pledges": 30,
+          "ballots": 30,
+          "yes_votes": 30,
+          "explicit_consents": 30,
+          "submissions": 3,
+          "joins": 3,
+          "leaves": 0,
+          "invalid_actions": {},
+          "verification_issues": [],
+          "repetition_flags": [],
+          "ballot_reasons": [
+            {
+              "step": 0,
+              "agent": "agent-8",
+              "reason": "Consent to the fixed bid; contribute to a careful, evidence-based solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-0",
+              "reason": "Consent to the fixed bid; team discussion supports a cautious, evidence-based answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-9",
+              "reason": "Consent to the fixed bid supports the team\u2019s shared solution.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-1",
+              "reason": "Small fixed bid; participation supports shared solution credit.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-2",
+              "reason": "Team should submit a cautious answer, distinguishing unavailable data from likely effects.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-7",
+              "reason": "Yes; fixed bid is small, and our discussion supports an accurate, cautious answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-3",
+              "reason": "Authorize the minimal fixed bid; team can contribute useful methodological cautions.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-4",
+              "reason": "Solo team; authorize the fixed bid to submit useful work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-5",
+              "reason": "Consent to fixed bid supports submitting our team's useful, evidence-based critique.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 0,
+              "agent": "agent-6",
+              "reason": "Consent to the fixed bid supports publication of our useful analysis.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-0",
+              "reason": "Submit the careful, qualified answer; fixed bid is minimal.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-8",
+              "reason": "Support submitting the careful, evidence-bounded answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-1",
+              "reason": "Authorize the small fixed bid to submit our evidence-based, non-fabricated answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-9",
+              "reason": "Support submitting the cautious, evidence-based answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-2",
+              "reason": "Authorize the small fixed bid to support the team\u2019s accurate, evidence-based response.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-7",
+              "reason": "Our discussion supports a careful, evidence-based answer; authorize the small fixed bid.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-3",
+              "reason": "Small fixed bid; support the team\u2019s careful evidence-based answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-4",
+              "reason": "Consent to the fixed bid; publish the excerpt-grounded answer and flag missing data.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-5",
+              "reason": "Consent to the fixed bid; cautious, evidence-based interpretation supports the team.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 1,
+              "agent": "agent-6",
+              "reason": "Publish a cautious answer without inventing DLS values.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-0",
+              "reason": "Support submitting our cautious, evidence-bounded answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-8",
+              "reason": "Support submitting the evidence-bounded answer; fixed bid cost is minimal.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-1",
+              "reason": "Authorize the small fixed bid to submit our evidence-grounded final answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-9",
+              "reason": "Final round; consent to the fixed bid and publish the evidence-qualified answer.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-2",
+              "reason": "Submit the cautious answer; fixed bid is small and supports finalization.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-7",
+              "reason": "Finalize the cautious answer; fixed bid is minimal and supports accepted work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-3",
+              "reason": "Solo team at deadline; authorize the small fixed bid to submit accepted work.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-4",
+              "reason": "Authorize the fixed bid to submit the evidence-qualified final response.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-5",
+              "reason": "Final action supports publishing our careful, evidence-limited analysis.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            },
+            {
+              "step": 2,
+              "agent": "agent-6",
+              "reason": "Authorize the fixed bid to submit the cautious answer without fabricating measurements.",
+              "pledge": null,
+              "act": true,
+              "consent": true
+            }
+          ],
+          "latest": {
+            "event": "round_complete",
+            "step": null,
+            "phase": null
+          }
+        }
+      ],
+      "costs": {
+        "phases": {
+          "round_membership": {
+            "calls": 90,
+            "cost_usd": 0.04281604,
+            "reserved_usd": 0.0,
+            "input_tokens": 298608,
+            "output_tokens": 11696,
+            "reasoning_tokens": 0
+          },
+          "round_join": {
+            "calls": 8,
+            "cost_usd": 0.0035295249999999995,
+            "reserved_usd": 0.0,
+            "input_tokens": 26949,
+            "output_tokens": 323,
+            "reasoning_tokens": 0
+          },
+          "round_chat": {
+            "calls": 90,
+            "cost_usd": 0.06490725000000003,
+            "reserved_usd": 0.0,
+            "input_tokens": 291196,
+            "output_tokens": 57029,
+            "reasoning_tokens": 29238
+          },
+          "round_commit": {
+            "calls": 90,
+            "cost_usd": 0.019258000000000004,
+            "reserved_usd": 0.0,
+            "input_tokens": 141918,
+            "output_tokens": 3050,
+            "reasoning_tokens": 0
+          },
+          "round_work": {
+            "calls": 14,
+            "cost_usd": 0.016719825,
+            "reserved_usd": 0.0,
+            "input_tokens": 49055,
+            "output_tokens": 21178,
+            "reasoning_tokens": 16708
+          },
+          "vote": {
+            "calls": 13,
+            "cost_usd": 0.010102400000000001,
+            "reserved_usd": 0.0,
+            "input_tokens": 80047,
+            "output_tokens": 195,
+            "reasoning_tokens": 0
+          },
+          "finalize": {
+            "calls": 6,
+            "cost_usd": 0.0160403,
+            "reserved_usd": 0.0,
+            "input_tokens": 39378,
+            "output_tokens": 22237,
+            "reasoning_tokens": 12783
+          },
+          "judge": {
+            "calls": 3,
+            "cost_usd": 0.003215775,
+            "reserved_usd": 0.0,
+            "input_tokens": 8700,
+            "output_tokens": 4257,
+            "reasoning_tokens": 4060
+          }
+        },
+        "solving_cost_usd": 0.09766737500000003,
+        "solving_share_of_confirmed_cost": 0.5530769832557346
+      },
+      "transport": {
+        "charged": 314
+      }
+    }
+  }
+}

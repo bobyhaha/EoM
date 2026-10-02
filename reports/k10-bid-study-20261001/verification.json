@@ -1,0 +1,617 @@
+{
+  "checked_at": 1790922637.8186429,
+  "all_paid_sources_terminal": true,
+  "aggregate_conservative_bound_usd": 6.5894556799999995,
+  "ledger_checks": [
+    {
+      "source": "runs/k10-ablation-3h-20261001/wealth-voluntary",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.453460225,
+      "unresolved_usd": 0.0,
+      "cap_usd": 20,
+      "requests": 939,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-ablation-3h-20261001/society-voluntary",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.45366695,
+      "unresolved_usd": 0.0,
+      "cap_usd": 20,
+      "requests": 920,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-ablation-3h-20261001/wealth-fixed",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.64914585,
+      "unresolved_usd": 0.0,
+      "cap_usd": 20,
+      "requests": 1048,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-ablation-3h-20261001/society-fixed",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.67965684,
+      "unresolved_usd": 0.0,
+      "cap_usd": 20,
+      "requests": 1056,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-feedback-3h-20261001/wealth-voluntary-feedback",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.64994912,
+      "unresolved_usd": 0.0,
+      "cap_usd": 5,
+      "requests": 1054,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-membership-clarity-20261001/wealth-voluntary-feedback-membership",
+      "status": "stopped",
+      "terminal": true,
+      "confirmed_usd": 0.07544045,
+      "unresolved_usd": 0.0,
+      "cap_usd": 2,
+      "requests": 116,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.694183255,
+      "unresolved_usd": 0.0,
+      "cap_usd": 2,
+      "requests": 1063,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-short-rounds-20261001/society-fixed-3rounds",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.176589115,
+      "unresolved_usd": 0.0,
+      "cap_usd": 2,
+      "requests": 314,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/wealth-voluntary",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.43960755,
+      "unresolved_usd": 0.0,
+      "cap_usd": 10,
+      "requests": 921,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/society-voluntary",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.438847375,
+      "unresolved_usd": 0.0,
+      "cap_usd": 10,
+      "requests": 921,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/wealth-fixed",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.559994675,
+      "unresolved_usd": 0.0,
+      "cap_usd": 10,
+      "requests": 1006,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/society-fixed",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.64348885,
+      "unresolved_usd": 0.0,
+      "cap_usd": 10,
+      "requests": 1047,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-original-reference-20261001",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.02513787,
+      "unresolved_usd": 0.0,
+      "cap_usd": 2,
+      "requests": 95,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-independent-20261001",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.186679025,
+      "unresolved_usd": 0.0,
+      "cap_usd": 2,
+      "requests": 65,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-original-high-reference-20261001",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.03675995,
+      "unresolved_usd": 0.0,
+      "cap_usd": 1.0,
+      "requests": 134,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-regrade-original-high-20261001",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.00413126,
+      "unresolved_usd": 0.0,
+      "cap_usd": 1,
+      "requests": 6,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-regrade-20261001",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.01717886,
+      "unresolved_usd": 0.0,
+      "cap_usd": 1,
+      "requests": 28,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-regrade-seed17-20261001",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.017796344999999998,
+      "unresolved_usd": 0.0,
+      "cap_usd": 1,
+      "requests": 24,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-society-prompt-20261001",
+      "status": "completed",
+      "terminal": true,
+      "confirmed_usd": 0.235559395,
+      "unresolved_usd": 0.0,
+      "cap_usd": 1,
+      "requests": 339,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    },
+    {
+      "source": "runs/k10-pilot-20261001",
+      "status": "stopped",
+      "terminal": true,
+      "confirmed_usd": 0.14771302,
+      "unresolved_usd": 0.0044697,
+      "cap_usd": 5,
+      "requests": 272,
+      "models": [
+        "openai/gpt-6-luna"
+      ],
+      "providers": [
+        "OpenAI"
+      ]
+    }
+  ],
+  "task_checks": [
+    {
+      "condition": "wealth-voluntary",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 0,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 2,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 2,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-voluntary",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 0,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-voluntary",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 1,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-voluntary",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 1,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-fixed",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-fixed",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-fixed",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary-feedback",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 8,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary-feedback",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 9,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary-feedback",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "membership-clarity-v1 / interrupted",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": false,
+      "rounds_started": 4,
+      "funded": 2,
+      "auctions": 3,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary-feedback-membership-v2",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 8,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary-feedback-membership-v2",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 9,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary-feedback-membership-v2",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 7,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed-3rounds",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 3,
+      "funded": 3,
+      "auctions": 3,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed-3rounds",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 3,
+      "funded": 3,
+      "auctions": 3,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed-3rounds",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 3,
+      "funded": 3,
+      "auctions": 3,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary / seed17",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 0,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary / seed17",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 1,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-voluntary / seed17",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 0,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-voluntary / seed17",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 1,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-voluntary / seed17",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 0,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-voluntary / seed17",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 0,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-fixed / seed17",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-fixed / seed17",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "wealth-fixed / seed17",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed / seed17",
+      "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed / seed17",
+      "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    },
+    {
+      "condition": "society-fixed / seed17",
+      "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+      "complete": true,
+      "rounds_started": 10,
+      "funded": 10,
+      "auctions": 10,
+      "economic_issues": []
+    }
+  ],
+  "issues": [],
+  "scope": "Independent receipt/status reconciliation, fresh populations, horizons, economic events, dataset/source fingerprints. Does not certify scientific answer correctness or replace manual report review."
+}

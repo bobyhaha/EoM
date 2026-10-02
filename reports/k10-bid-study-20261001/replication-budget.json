@@ -1,0 +1,62 @@
+{
+  "checked_at": 1790917413.3884559,
+  "upper_bound_usd": 50.825398965,
+  "new_caps_usd": 40,
+  "prior_sources": [
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/wealth-voluntary",
+      "status": "completed",
+      "bound_usd": 0.453460225
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/society-voluntary",
+      "status": "completed",
+      "bound_usd": 0.45366695
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/wealth-fixed",
+      "status": "completed",
+      "bound_usd": 0.64914585
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/society-fixed",
+      "status": "completed",
+      "bound_usd": 0.67965684
+    },
+    {
+      "source": "runs/k10-feedback-3h-20261001/wealth-voluntary-feedback",
+      "status": "running",
+      "bound_usd": 5
+    },
+    {
+      "source": "runs/k10-short-rounds-20261001/society-fixed-3rounds",
+      "status": "completed",
+      "bound_usd": 0.176589115
+    },
+    {
+      "source": "runs/k10-original-reference-20261001",
+      "status": "completed",
+      "bound_usd": 0.02513787
+    },
+    {
+      "source": "runs/k10-independent-20261001",
+      "status": "running",
+      "bound_usd": 2
+    },
+    {
+      "source": "runs/k10-regrade-20261001",
+      "status": "running",
+      "bound_usd": 1
+    },
+    {
+      "source": "runs/k10-society-prompt-20261001",
+      "status": "completed",
+      "bound_usd": 0.235559395
+    },
+    {
+      "source": "runs/k10-pilot-20261001",
+      "status": "stopped",
+      "bound_usd": 0.15218272
+    }
+  ]
+}

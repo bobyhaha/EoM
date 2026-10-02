@@ -1,0 +1,2563 @@
+{
+  "audit_version": 2,
+  "updated_at": 1790922705.367914,
+  "cells": {
+    "wealth-voluntary-feedback": {
+      "tasks": [
+        {
+          "task": "01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+          "complete": true,
+          "score": 0.488,
+          "final_answer": true,
+          "auctions": 10,
+          "funded": 8,
+          "positive_pledges": 23,
+          "ballots": 100,
+          "yes_votes": 100,
+          "explicit_consents": 0,
+          "submissions": 8,
+          "joins": 8,
+          "leaves": 4,
+          "invalid_actions": {
+            "round_chat": 1,
+            "round_membership": 10
+          },
+          "verification_issues": [],
+          "repetition_flags": [],
+          "ballot_reasons": [
+            {
+              "step": 0,
+              "agent": "agent-1",
+              "reason": "Yes; preserve funds while supporting the team\u2019s useful solution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-0",
+              "reason": "Support publishing the useful derivations with a modest personal pledge.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-2",
+              "reason": "Vote yes; preserve wealth and rely on teammate's positive pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-4",
+              "reason": "Act to publish the useful analysis; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-3",
+              "reason": "Vote to act; preserve wealth while contributing the prepared solution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-5",
+              "reason": "No task details or team discussion; preserve wealth until a useful action is possible.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-9",
+              "reason": "Vote to act; preserve wealth while contributing the team's prepared solution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-6",
+              "reason": "Vote yes; preserve funds while supporting the team\u2019s work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-8",
+              "reason": "Yes; preserve my wealth while supporting the team's action.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-7",
+              "reason": "Advance the shared derivation without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-1",
+              "reason": "Act to preserve collaboration credit; prior winning bid makes zero-cost participation sensible.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-0",
+              "reason": "Vote yes to support the team; preserve wealth by pledging zero.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-4",
+              "reason": "Vote yes; preserve wealth while supporting the team's work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-2",
+              "reason": "Support the team\u2019s work while preserving my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-5",
+              "reason": "Vote yes; preserve funds while contributing to team work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-3",
+              "reason": "Preserve wealth; yes vote supports team activation without pledging.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-9",
+              "reason": "Support acting; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-6",
+              "reason": "Support the team acting; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-7",
+              "reason": "Join the bid and publish our useful corrections without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-8",
+              "reason": "Agree to act; preserve funds while contributing the shared derivation.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-1",
+              "reason": "Vote yes with zero pledge; preserve wealth while enabling team work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-0",
+              "reason": "Vote yes; preserve funds while enabling the team to act if others pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-2",
+              "reason": "Support submitting the qualified solution; preserve my wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-4",
+              "reason": "Support submitting the qualified solution; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-3",
+              "reason": "Vote yes while preserving wealth; avoid bidding absent evidence it improves winning odds.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-5",
+              "reason": "Vote yes; preserve wealth, since zero bids previously and no winning benefit is established.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-9",
+              "reason": "Contribute the clarified physics; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-6",
+              "reason": "Preserve wealth; prior zero bids indicate no demonstrated need to pay.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-8",
+              "reason": "Vote yes with zero pledge; preserve wealth while enabling shared work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-7",
+              "reason": "Contribute useful work; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-0",
+              "reason": "A positive minimal bid can submit our useful correction and earn path credit.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-1",
+              "reason": "Positive bid is needed to publish; smallest competitive pledge.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-2",
+              "reason": "Submit the prepared solution; a small positive bid enables publication and shared credit.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-4",
+              "reason": "Vote yes and pledge minimally so the ready solution can be submitted.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-3",
+              "reason": "Vote yes, but preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-5",
+              "reason": "Vote yes; preserve wealth while supporting the team's work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-9",
+              "reason": "A small positive bid gives us a chance to publish useful work.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-6",
+              "reason": "Act with a minimal positive bid to help publish useful work.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-7",
+              "reason": "Advance the existing solution; preserve funds while voting to act.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-8",
+              "reason": "Vote to act; preserve my wealth with a zero contribution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-1",
+              "reason": "Continue the winning team\u2019s work without risking my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-0",
+              "reason": "Support publishing the completed conclusions without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-2",
+              "reason": "Small positive bid preserves chance to publish useful work at limited cost.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-3",
+              "reason": "Act to submit useful work; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-4",
+              "reason": "Act with zero pledge to preserve wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-5",
+              "reason": "Preserve wealth; solo positive bid unlikely to win.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-6",
+              "reason": "Preserve wealth while remaining eligible to contribute.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-7",
+              "reason": "Solo team; preserve wealth while remaining eligible to act.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-8",
+              "reason": "Act with zero pledge; preserve wealth while contributing useful solution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-9",
+              "reason": "Small positive bid preserves participation while limiting downside.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-1",
+              "reason": "Yes; agent-0 will provide the positive pledge needed to submit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-0",
+              "reason": "Minimal positive bid to enable submission; solution is ready.",
+              "pledge": 0.01,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-3",
+              "reason": "Support acting; preserve funds since zero contribution still earns equal credit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-2",
+              "reason": "Small pledge preserves chance to publish final work and earn reward.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-4",
+              "reason": "Contribute no funds; prior useful work is already public.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-5",
+              "reason": "Contribute a zero-cost vote; preserve wealth while enabling accepted work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-6",
+              "reason": "Preserve wealth; no positive bid is needed to vote.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-7",
+              "reason": "Preserve wealth; solo team can act with zero-cost pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-8",
+              "reason": "Act with zero pledge to preserve wealth while retaining participation credit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-9",
+              "reason": "Submit the final answer; use a minimal pledge.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-1",
+              "reason": "Support submitting the consistent derivations without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-0",
+              "reason": "Support publishing the useful clarification; keep my pledge minimal.",
+              "pledge": 0.01,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-3",
+              "reason": "Agree with prior analysis; preserve wealth while supporting the team's bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-2",
+              "reason": "Continue participating; preserve wealth with a minimal positive pledge.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-4",
+              "reason": "Preserve wealth; submit useful work only if team wins.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-7",
+              "reason": "Vote yes; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-6",
+              "reason": "Preserve wealth; team can act with teammate's positive bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-5",
+              "reason": "Continue useful collaboration without risking wealth on the bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-8",
+              "reason": "Preserve wealth; no team or positive pledge needed.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-9",
+              "reason": "Submit the useful clarification; keep the winning bid cost minimal.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-0",
+              "reason": "Submit the prepared solution; preserve wealth with a minimal positive pledge.",
+              "pledge": 0.01,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-1",
+              "reason": "Ready solution; preserve wealth while supporting team submission.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-2",
+              "reason": "Small pledge supports submission while preserving wealth; solution notes are ready.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-3",
+              "reason": "Yes; preserve funds while enabling the team to submit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-7",
+              "reason": "Vote yes with zero pledge; preserve wealth while contributing if team wins.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-4",
+              "reason": "A small positive bid supports publishing our useful caveats while limiting cost.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-5",
+              "reason": "Support the team\u2019s work without risking wealth; vote yes.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-6",
+              "reason": "Support the team acting; preserve my funds.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-8",
+              "reason": "Act with zero pledge to preserve funds; submit useful work if selected.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-9",
+              "reason": "Continue solo contribution with a minimal positive bid.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-1",
+              "reason": "Ready to submit; vote yes while preserving my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-0",
+              "reason": "Submit the completed solution with minimal pledge.",
+              "pledge": 0.01,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-2",
+              "reason": "Small pledge preserves winning chance; submit the team's useful corrections.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-3",
+              "reason": "Preserve wealth; contribute the discussed solution if the team wins.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-4",
+              "reason": "Continue the team\u2019s useful work without risking wealth on a pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-7",
+              "reason": "Support team action; preserve funds with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-5",
+              "reason": "Support acting; preserve funds while contributing the technical clarification.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-6",
+              "reason": "Support acting; preserve funds while contributing the discussed caveats.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-8",
+              "reason": "Continue contributing; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-9",
+              "reason": "Act with zero pledge to preserve funds while contributing if selected.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-0",
+              "reason": "Final solution is ready; support a positive bid to publish.",
+              "pledge": 0.01,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-1",
+              "reason": "Support final submission; preserve my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-3",
+              "reason": "Finalize the prepared solution; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-2",
+              "reason": "Finalize the prepared derivation; preserve wealth with a minimal positive bid.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-4",
+              "reason": "Vote yes; preserve funds while supporting the team's final submission.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-7",
+              "reason": "Finalize the discussed solution; preserve wealth with no pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-5",
+              "reason": "Finalize the agreed solution; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-6",
+              "reason": "Final answer should be submitted; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-8",
+              "reason": "Finalize the established solution without risking my remaining wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-9",
+              "reason": "Finalize the discussed solution; preserve wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            }
+          ],
+          "latest": {
+            "event": "round_complete",
+            "step": null,
+            "phase": null
+          }
+        },
+        {
+          "task": "02-30a44280-a888-42bf-913a-208aa47c8772",
+          "complete": true,
+          "score": 0.675,
+          "final_answer": true,
+          "auctions": 10,
+          "funded": 9,
+          "positive_pledges": 22,
+          "ballots": 100,
+          "yes_votes": 100,
+          "explicit_consents": 0,
+          "submissions": 9,
+          "joins": 6,
+          "leaves": 2,
+          "invalid_actions": {
+            "round_membership": 8
+          },
+          "verification_issues": [],
+          "repetition_flags": [],
+          "ballot_reasons": [
+            {
+              "step": 0,
+              "agent": "agent-8",
+              "reason": "Vote to act; preserve wealth while contributing useful solution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-0",
+              "reason": "Enter with a modest bid to secure accepted work and shared reward.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-1",
+              "reason": "Act with zero pledge to preserve wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-2",
+              "reason": "Solo team; preserve wealth while participating.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-3",
+              "reason": "Acting preserves the chance to earn credit; zero pledge avoids unnecessary cost.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-4",
+              "reason": "Act with zero pledge to preserve wealth while submitting useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-5",
+              "reason": "Act with zero pledge; preserve wealth while enabling team work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-6",
+              "reason": "Solo team; preserve wealth until a positive bid can improve expected returns.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-7",
+              "reason": "Act with zero pledge; preserve wealth while enabling team participation.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-9",
+              "reason": "Positive bid enables publication; preserve most wealth for later rounds.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-8",
+              "reason": "Modest bid preserves funds while giving our team a chance to publish.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-0",
+              "reason": "Modest positive bid preserves funds while giving our team a chance to publish.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-1",
+              "reason": "Contribute useful work without risking scarce wealth; no auction bid needed.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-2",
+              "reason": "Act with zero pledge to preserve wealth while contributing work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-3",
+              "reason": "Submit useful mechanistic and experimental guidance without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-4",
+              "reason": "Act with zero pledge; preserve wealth while contributing if the team wins.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-5",
+              "reason": "Act with zero pledge; preserve wealth while pursuing accepted work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-6",
+              "reason": "Act with zero pledge to preserve wealth while pursuing team credit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-7",
+              "reason": "Preserve wealth; no team membership or collaboration advantage is established.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-9",
+              "reason": "Continue the accepted design with a modest bid.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-8",
+              "reason": "Modest pledge supports another accepted contribution and shared reward.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-0",
+              "reason": "Modest positive pledge supports another accepted contribution.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-1",
+              "reason": "Act with zero pledge; avoid auction cost while preserving potential reward.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-2",
+              "reason": "Act with zero pledge; preserve wealth while contributing useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-3",
+              "reason": "Act with zero pledge; preserve wealth while contributing useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-4",
+              "reason": "Proceed without risking wealth; preserve funds for later rounds.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-5",
+              "reason": "Vote to act; preserve wealth with no personal pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-6",
+              "reason": "Act with no pledge; preserve wealth while contributing useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-7",
+              "reason": "Act with zero pledge; preserve wealth while contributing to accepted work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-9",
+              "reason": "Act without risking wealth; no team is currently formed.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-0",
+              "reason": "Continue contributing to the winning team with a modest pledge.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-8",
+              "reason": "Modest positive pledge supports continued accepted work.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-1",
+              "reason": "Vote yes with zero pledge; preserve wealth while enabling team submission.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-5",
+              "reason": "Vote yes; preserve wealth while supporting the team\u2019s useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-2",
+              "reason": "Submit the discussed design without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-3",
+              "reason": "Solo team; preserve wealth until finalization or a better opportunity.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-4",
+              "reason": "Act with zero pledge to preserve wealth while retaining a chance to earn credit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-6",
+              "reason": "Act with zero pledge to preserve wealth; submit useful work if selected.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-7",
+              "reason": "Act with zero pledge; preserve wealth while retaining a chance to earn credit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-9",
+              "reason": "Solo team; preserve wealth and await a worthwhile opportunity.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-0",
+              "reason": "Continue team participation; preserve wealth while the existing team can submit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-8",
+              "reason": "Continue winning and publish the refined reversible Keap1-sequestration design.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-1",
+              "reason": "Contribute useful work if selected; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-5",
+              "reason": "Vote yes; preserve wealth while enabling participation if partner pledges.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-2",
+              "reason": "Support the team\u2019s work without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-3",
+              "reason": "Solo team; preserve wealth unless a positive bid is required.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-4",
+              "reason": "Participate without risking wealth; positive bids have not earned my team credit.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-6",
+              "reason": "Act with zero pledge; preserve wealth while contributing useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-7",
+              "reason": "Act with zero pledge to preserve wealth while contributing the design.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-9",
+              "reason": "Act with zero pledge; preserve wealth while contributing useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-0",
+              "reason": "Continue the team\u2019s accepted work without risking wealth; prior positive bids established winning access.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-8",
+              "reason": "Continue the winning team\u2019s final submission with a modest pledge.",
+              "pledge": 1.0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-1",
+              "reason": "Support finalizing the discussed solution without risking wealth on the bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-5",
+              "reason": "Support the final answer; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-2",
+              "reason": "Act with zero pledge; preserve wealth while contributing to accepted work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-3",
+              "reason": "Act with zero pledge; no need to risk wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-4",
+              "reason": "Join a winning team if possible; preserve wealth without bidding.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-6",
+              "reason": "Act with zero pledge to preserve wealth while enabling team work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-7",
+              "reason": "Act with zero pledge; preserve wealth while contributing to accepted work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-9",
+              "reason": "Act with zero pledge; avoid auction cost.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-8",
+              "reason": "Continue accepted work; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-0",
+              "reason": "Support the team acting; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-1",
+              "reason": "Support submission; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-5",
+              "reason": "Ready to submit; preserve wealth while supporting team action.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-2",
+              "reason": "No team is currently formed; avoid an unauthorized pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-3",
+              "reason": "Support the team\u2019s work without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-4",
+              "reason": "Vote yes; preserve wealth unless a positive bid is strategically necessary.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-9",
+              "reason": "Vote to act; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-6",
+              "reason": "Advance the design without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-7",
+              "reason": "Act with zero pledge to preserve wealth while contributing useful work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-8",
+              "reason": "Modest positive pledge enables submission; team discussion supports a useful causal design.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-0",
+              "reason": "A modest positive bid can secure submission; shared work merits acting.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-2",
+              "reason": "Vote yes to submit the accumulated design; preserve wealth with no pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-1",
+              "reason": "A modest positive bid can publish our useful accumulated work.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-3",
+              "reason": "Vote to act; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-6",
+              "reason": "Vote yes; preserve wealth while allowing a positive teammate bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-4",
+              "reason": "Act with zero pledge to preserve wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-5",
+              "reason": "Act with zero pledge to preserve funds.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-7",
+              "reason": "Solo team; positive bid can publish the prepared solution.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-9",
+              "reason": "Solo team; bid zero to preserve wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-0",
+              "reason": "Support acting; agent-8 can provide the positive bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-8",
+              "reason": "Support the team with a modest positive bid and publish the prepared work.",
+              "pledge": 1.0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-1",
+              "reason": "Modest bid supports publishing the prepared work.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-2",
+              "reason": "Modest pledge gives us a chance to publish and earn accepted-work credit.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-6",
+              "reason": "Vote yes; preserve wealth while supporting the team's work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-3",
+              "reason": "Support the team acting; preserve funds while contributing the discussed design.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-5",
+              "reason": "Support submitting the existing useful work; preserve my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-4",
+              "reason": "Vote to act; preserve my wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-7",
+              "reason": "Positive bid gives a chance to publish prepared work and earn accepted-round credit.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-9",
+              "reason": "Participate without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-0",
+              "reason": "Support final submission; preserve funds with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-8",
+              "reason": "Vote yes to support final submission; preserve my remaining wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-2",
+              "reason": "Modest positive bid to submit the ready final answer.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-1",
+              "reason": "Support final submission with a modest positive bid.",
+              "pledge": 1.0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-6",
+              "reason": "Vote yes to finalize; preserve funds.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-3",
+              "reason": "Vote yes to finalize; preserve my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-5",
+              "reason": "Finalize the discussed design without risking wealth on the bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-4",
+              "reason": "Act to submit the prepared final answer; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-7",
+              "reason": "Submit the final answer; preserve remaining wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-9",
+              "reason": "Final round: bid to submit the discussed solution and earn the reward share.",
+              "pledge": 21,
+              "act": true,
+              "consent": null
+            }
+          ],
+          "latest": {
+            "event": "round_complete",
+            "step": null,
+            "phase": null
+          }
+        },
+        {
+          "task": "03-7c94f50a-0896-450f-8d55-00c98aca5158",
+          "complete": true,
+          "score": 0.12,
+          "final_answer": true,
+          "auctions": 10,
+          "funded": 10,
+          "positive_pledges": 19,
+          "ballots": 100,
+          "yes_votes": 100,
+          "explicit_consents": 0,
+          "submissions": 10,
+          "joins": 5,
+          "leaves": 0,
+          "invalid_actions": {},
+          "verification_issues": [],
+          "repetition_flags": [],
+          "ballot_reasons": [
+            {
+              "step": 0,
+              "agent": "agent-1",
+              "reason": "Support acting; conserve wealth by pledging zero.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-0",
+              "reason": "Support acting; preserve funds while contributing the substantive discussion.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-2",
+              "reason": "Vote yes; preserve funds while enabling a positive team bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-9",
+              "reason": "Vote yes; preserve wealth while enabling the team to act if others pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-7",
+              "reason": "Vote yes; preserve funds while enabling shared work if the team wins.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-3",
+              "reason": "Vote yes; preserve funds while contributing our discussion to the team.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-5",
+              "reason": "Support acting; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-4",
+              "reason": "Vote yes; preserve funds while supporting the team\u2019s work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-6",
+              "reason": "Act with zero pledge to preserve funds while advancing the solution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 0,
+              "agent": "agent-8",
+              "reason": "Act to contribute the discussed caveats; modest pledge limits auction cost.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-0",
+              "reason": "Contribute the agreed caveats; conserve funds while voting to act.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-1",
+              "reason": "Preserve wealth; team can act if partner pledges positively.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-2",
+              "reason": "Submit the careful excerpt-based analysis; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-9",
+              "reason": "Vote yes; avoid risking wealth, and let any authorized teammate pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-3",
+              "reason": "Yes to a zero-cost bid; our discussion provides a cautious, useful response.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-7",
+              "reason": "Submit the careful, evidence-bounded answer; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-5",
+              "reason": "Support acting, but preserve wealth by pledging zero.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-4",
+              "reason": "Support the team's useful work without risking wealth on an uncertain auction.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-6",
+              "reason": "Preserve wealth; my substantive discussion contribution is already available.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 1,
+              "agent": "agent-8",
+              "reason": "Continue useful work; modest pledge preserves wealth.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-0",
+              "reason": "Support acting; preserve funds while contributing to accepted work.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-1",
+              "reason": "Vote yes; preserve wealth with zero contribution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-2",
+              "reason": "Support acting, but preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-9",
+              "reason": "The discussion supports a careful answer; I can contribute without risking funds.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-7",
+              "reason": "Vote yes; preserve wealth unless a positive pledge is necessary to win.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-3",
+              "reason": "Vote yes; preserve wealth with no contribution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-5",
+              "reason": "Vote yes to support the team; preserve wealth with no pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-4",
+              "reason": "Vote yes; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-6",
+              "reason": "Vote yes; preserve funds unless a positive pledge is necessary.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 2,
+              "agent": "agent-8",
+              "reason": "Continue solo work with a modest positive bid.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-0",
+              "reason": "Support acting, but preserve wealth; teammates can provide a positive bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-1",
+              "reason": "Vote yes; preserve wealth while enabling the team to act.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-2",
+              "reason": "Support submission; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-9",
+              "reason": "Support submitting the cautious answer; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-3",
+              "reason": "Vote yes; preserve funds while supporting the team\u2019s chance to publish.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-7",
+              "reason": "Support the team\u2019s work; preserve wealth with a zero contribution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-5",
+              "reason": "Support acting; conserve funds since no contribution is needed to vote yes.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-4",
+              "reason": "Agree with the discussion; preserve wealth while supporting a positive team bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-6",
+              "reason": "Preserve wealth; only act with a positive winning bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 3,
+              "agent": "agent-8",
+              "reason": "Continue successful solo participation with a minimal positive bid.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-0",
+              "reason": "Submit the qualified, evidence-based answer without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-1",
+              "reason": "Support submitting the qualified answer; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-9",
+              "reason": "Support the cautious final answer; preserve funds with no pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-2",
+              "reason": "Support the cautious answer; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-7",
+              "reason": "Support submitting our cautious analysis; preserve my wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-3",
+              "reason": "Support submission; avoid risking funds on a likely losing bid.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-4",
+              "reason": "Support acting; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-5",
+              "reason": "Agree with the discussion; preserve wealth while supporting team action.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-6",
+              "reason": "Participate without risking wealth; contribute the measurement caveat and conditional comparisons.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 4,
+              "agent": "agent-8",
+              "reason": "Continue submitting useful work; preserve most wealth.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-1",
+              "reason": "Support submitting the qualified answer without risking my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-0",
+              "reason": "Submit the qualified answer; conserve wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-9",
+              "reason": "Support the team's qualified answer; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-2",
+              "reason": "Support the team; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-7",
+              "reason": "A modest positive pledge supports publication while limiting cost.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-3",
+              "reason": "Small positive pledge enables publication while limiting cost.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-5",
+              "reason": "Submit the evidence-based answer; preserve funds with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-4",
+              "reason": "Support team action; preserve wealth with no personal pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-6",
+              "reason": "Support acting; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 5,
+              "agent": "agent-8",
+              "reason": "Support team action; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-0",
+              "reason": "Support submitting the caveated, evidence-based answer; preserve my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-1",
+              "reason": "Support submitting the evidence-based answer; preserve funds with zero contribution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-9",
+              "reason": "Small pledge supports submitting our qualified, evidence-bounded answer.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-2",
+              "reason": "Support submitting the qualified answer; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-7",
+              "reason": "Support publishing the prepared answer with a modest positive pledge.",
+              "pledge": 0.5,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-3",
+              "reason": "Support publishing the ready answer with a modest positive bid.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-4",
+              "reason": "Preserve wealth; participate if teammate\u2019s pledge activates the team.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-5",
+              "reason": "Continue only if our team can win; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-8",
+              "reason": "Support acting; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 6,
+              "agent": "agent-6",
+              "reason": "Support the team acting; preserve my wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-0",
+              "reason": "Ready to submit; preserve wealth while supporting the team.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-1",
+              "reason": "Support submitting the ready answer without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-9",
+              "reason": "Support publishing the qualified calculations; conserve funds with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-2",
+              "reason": "Support submitting the qualified calculation; preserve my wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-7",
+              "reason": "Support publication with a modest positive pledge.",
+              "pledge": 0.5,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-3",
+              "reason": "Support publication with a modest pledge.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-5",
+              "reason": "Vote yes; preserve wealth with zero contribution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-4",
+              "reason": "Vote yes; preserve wealth with no pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-8",
+              "reason": "Act with zero pledge to preserve wealth; contribute cautious, evidence-based answer.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 7,
+              "agent": "agent-6",
+              "reason": "Support acting, but preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-1",
+              "reason": "Support submitting the prepared answer; preserve wealth with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-0",
+              "reason": "Support submitting the prepared answer; preserve wealth with no contribution.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-9",
+              "reason": "Support the qualified answer; preserve wealth with no personal pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-2",
+              "reason": "Support acting; preserve wealth with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-7",
+              "reason": "Support another submission with a modest pledge; preserve wealth.",
+              "pledge": 0.5,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-3",
+              "reason": "Support submitting the ready answer with a modest positive pledge.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-4",
+              "reason": "Act to preserve a chance to publish; zero pledge avoids personal bidding cost.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-5",
+              "reason": "Support the team\u2019s useful contribution while preserving funds.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-8",
+              "reason": "Support publishing the cautious answer; preserve funds with a zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 8,
+              "agent": "agent-6",
+              "reason": "Support publishing the cautious answer; preserve funds with zero pledge.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-1",
+              "reason": "Support submitting the qualified final answer without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-0",
+              "reason": "Support finalizing the qualified answer without risking wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-9",
+              "reason": "Yes; let my teammate fund the positive bid so we can finalize.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-2",
+              "reason": "Support final submission; teammate pledges positively, so preserve my wealth.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-7",
+              "reason": "Support final submission; prior modest bid won and work is ready.",
+              "pledge": 0.5,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-3",
+              "reason": "Support final submission with a small positive bid.",
+              "pledge": 0.1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-4",
+              "reason": "Positive pledge gives the team a chance to publish the final answer.",
+              "pledge": 2,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-5",
+              "reason": "Yes; agent-4's positive pledge can activate our team.",
+              "pledge": 0,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-8",
+              "reason": "Deadline requires positive bid; modest pledge enables submission.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            },
+            {
+              "step": 9,
+              "agent": "agent-6",
+              "reason": "Agreed; modest positive bid enables final submission.",
+              "pledge": 1,
+              "act": true,
+              "consent": null
+            }
+          ],
+          "latest": {
+            "event": "round_complete",
+            "step": null,
+            "phase": null
+          }
+        }
+      ],
+      "costs": {
+        "phases": {
+          "round_membership": {
+            "calls": 300,
+            "cost_usd": 0.15717741999999993,
+            "reserved_usd": 0.0,
+            "input_tokens": 1089750,
+            "output_tokens": 43077,
+            "reasoning_tokens": 0
+          },
+          "round_join": {
+            "calls": 21,
+            "cost_usd": 0.009937925,
+            "reserved_usd": 0.0,
+            "input_tokens": 76476,
+            "output_tokens": 760,
+            "reasoning_tokens": 0
+          },
+          "round_chat": {
+            "calls": 300,
+            "cost_usd": 0.26484774999999994,
+            "reserved_usd": 0.0,
+            "input_tokens": 1511570,
+            "output_tokens": 151848,
+            "reasoning_tokens": 82573
+          },
+          "round_commit": {
+            "calls": 300,
+            "cost_usd": 0.06062924999999996,
+            "reserved_usd": 0.0,
+            "input_tokens": 446798,
+            "output_tokens": 9604,
+            "reasoning_tokens": 0
+          },
+          "round_work": {
+            "calls": 80,
+            "cost_usd": 0.10869150000000004,
+            "reserved_usd": 0.0,
+            "input_tokens": 486168,
+            "output_tokens": 95853,
+            "reasoning_tokens": 71524
+          },
+          "vote": {
+            "calls": 45,
+            "cost_usd": 0.03171012499999999,
+            "reserved_usd": 0.0,
+            "input_tokens": 251008,
+            "output_tokens": 675,
+            "reasoning_tokens": 0
+          },
+          "finalize": {
+            "calls": 5,
+            "cost_usd": 0.014012875000000001,
+            "reserved_usd": 0.0,
+            "input_tokens": 48058,
+            "output_tokens": 16012,
+            "reasoning_tokens": 7590
+          },
+          "judge": {
+            "calls": 3,
+            "cost_usd": 0.0029422749999999994,
+            "reserved_usd": 0.0,
+            "input_tokens": 9372,
+            "output_tokens": 3542,
+            "reasoning_tokens": 3348
+          }
+        },
+        "solving_cost_usd": 0.38755212499999997,
+        "solving_share_of_confirmed_cost": 0.59628071348108
+      },
+      "transport": {
+        "charged": 1054
+      }
+    }
+  }
+}

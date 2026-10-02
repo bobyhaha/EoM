@@ -1,0 +1,19 @@
+{
+  "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+  "selected_sample": 4,
+  "score": 0.325,
+  "reason": "It gives the exact finite-lattice matching for t, the correct numerical energy, and explicit singlet states with relevant normalization and isospin caveats. It also correctly distinguishes the thermodynamic and continuum limits, derives the regulator-dependent coupling condition, and explains why discrete excited-state energies and degeneracies are undefined in infinite volume.",
+  "candidate_order": [
+    9,
+    4,
+    2,
+    5,
+    8,
+    1,
+    10,
+    7,
+    3,
+    6
+  ],
+  "raw_selection": "{\"sample\":4,\"reason\":\"It gives the exact finite-lattice matching for t, the correct numerical energy, and explicit singlet states with relevant normalization and isospin caveats. It also correctly distinguishes the thermodynamic and continuum limits, derives the regulator-dependent coupling condition, and explains why discrete excited-state energies and degeneracies are undefined in infinite volume.\"}"
+}

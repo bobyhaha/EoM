@@ -1,0 +1,17 @@
+{
+  "sources": [
+    "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/wealth-voluntary",
+    "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/society-voluntary",
+    "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/wealth-fixed",
+    "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-3h-20261001/society-fixed",
+    "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-feedback-3h-20261001/wealth-voluntary-feedback",
+    "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-original-reference-20261001"
+  ],
+  "replicates": 2,
+  "cap_usd": 1,
+  "deadline": 1790924350.0,
+  "declared_at": 1790914425.9595652,
+  "selection": "Every completed submitted answer from primary factorial, feedback follow-up, and original reference, regardless of score. Missing answers remain zero without API calls. Interrupted episodes are not scored.",
+  "method": "Repeat the saved successful original judge prompt, with identical system text and reasoning setting. Arm labels are not added to judge prompts. Grades are reported separately; no answer generation or grade replacement.",
+  "limitation": "Same-model grader variability, not independent expert validation. Replicates are not independent research tasks."
+}

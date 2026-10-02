@@ -1,0 +1,93 @@
+{
+  "checked_at": 1790919199.900001,
+  "upper_bound_usd": 48.75464642,
+  "new_caps_usd": 2,
+  "prior_sources": [
+    {
+      "source": "runs/k10-ablation-3h-20261001/wealth-voluntary",
+      "status": "completed",
+      "bound_usd": 0.453460225
+    },
+    {
+      "source": "runs/k10-ablation-3h-20261001/society-voluntary",
+      "status": "completed",
+      "bound_usd": 0.45366695
+    },
+    {
+      "source": "runs/k10-ablation-3h-20261001/wealth-fixed",
+      "status": "completed",
+      "bound_usd": 0.64914585
+    },
+    {
+      "source": "runs/k10-ablation-3h-20261001/society-fixed",
+      "status": "completed",
+      "bound_usd": 0.67965684
+    },
+    {
+      "source": "runs/k10-feedback-3h-20261001/wealth-voluntary-feedback",
+      "status": "completed",
+      "bound_usd": 0.64994912
+    },
+    {
+      "source": "runs/k10-short-rounds-20261001/society-fixed-3rounds",
+      "status": "completed",
+      "bound_usd": 0.176589115
+    },
+    {
+      "source": "runs/k10-original-reference-20261001",
+      "status": "completed",
+      "bound_usd": 0.02513787
+    },
+    {
+      "source": "runs/k10-independent-20261001",
+      "status": "completed",
+      "bound_usd": 0.186679025
+    },
+    {
+      "source": "runs/k10-regrade-20261001",
+      "status": "completed",
+      "bound_usd": 0.01717886
+    },
+    {
+      "source": "runs/k10-society-prompt-20261001",
+      "status": "completed",
+      "bound_usd": 0.235559395
+    },
+    {
+      "source": "runs/k10-pilot-20261001",
+      "status": "stopped",
+      "bound_usd": 0.15218272
+    },
+    {
+      "source": "runs/k10-membership-clarity-20261001/wealth-voluntary-feedback-membership",
+      "status": "stopped",
+      "bound_usd": 0.07544045
+    },
+    {
+      "source": "runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership",
+      "status": "running",
+      "bound_usd": 2
+    },
+    {
+      "source": "runs/k10-regrade-seed17-20261001",
+      "status": "running",
+      "bound_usd": 1
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/wealth-voluntary",
+      "bound_usd": 10
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/society-voluntary",
+      "bound_usd": 10
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/wealth-fixed",
+      "bound_usd": 10
+    },
+    {
+      "source": "runs/k10-ablation-seed17-20261001/society-fixed",
+      "bound_usd": 10
+    }
+  ]
+}

@@ -274,6 +274,20 @@ class RuntimeTests(unittest.TestCase):
             decoded = json.loads(payload)
             self.assertEqual(decoded["rounds"][0]["events"][-1]["text"], malicious)
 
+    def test_partial_replay_preserves_events_without_a_terminal_grade(self):
+        mas = engine()
+        mas.events.append({"event": "team_message", "round": 0,
+                           "agent": "agent-0", "members": ["agent-0"],
+                           "text": "Work before interruption", "channel": "team"})
+        payload = replay_data(mas, "interrupted")
+        self.assertEqual(len(payload["rounds"]), 1)
+        partial = payload["rounds"][0]
+        self.assertTrue(partial["partial"])
+        self.assertEqual(partial["events"][-1]["text"], "Work before interruption")
+        self.assertNotIn("score", partial["metrics"])
+        self.assertNotIn("reward", partial["metrics"])
+        self.assertFalse(any(e["event"] == "round_complete" for e in mas.events))
+
     def test_run_outputs_and_refuse_overwrite(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "run"

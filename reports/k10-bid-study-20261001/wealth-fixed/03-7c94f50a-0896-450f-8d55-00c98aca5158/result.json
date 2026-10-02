@@ -1,0 +1,828 @@
+{
+  "cell": "wealth-fixed",
+  "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+  "score": 0.12,
+  "has_final_answer": true,
+  "answer": "## What can and cannot be concluded from the excerpt\nThe recipe specifies starting materials and some process conditions, but it gives no water-addition volume, pre-filtration DLS trace, measurement settings, or complete lyophilization cycle. Therefore, neither the exact effects of the proposed changes nor exact DLS peak values can be determined from the excerpt alone. The details listed below are unspecified in this excerpt; that does not establish that they were absent from the full publication or laboratory method.\n\n### 1. Stirring for 1 minute instead of 5 minutes\nThe 5-minute stirring step mixes paclitaxel and mPEG-PDLLA in acetonitrile before solvent evaporation. Stirring for only 1 minute could result in less uniform mixing or incomplete dissolution, potentially causing batch variability, drug-rich material, or aggregation upon hydration. However, the excerpt does not establish that 1 minute is insufficient: if both components are already fully dissolved and homogeneous, the final product may not differ appreciably. A definite size change or its direction cannot be predicted without measurements.\n\n### 2. Saline at 60 \u00b0C instead of water\nSaline adds ions and changes ionic strength, so it is not an equivalent replacement for water. These changes may affect hydration, micelle interactions, colloidal stability, or drug solubility, but the magnitude and direction are formulation-dependent. Aggregation or precipitation is possible but cannot be asserted from the recipe, particularly without the saline concentration and comparative data. Nonvolatile salts would remain in the lyophilized product and could affect the cake or its reconstitution. For DLS, use the sample medium\u2019s actual viscosity at the measurement temperature rather than assuming water viscosity.\n\n### 3. 5% sucrose at 60 \u00b0C instead of water\nSucrose changes the solution composition, viscosity, and osmotic conditions. It may act as a cryo-/lyoprotectant during freezing and drying, but that does not establish that it improves micelle formation or redispersion in this formulation. It remains in the dried product, increases its mass, and changes the drug fraction of the total solids. The result may depend on whether 5% is w/v or w/w, the hydration volume, and drying and reconstitution conditions. Its effect on particle size or any protective benefit should be tested, not assumed.\n\n### 4. Pre-filtration DLS peaks and hydrodynamic size\nThe number of intensity-distribution peaks and their positions cannot be recovered from the preparation recipe. They must be read from the actual DLS intensity distribution or raw data measured on an aliquot taken before the 0.22 \u00b5m filtration step. No peak count or numerical sizes are provided here, so supplying them would require guessing.\n\nDLS ordinarily reports hydrodynamic diameters, not directly measured hydrodynamic volumes. For translational diffusion coefficient D, the Stokes\u2013Einstein relation gives:\n\nd_h = k_B T / (3\u03c0 \u03b7 D),\n\nwhere k_B is Boltzmann\u2019s constant, T is absolute temperature, and \u03b7 is dispersant viscosity. If a spherical-equivalent geometric volume is wanted after a diameter is known, it can be estimated as V = \u03c0d_h\u00b3/6. This is not a direct DLS volume measurement and assumes a sphere. An intensity distribution is not a particle-count distribution: in the Rayleigh regime, larger scatterers can contribute disproportionately to intensity (approximately proportional to diameter to the sixth power). Apparent extra peaks should be checked for reproducibility and possible dust, bubbles, or aggregates. The nominal 0.22 \u00b5m filter pore size is not a sharp DLS-diameter cutoff; filtration can remove some large species or cause product loss.\n\n### 5. Process information unspecified in the quoted excerpt\nFor reproducibility and interpretation, the following information is not specified in the excerpt. This does not prove it was omitted from the full publication or actual procedure:\n\n- **Hydration amount and concentration:** water volume, addition rate, and resulting drug, polymer, and total-solids concentrations.\n- **Hydration and mixing conditions:** mixing method and duration, whether the solution is held at 60 \u00b0C until dissolved, and how complete dissolution or clarity is assessed.\n- **Solvent-removal endpoint:** evaporation duration or endpoint and how residual acetonitrile is controlled or verified. Temperature and reduced pressure alone do not specify residual solvent.\n- **Handling before filtration and drying:** any cooling, holding, or conditioning conditions, if used.\n- **Filtration details:** membrane material and filtration conditions, and recovery or losses where relevant. A 0.22 \u00b5m pore-size statement alone does not specify these.\n- **Lyophilization cycle:** freezing conditions or rate, shelf and product temperatures, chamber pressure, primary and secondary drying times or endpoints, and sample loading/fill details. Naming the freeze-dryer model is not a cycle recipe.\n- **Post-drying procedure and characterization:** storage conditions and, for testing or use, reconstitution medium and volume, mixing, and time before measurement. DLS reporting should also give sample preparation/dilution, measurement temperature and viscosity, replicates, and analysis settings.\n- **Drug recovery/loading:** the recipe gives feed amounts, not measured encapsulation or final loading; an assay and recovery information would be needed to report those values.\n\n### Quantitative checks and how to resolve the uncertainties\nThe paclitaxel-to-polymer feed mass ratio is 30:150 = 1:5. Paclitaxel is 20% of the polymer mass, and its fraction of the combined starting solids is 30/(30+150) = 0.167, or about 16.7%. The initial acetonitrile concentrations are 30 mg/2.0 mL = 15 mg/mL paclitaxel and 150 mg/2.0 mL = 75 mg/mL polymer. These are not the final aqueous concentrations. For a hydration volume V mL, nominal concentrations before losses would be 30/V mg/mL paclitaxel and 150/V mg/mL polymer; actual concentrations and drug loading require recovery measurements.\n\nTo establish the consequences of the proposed changes, prepare replicate, otherwise-matched batches and change one factor at a time. Hold hydration volume and other processing conditions constant, and state the sucrose concentration basis. Record appearance and drug recovery; measure DLS before and after filtration under matched temperature and analysis conditions, using the appropriate viscosity for each medium. Lyophilize and reconstitute samples at the same volume before comparing dried products. The precise effects, and the pre-filtration peak count and sizes, remain unresolved without these experiments or the original DLS data.",
+  "metric": {
+    "round": 0,
+    "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+    "protocol": "rounds",
+    "score": 0.12,
+    "reward": 1.44,
+    "reward_issued": 2.304,
+    "reward_distribution": "per_member_path",
+    "contributing_rounds": 10,
+    "credit_path": [
+      {
+        "step": 0,
+        "team": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "final": false,
+        "credits": {
+          "agent-1": 0.144
+        }
+      },
+      {
+        "step": 1,
+        "team": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-3": 0.144,
+          "agent-8": 0.144
+        }
+      },
+      {
+        "step": 2,
+        "team": "solo:agent-5",
+        "members": [
+          "agent-5"
+        ],
+        "final": false,
+        "credits": {
+          "agent-5": 0.144
+        }
+      },
+      {
+        "step": 3,
+        "team": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-3": 0.144,
+          "agent-8": 0.144
+        }
+      },
+      {
+        "step": 4,
+        "team": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-3": 0.144,
+          "agent-8": 0.144
+        }
+      },
+      {
+        "step": 5,
+        "team": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "final": false,
+        "credits": {
+          "agent-3": 0.144,
+          "agent-8": 0.144
+        }
+      },
+      {
+        "step": 6,
+        "team": "solo:agent-7",
+        "members": [
+          "agent-7"
+        ],
+        "final": false,
+        "credits": {
+          "agent-7": 0.144
+        }
+      },
+      {
+        "step": 7,
+        "team": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "final": false,
+        "credits": {
+          "agent-2": 0.144
+        }
+      },
+      {
+        "step": 8,
+        "team": "team-2",
+        "members": [
+          "agent-0",
+          "agent-1"
+        ],
+        "final": false,
+        "credits": {
+          "agent-0": 0.144,
+          "agent-1": 0.144
+        }
+      },
+      {
+        "step": 9,
+        "team": "team-2",
+        "members": [
+          "agent-0",
+          "agent-1"
+        ],
+        "final": true,
+        "credits": {
+          "agent-0": 0.144,
+          "agent-1": 0.144
+        }
+      }
+    ],
+    "winner": "team-2",
+    "steps": [
+      {
+        "step": 0,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "solo:agent-1",
+        "members": [
+          "agent-1"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 19.9,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 1,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.1,
+          "agent-1": 0.1,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 19.95,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": null,
+          "agent-1": null,
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 2,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "solo:agent-5",
+        "members": [
+          "agent-5"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 19.9,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 3,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.0,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 19.95,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 4,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 19.95,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 5,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "team-1",
+        "members": [
+          "agent-3",
+          "agent-8"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 19.95,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 19.95,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 6,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "solo:agent-7",
+        "members": [
+          "agent-7"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 19.9,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 7,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "solo:agent-2",
+        "members": [
+          "agent-2"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.0,
+          "agent-1": 20.0,
+          "agent-2": 19.9,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 8,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "team-2",
+        "members": [
+          "agent-0",
+          "agent-1"
+        ],
+        "accepted": true,
+        "final": false,
+        "score": 0.0,
+        "reward": 0.0,
+        "share": 0.0,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 19.95,
+          "agent-1": 19.95,
+          "agent-2": 20.0,
+          "agent-3": 20.0,
+          "agent-4": 20.0,
+          "agent-5": 20.0,
+          "agent-6": 20.0,
+          "agent-7": 20.0,
+          "agent-8": 20.0,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      },
+      {
+        "step": 9,
+        "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+        "winner": "team-2",
+        "members": [
+          "agent-0",
+          "agent-1"
+        ],
+        "accepted": true,
+        "final": true,
+        "score": 0.12,
+        "reward": 1.44,
+        "share": 0.144,
+        "contributions": {
+          "agent-0": 0.05,
+          "agent-1": 0.05,
+          "agent-2": 0.1,
+          "agent-3": 0.05,
+          "agent-4": 0.1,
+          "agent-5": 0.1,
+          "agent-6": 0.1,
+          "agent-7": 0.1,
+          "agent-8": 0.05,
+          "agent-9": 0.1
+        },
+        "wealth": {
+          "agent-0": 20.237999999999996,
+          "agent-1": 20.381999999999994,
+          "agent-2": 20.144,
+          "agent-3": 20.575999999999993,
+          "agent-4": 20.0,
+          "agent-5": 20.144,
+          "agent-6": 20.0,
+          "agent-7": 20.144,
+          "agent-8": 20.575999999999993,
+          "agent-9": 20.0
+        },
+        "membership": {
+          "agent-0": "team-2",
+          "agent-1": "team-2",
+          "agent-2": null,
+          "agent-3": "team-1",
+          "agent-4": null,
+          "agent-5": null,
+          "agent-6": null,
+          "agent-7": null,
+          "agent-8": "team-1",
+          "agent-9": null
+        }
+      }
+    ],
+    "step_count": 10,
+    "paid": {
+      "agent-0": 0.1,
+      "agent-1": 0.2,
+      "agent-2": 0.1,
+      "agent-3": 0.2,
+      "agent-4": 0.0,
+      "agent-5": 0.1,
+      "agent-6": 0.0,
+      "agent-7": 0.1,
+      "agent-8": 0.2,
+      "agent-9": 0.0
+    },
+    "bid_income": {
+      "agent-0": 0.05,
+      "agent-1": 0.15000000000000002,
+      "agent-2": 0.1,
+      "agent-3": 0.2,
+      "agent-4": 0.0,
+      "agent-5": 0.1,
+      "agent-6": 0.0,
+      "agent-7": 0.1,
+      "agent-8": 0.2,
+      "agent-9": 0.0
+    },
+    "reward_income": {
+      "agent-0": 0.288,
+      "agent-1": 0.43199999999999994,
+      "agent-2": 0.144,
+      "agent-3": 0.576,
+      "agent-4": 0.0,
+      "agent-5": 0.144,
+      "agent-6": 0.0,
+      "agent-7": 0.144,
+      "agent-8": 0.576,
+      "agent-9": 0.0
+    },
+    "team_sizes": [
+      2,
+      1,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "coordination_paid": {
+      "agent-0": 0.0,
+      "agent-1": 0.0,
+      "agent-2": 0.0,
+      "agent-3": 0.0,
+      "agent-4": 0.0,
+      "agent-5": 0.0,
+      "agent-6": 0.0,
+      "agent-7": 0.0,
+      "agent-8": 0.0,
+      "agent-9": 0.0
+    },
+    "coordination_burn_total": 0.0,
+    "wealth": {
+      "agent-0": 20.237999999999996,
+      "agent-1": 20.381999999999994,
+      "agent-2": 20.144,
+      "agent-3": 20.575999999999993,
+      "agent-4": 20.0,
+      "agent-5": 20.144,
+      "agent-6": 20.0,
+      "agent-7": 20.144,
+      "agent-8": 20.575999999999993,
+      "agent-9": 20.0
+    },
+    "membership": {
+      "agent-0": "team-2",
+      "agent-1": "team-2",
+      "agent-2": null,
+      "agent-3": "team-1",
+      "agent-4": null,
+      "agent-5": null,
+      "agent-6": null,
+      "agent-7": null,
+      "agent-8": "team-1",
+      "agent-9": null
+    },
+    "contributions": {
+      "agent-0": 0.05,
+      "agent-1": 0.05,
+      "agent-2": 0.1,
+      "agent-3": 0.05,
+      "agent-4": 0.1,
+      "agent-5": 0.1,
+      "agent-6": 0.1,
+      "agent-7": 0.1,
+      "agent-8": 0.05,
+      "agent-9": 0.1
+    },
+    "contribution_fraction": {
+      "agent-0": 0.0025062656641604013,
+      "agent-1": 0.0025062656641604013,
+      "agent-2": 0.005,
+      "agent-3": 0.0025,
+      "agent-4": 0.005,
+      "agent-5": 0.005,
+      "agent-6": 0.005,
+      "agent-7": 0.005,
+      "agent-8": 0.0025,
+      "agent-9": 0.005
+    },
+    "bid_paid_total": 0.9999999999999999,
+    "bid_transfer_total": 0.8999999999999999,
+    "bid_burn_total": 0.1,
+    "reflection_burn_total": 0.0,
+    "reward_total": 2.304,
+    "invalid_actions": 1
+  },
+  "cost_usd": 0.18927570000000005,
+  "completed_at": 1790917102.138597,
+  "population": [
+    {
+      "name": "agent-0",
+      "wealth": 20.237999999999996,
+      "team": "team-2",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " can be determined from the excerpt alone. The details listed below are unspecified in this excerpt; that does not establish that they were absent from the full publication or laboratory method.\n\n### 1. Stirring for 1 minute instead of 5 minutes\nThe 5-minute stirring step mixes paclitaxel and mPEG-PDLLA in acetonitrile before solvent evaporation. Stirring for only 1 minute could result in less uniform mixing or incomplete dissolution, potentially causing batch variability, drug-rich material, or aggregation upon hydration. However, the excerpt does not establish that 1 minute is insufficient: if both components are already fully dissolved and homogeneous, the final product may not differ appreciably. A definite size change or its direction cannot be predicted without measurements.\n\n### 2. Saline at 60 \u00b0C instead of water\nSaline adds ions and changes ionic strength, so it is not an equivalent replacement for water. These changes may affect hydration, micelle interactions, colloidal stability, or drug solubility, but the magnitude and direction are formulation-dependent. Aggregation or precipitation is possible but cannot be asserted from the recipe, particularly without the saline concentration and comparative data. Nonvolatile salts would remain in the lyophilized product and could affect the cake or its reconstitution. For DLS, use the sample medium\u2019s actual viscosity at the measurement temperature rather than assuming water viscosity.\n\n### 3. 5% sucrose at 60 \u00b0C instead of water\nSucrose changes the solution composition, viscosity, and osmotic conditions. It may act as a cryo-/lyoprotectant during freezing and drying, but that does not establish that it improves micelle formation or redispersion in this formulation. It remains in the dried product, increases its mass, and changes the drug fraction of the total solids. The result may depend on whether 5% is w/v or w/w, the hydration volume, and drying and reconstitution conditions. Its effect on particle size or any protective benefit should be tested, not assumed.\n\n### 4. Pre-filtration DLS peaks and hydrodynamic size\nThe number of intensity-distribution peaks and their positions\n{\"bid_income\": 0.05, \"contributing_rounds\": 2, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.288, \"team\": \"team-2\", \"wealth\": 20.237999999999996}"
+    },
+    {
+      "name": "agent-1",
+      "wealth": 20.381999999999994,
+      "team": "team-2",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " listed below are unspecified in this excerpt; that does not establish that they were absent from the full publication or laboratory method.\n\n### 1. Stirring for 1 minute instead of 5 minutes\nThe 5-minute stirring step mixes paclitaxel and mPEG-PDLLA in acetonitrile before solvent evaporation. Stirring for only 1 minute could result in less uniform mixing or incomplete dissolution, potentially causing batch variability, drug-rich material, or aggregation upon hydration. However, the excerpt does not establish that 1 minute is insufficient: if both components are already fully dissolved and homogeneous, the final product may not differ appreciably. A definite size change or its direction cannot be predicted without measurements.\n\n### 2. Saline at 60 \u00b0C instead of water\nSaline adds ions and changes ionic strength, so it is not an equivalent replacement for water. These changes may affect hydration, micelle interactions, colloidal stability, or drug solubility, but the magnitude and direction are formulation-dependent. Aggregation or precipitation is possible but cannot be asserted from the recipe, particularly without the saline concentration and comparative data. Nonvolatile salts would remain in the lyophilized product and could affect the cake or its reconstitution. For DLS, use the sample medium\u2019s actual viscosity at the measurement temperature rather than assuming water viscosity.\n\n### 3. 5% sucrose at 60 \u00b0C instead of water\nSucrose changes the solution composition, viscosity, and osmotic conditions. It may act as a cryo-/lyoprotectant during freezing and drying, but that does not establish that it improves micelle formation or redispersion in this formulation. It remains in the dried product, increases its mass, and changes the drug fraction of the total solids. The result may depend on whether 5% is w/v or w/w, the hydration volume, and drying and reconstitution conditions. Its effect on particle size or any protective benefit should be tested, not assumed.\n\n### 4. Pre-filtration DLS peaks and hydrodynamic size\nThe number of intensity-distribution peaks and their positions\n{\"bid_income\": 0.15000000000000002, \"contributing_rounds\": 3, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.2, \"reward_received\": 0.43199999999999994, \"team\": \"team-2\", \"wealth\": 20.381999999999994}"
+    },
+    {
+      "name": "agent-2",
+      "wealth": 20.144,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " not volumes, and distinguish unspecified excerpt details from confirmed omissions.\n[regroup] agent-1: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-0: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-2: The shared answer is appropriately cautious: the recipe supplies neither a pre-filtration DLS trace nor enough conditions to infer peak count or sizes. Report DLS hydrodynamic diameters (not volumes); any V = \u03c0d\u00b3/6 is only a spherical-equivalent estimate from measured d. Treat shorter stirring and saline/sucrose effects as plausible and formulation-dependent, and label process details as unspecified in this excerpt\u2014not confirmed omissions from the full publication. Both saline and sucrose also remain in the dried product, so compare matched batches after reconstitution at the same volume.\n[bidding] agent-2: Finalization preserves a chance of reward; fixed bid is only 0.1.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.1, \"contributing_rounds\": 1, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.144, \"team\": null, \"wealth\": 20.144}"
+    },
+    {
+      "name": "agent-3",
+      "wealth": 20.575999999999993,
+      "team": "team-1",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-8: The evidence-based answer is ready: the excerpt does not provide the pre-filtration DLS plot/data, so we cannot state a peak count or numerical sizes. Measure an aliquot before filtration and report its intensity-distribution hydrodynamic diameters (DLS does not directly measure hydrodynamic volume). Describe effects of shorter stirring, saline, and sucrose as plausible but unquantified, and list reproducibility details as unspecified in this excerpt\u2014not confirmed omissions from the full publication.\n[pre_bid] agent-3: The shared answer is ready. In the final response, be explicit that the excerpt gives no pre-filtration DLS trace, so an exact peak count or numerical sizes cannot be supplied; DLS reports inferred hydrodynamic diameters, not hydrodynamic volumes. Frame the protocol items as unspecified in this excerpt rather than confirmed omissions from the full publication, and describe the proposed changes as plausible effects to test\u2014not certain outcomes.\n[bidding] agent-8: Final answer is ready; authorize the fixed bid to submit it.\n[bidding] agent-3: Final answer is ready; authorize the minimal fixed bid.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.2, \"contributing_rounds\": 4, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.2, \"reward_received\": 0.576, \"team\": \"team-1\", \"wealth\": 20.575999999999993}"
+    },
+    {
+      "name": "agent-4",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " not volumes, and distinguish unspecified excerpt details from confirmed omissions.\n[regroup] agent-1: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-0: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-4: The evidence-based answer should explicitly say the excerpt does not include a pre-filtration DLS trace, so neither the intensity-peak count nor numerical hydrodynamic sizes can be determined from it. DLS obtains hydrodynamic diameter from diffusion, d_h = k_BT/(3\u03c0\u03b7D), not particle volume; \u03c0d_h\u00b3/6 is only a spherical-equivalent estimate if a diameter is known. Describe the stirring and medium substitutions as plausible, testable effects rather than certain outcomes, and label reproducibility details as unspecified in the quoted excerpt, not confirmed absent from the full publication.\n[bidding] agent-4: Finalize the evidence-based answer; fixed bid cost is minimal.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-5",
+      "wealth": 20.144,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " sizes; report measured hydrodynamic diameters, not volumes, and distinguish unspecified excerpt details from confirmed omissions.\n[regroup] agent-1: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-0: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-5: The shared solution is sound: the quoted recipe cannot determine an exact pre-filtration DLS peak count or numerical sizes; those require the underlying DLS trace or data. DLS reports hydrodynamic diameter, not volume, and any spherical-equivalent volume would be calculated as V = \u03c0d_h\u00b3/6 from measured diameters. Keep predicted effects of shorter stirring, saline, and sucrose conditional, and label procedural details as unspecified in the excerpt rather than confirmed omissions from the full publication. The answer is ready to submit with those qualifications.\n[bidding] agent-5: Finalize the qualified answer; fixed bid cost is small.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.1, \"contributing_rounds\": 1, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.144, \"team\": null, \"wealth\": 20.144}"
+    },
+    {
+      "name": "agent-6",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": "-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish unspecified excerpt details from confirmed omissions.\n[regroup] agent-1: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-0: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-6: One important distinction for the final answer: the quoted recipe supports qualitative hypotheses, not definite outcomes. A shorter stir matters only if mixing or dissolution is incomplete; saline and sucrose change the formulation and should be tested in matched batches. For DLS, ask for the actual pre-filtration intensity distribution and report peak positions as hydrodynamic diameters\u2014neither peak count nor sizes follow from the recipe. Call the listed procedural details unspecified in this excerpt, since they may be given elsewhere in the publication or supplement.\n[bidding] agent-6: Final-round participation earns reward credit; fixed bid is small.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    },
+    {
+      "name": "agent-7",
+      "wealth": 20.144,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-0: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-7: The final answer should explicitly say the quoted recipe contains no pre-filtration DLS plot or raw data, so an exact peak count and numerical sizes cannot be supplied responsibly. DLS reports hydrodynamic diameter from diffusion, d_h = k_BT/(3\u03c0\u03b7D); a volume is only a spherical-equivalent estimate, V_h = \u03c0d_h\u00b3/6, given a measured diameter. Saline adds persistent nonvolatile ions and changes ionic strength; 5% sucrose (define the basis, e.g. w/v) may provide cryo-/lyoprotection but also remains in the dried product. Effects are formulation-dependent, so avoid asserting definite outcomes without matched experiments. Frame unspecified procedure details as omissions from this excerpt, not confirmed omissions from the full publication.\n[bidding] agent-7: Finalize the evidence-bounded answer; the fixed bid is minimal.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.1, \"contributing_rounds\": 1, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.1, \"reward_received\": 0.144, \"team\": null, \"wealth\": 20.144}"
+    },
+    {
+      "name": "agent-8",
+      "wealth": 20.575999999999993,
+      "team": "team-1",
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-8: The evidence-based answer is ready: the excerpt does not provide the pre-filtration DLS plot/data, so we cannot state a peak count or numerical sizes. Measure an aliquot before filtration and report its intensity-distribution hydrodynamic diameters (DLS does not directly measure hydrodynamic volume). Describe effects of shorter stirring, saline, and sucrose as plausible but unquantified, and list reproducibility details as unspecified in this excerpt\u2014not confirmed omissions from the full publication.\n[pre_bid] agent-3: The shared answer is ready. In the final response, be explicit that the excerpt gives no pre-filtration DLS trace, so an exact peak count or numerical sizes cannot be supplied; DLS reports inferred hydrodynamic diameters, not hydrodynamic volumes. Frame the protocol items as unspecified in this excerpt rather than confirmed omissions from the full publication, and describe the proposed changes as plausible effects to test\u2014not certain outcomes.\n[bidding] agent-8: Final answer is ready; authorize the fixed bid to submit it.\n[bidding] agent-3: Final answer is ready; authorize the minimal fixed bid.\nTeam entered; binding pledge 0.05 in round 9.\n{\"bid_income\": 0.2, \"contributing_rounds\": 4, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.2, \"reward_received\": 0.576, \"team\": \"team-1\", \"wealth\": 20.575999999999993}"
+    },
+    {
+      "name": "agent-9",
+      "wealth": 20.0,
+      "team": null,
+      "strategy": "Choose actions that improve your future wealth.",
+      "summary": " report measured hydrodynamic diameters, not volumes, and distinguish unspecified excerpt details from confirmed omissions.\n[regroup] agent-1: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-0: Stay with current teams for finalization. The recipe cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions. Keep substitution effects conditional.\n[regroup] agent-8: Stay with current teams for finalization. The recipe alone cannot determine pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[regroup] agent-5: Stay with current teams for finalization. The recipe cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and label protocol details as unspecified in the excerpt rather than confirmed omissions.\n[regroup] agent-7: I\u2019ll stay solo for finalization. The protocol alone cannot establish pre-filtration DLS peak count or sizes; report measured hydrodynamic diameters, not volumes, and distinguish details unspecified in the excerpt from confirmed omissions.\n[pre_bid] agent-9: For the final answer, keep conclusions evidence-bounded: explain the plausible, conditional effects of shorter stirring and saline/sucrose, but state that the recipe alone cannot provide a pre-filtration DLS peak count or sizes. DLS ordinarily reports hydrodynamic diameters, not volumes; give measured peak values only if the source supplies the actual trace. List reproducibility-critical items as unspecified in the quoted excerpt\u2014not confirmed absent from the full publication\u2014and distinguish pre-filtration measurements from post-filtration or post-lyophilization results.\n[bidding] agent-9: Finalization earns reward; fixed bid costs only 0.1 if winning.\nTeam entered; binding pledge 0.1 in round 9.\n{\"bid_income\": 0.0, \"contributing_rounds\": 0, \"coordination_paid\": 0.0, \"episode\": 0, \"paid\": 0.0, \"reward_received\": 0.0, \"team\": null, \"wealth\": 20.0}"
+    }
+  ]
+}

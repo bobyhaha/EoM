@@ -1,0 +1,68 @@
+{
+  "scope": "Fresh untrained original EoM k10 reference; three matched development tasks; seed7; no cross-task carryover.",
+  "config": {
+    "engine": {
+      "max_steps_per_episode": 10,
+      "max_trials_per_episode": 2,
+      "birth_interval": 5,
+      "num_births_per_interval": 2,
+      "min_num_agents": 0,
+      "max_num_agents": 20,
+      "bid_scheme": "fixed",
+      "base_bid": 0.1,
+      "novice_bid_epsilon": 0.1,
+      "initial_wealth": 0.5,
+      "rent": 0,
+      "rent_interval": 3,
+      "holland_alpha": 0.1,
+      "tycoon_wealth_threshold": 5.0
+    },
+    "reward": {
+      "reward_scheme": "path_reward_and_stepwise_reward",
+      "path_reward_scale": 1.0,
+      "terminal_output_bonus_scale": 0.5,
+      "env_reward_scale": 1.0,
+      "missing_terminal_score": 0.0,
+      "center_env_reward": true,
+      "regression_multiplier": 1.0,
+      "broken_program_penalty": 0.0,
+      "path_reward_per_unique_author": false,
+      "step_reward_split_chain": false,
+      "step_reward_chain_window": 3
+    },
+    "evolution": {
+      "p_a": 0.0,
+      "p_b": 1.0,
+      "periodical_good_p": 0.5
+    },
+    "evaluation": {
+      "periodic_test_enabled": false,
+      "periodic_test_before_training": false,
+      "periodic_test_every_n_tasks": 3,
+      "periodic_test_parallel_enabled": true,
+      "periodic_test_max_workers": 10
+    },
+    "concurrency": {
+      "wakeup_parallel_enabled": false,
+      "wakeup_max_workers": 10,
+      "wakeup_retry_attempts": 2,
+      "wakeup_retry_backoff_seconds": 1.0,
+      "wakeup_fail_open": false,
+      "log_wakeup": false,
+      "wakeup_model": null
+    },
+    "terminal": {
+      "enabled": true,
+      "start_on_step_from_end": 1,
+      "candidate_agent_tags": [
+        "terminal"
+      ],
+      "allow_abstain_terminal_mode": true
+    }
+  },
+  "cap_usd": 1.0,
+  "deadline": 1790924350.0,
+  "solver_tokens": 16384,
+  "solver_reasoning": "high",
+  "comparability": "Native original loop and fixed individual bids; 16384 high solver output vs team16384 high. Roles, early stopping and total compute still differ."
+}

@@ -22,6 +22,13 @@ def upper_bound(primary):
         membership = Path('runs')/name/'wealth-voluntary-feedback-membership'
         if (membership/'status.json').exists():
             sources.append(membership)
+    regrades = Path('runs/k10-regrade-seed17-20261001')
+    if (regrades/'status.json').exists():
+        sources.append(regrades)
+    for name in ('k10-original-high-reference-20261001','k10-regrade-original-high-20261001'):
+        extra = Path('runs')/name
+        if (extra/'status.json').exists():
+            sources.append(extra)
     rows=[]
     for p in sources:
         if not (p/'status.json').exists():

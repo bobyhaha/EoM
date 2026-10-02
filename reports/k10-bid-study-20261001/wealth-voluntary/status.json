@@ -1,0 +1,40 @@
+{
+  "cell": "wealth-voluntary",
+  "status": "completed",
+  "results": [
+    {
+      "cell": "wealth-voluntary",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "score": 0.0,
+      "has_final_answer": false,
+      "cost_usd": 0.17428065
+    },
+    {
+      "cell": "wealth-voluntary",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "score": 0.0,
+      "has_final_answer": false,
+      "cost_usd": 0.14179452499999998
+    },
+    {
+      "cell": "wealth-voluntary",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "score": 0.08,
+      "has_final_answer": true,
+      "cost_usd": 0.13738505
+    }
+  ],
+  "started_at": 1790913861.03159,
+  "pid": 46085,
+  "usage": {
+    "cost_usd": 0.453460225,
+    "unconfirmed_usd": 0.0,
+    "requests": 939,
+    "input_tokens": 2802101,
+    "output_tokens": 206587,
+    "cap_usd": 20
+  },
+  "updated_at": 1790916460.4509,
+  "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+  "task_number": 3
+}

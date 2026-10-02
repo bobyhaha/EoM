@@ -1,0 +1,24 @@
+{
+  "captured_at": 1790919292.071127,
+  "timing": "Immediately after launch; core files also verified unchanged from upstream local origin/main.",
+  "upstream_commit": "e7faa7233c58ee3a8c88ef2e7971d083c98d30a8",
+  "sha256": {
+    "hayekmas/experiments/bid_original_reference.py": "9ee59a3e47af481e84dcfba771def0d21fe590ed6691679511dd5ecb5cb477a0",
+    "hayekmas/experiments/campaign_client.py": "643f2e5e1de87c1c5b4f26f0000363986ecf4320edee6c33a6634a82eeae21d8",
+    "global_configs/k10_bid_ablation.json": "4f23c8673d8ec4f511274dc4daec306137050d4caab45667d8d9057562299e98",
+    "global_configs/train_research.json": "725492f571460ed9e9b082aaa19fe289fc32fd5fc8822a121e6808d717702ae9",
+    "hayekmas/base/config.py": "abcf78b2fbcd8459c2e57d45e713fd07494d462ebf6c0ca09c1ea7543f66b238",
+    "hayekmas/base/env.py": "098be6493d61ba646e5f8c63807401ce211cffbf54340bfb931aae1c544a9e7d",
+    "hayekmas/base/population.py": "281b29ca03b2f9529629e9c3b8bb6698fe7038f9fd2a8ee827dd4fe74cae8eef",
+    "hayekmas/base/mas.py": "e4f5e85314d570500eb0a23856ba3e9843e984d27e640ec108de6f2024639186",
+    "hayekmas/base/__init__.py": "60a1b32ad83b4333e23264b97af2ffa2af6b7af54ac94a8e0b373aa616c2ecdc",
+    "hayekmas/base/prompts.py": "95f52ca7d813f60f9ca83660d24aa78b49c91e58b4600a343adfdebeb98fdc69",
+    "hayekmas/base/pipeline.py": "b154efd73cf03dfa93f0310956229951dd9aacda61ec304185ee249517cd4f3a",
+    "hayekmas/base/agent.py": "0fee568d3762577be9776cc9bd9168eabc962410516ef26e7201288362f58092",
+    "hayekmas/adapters/researchworld/env.py": "0d5e06765031f8d9d15f413b2462fb32c9c42f056d52d0eb77bd565bd8ead1ff",
+    "hayekmas/adapters/researchworld/__init__.py": "9ae0206d4d3432f14a13fa53dd516e2c0b0c4f507f337edef900fd0e20d28330",
+    "hayekmas/adapters/researchworld/runtime.py": "a6050db1c7b8ed0747ac2f6fc8598f0334524ad14c67c156ee56b10bedcc1745",
+    "hayekmas/adapters/researchworld/prompts.py": "63059032a4996b728e239da0cd687e5ecf3ffcc2383aea4ae6be2beeaac22671",
+    "hayekmas/adapters/researchworld/agent.py": "3410ad97dd06e65e3b184b45c0d5ad82eeecc51cd3552616de897526a1c9a591"
+  }
+}

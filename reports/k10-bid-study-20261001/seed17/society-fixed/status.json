@@ -1,0 +1,40 @@
+{
+  "cell": "society-fixed",
+  "status": "completed",
+  "results": [
+    {
+      "cell": "society-fixed",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "score": 0.425,
+      "has_final_answer": true,
+      "cost_usd": 0.250279025
+    },
+    {
+      "cell": "society-fixed",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "score": 0.595,
+      "has_final_answer": true,
+      "cost_usd": 0.186267275
+    },
+    {
+      "cell": "society-fixed",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "score": 0.12,
+      "has_final_answer": true,
+      "cost_usd": 0.20694255
+    }
+  ],
+  "started_at": 1790917413.584851,
+  "pid": 16400,
+  "usage": {
+    "cost_usd": 0.64348885,
+    "unconfirmed_usd": 0.0,
+    "requests": 1047,
+    "input_tokens": 3958243,
+    "output_tokens": 297574,
+    "cap_usd": 10
+  },
+  "updated_at": 1790921086.092682,
+  "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+  "task_number": 3
+}

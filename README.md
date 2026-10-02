@@ -44,6 +44,18 @@ selection. See [TEAMS.md](TEAMS.md#k10-funding-ablation) for the exact rules,
 bounded launch command, and result/replay paths. This mechanism study does not
 replace the full training-and-held-out-evaluation protocol.
 
+The completed [research report](reports/k10-bid-study-20261001/index.html)
+includes scores, API costs, repeat grades, membership timelines, and dialogue
+replays. View the portable bundle locally without an API key:
+
+```bash
+python3 -m http.server 8791 --bind 127.0.0.1 --directory reports/k10-bid-study-20261001
+```
+
+Open http://127.0.0.1:8791/ in a browser. The bundle preserves results and
+provider cost receipts; full request logs and checkpoints remain under local
+`runs/k10-*` directories.
+
 ### Earlier original-EoM versus teams campaign
 
 The 12-hour GPT-6 Luna campaign saves everything under

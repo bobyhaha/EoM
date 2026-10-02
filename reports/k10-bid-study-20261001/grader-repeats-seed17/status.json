@@ -1,0 +1,363 @@
+{
+  "status": "completed",
+  "grades": [
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-voluntary/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 1,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-voluntary/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 2,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-voluntary/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 1,
+      "primary_score": 0.45,
+      "answer_sha256": "8db97d445cfe560130169e1f46c8c141bb28ee9bf184fdb3c81534fdc9f03591",
+      "score": 0.35,
+      "judgment": "SCORE: 0.350\nREASON: The solution gives the three singlet channels, a finite-\\(L\\) matching formula for \\(t\\), and an approximate single-particle energy, but misses the required coupling and excited-state results and the two-body energy expressions.",
+      "judge_prompt_sha256": "b067cd85c84f14991dc7aadff7b7dcf871febc55cf86c2e4e1040f144b0eea28"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-voluntary/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 2,
+      "primary_score": 0.45,
+      "answer_sha256": "8db97d445cfe560130169e1f46c8c141bb28ee9bf184fdb3c81534fdc9f03591",
+      "score": 0.45,
+      "judgment": "SCORE: 0.450\nREASON: The solution identifies three spin-singlet channels, derives the finite-volume matching for \\(t\\) and its continuum limit, and gives the single-particle energy, but it does not determine \\(C\\), provide the requested two-body derivation or discrete excited levels, or establish the stated second-level degeneracy.",
+      "judge_prompt_sha256": "b067cd85c84f14991dc7aadff7b7dcf871febc55cf86c2e4e1040f144b0eea28"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-fixed/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 1,
+      "primary_score": 0.45,
+      "answer_sha256": "d7e6e6c654d72097a3e73765b7409ba966a77e0f0f8369371ad4901a48f30d1d",
+      "score": 0.45,
+      "judgment": "SCORE: 0.450\nREASON: The solution identifies the three spin-singlet channels, gives the single-particle energy and matched hopping parameter, and writes explicit singlet states, but does not provide a finite numerical coupling, the requested finite-volume energy expressions, or the rubric\u2019s excited-state energies and degeneracy.",
+      "judge_prompt_sha256": "ef2b8d4ea86cf13a4833ad173b048b00719ffdfe09fd8521b54460c3d383f610"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-fixed/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 2,
+      "primary_score": 0.45,
+      "answer_sha256": "d7e6e6c654d72097a3e73765b7409ba966a77e0f0f8369371ad4901a48f30d1d",
+      "score": 0.5,
+      "judgment": "SCORE: 0.500\nREASON: The solution identifies the three singlet channels, gives the single-particle energy and exact/approximate hopping, and states the continuum threshold, but it does not provide a numerical coupling or the requested finite-volume two-body levels and degeneracy.",
+      "judge_prompt_sha256": "ef2b8d4ea86cf13a4833ad173b048b00719ffdfe09fd8521b54460c3d383f610"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-fixed/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 1,
+      "primary_score": 0.425,
+      "answer_sha256": "7313b5b5727ea9489d1a96888d95d2ccaf7fac3601905969ac61e2948151e1c5",
+      "score": 0.235,
+      "judgment": "SCORE: 0.235\nREASON: The solution identifies three spin-singlet channels, gives the approximately correct lowest nonzero energy, and derives the continuum hopping form, but does not provide the requested finite negative coupling or discrete excited-state results.",
+      "judge_prompt_sha256": "edb071cc6f89c03a7a94f4d8e81eb9573dda14ba37c3e990e4c69ec26a899021"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-fixed/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 2,
+      "primary_score": 0.425,
+      "answer_sha256": "7313b5b5727ea9489d1a96888d95d2ccaf7fac3601905969ac61e2948151e1c5",
+      "score": 0.575,
+      "judgment": "SCORE: 0.575\nREASON: The solution gives three spin-singlet examples, the matching formula for \\(t\\), and the scattering threshold, with partial credit for the energy expressions and negative finite coupling relation; it omits the requested explicit singlet combinations and numerical \\(C\\), and gives neither the required excited-state energies nor the five-fold degeneracy.",
+      "judge_prompt_sha256": "edb071cc6f89c03a7a94f4d8e81eb9573dda14ba37c3e990e4c69ec26a899021"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-short-rounds-20261001/society-fixed-3rounds/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 1,
+      "primary_score": 0.375,
+      "answer_sha256": "272fb5e62656d418d84f071d1b541ece44f5062c8a03f68c5c9c5ce8f5ba1e91",
+      "score": 0.213,
+      "judgment": "SCORE: 0.213\nREASON: The solution gives the approximate single-particle energy, lattice-to-continuum matching, and a negative cutoff-dependent coupling equation, but misses the specified singlet states, two-body energy expressions, and discrete excited-state results.",
+      "judge_prompt_sha256": "3ef1308fb8a0f473fa927aa97a6726e78131801ce75bfe0538553b25bbcc48ab"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-short-rounds-20261001/society-fixed-3rounds/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 2,
+      "primary_score": 0.375,
+      "answer_sha256": "272fb5e62656d418d84f071d1b541ece44f5062c8a03f68c5c9c5ce8f5ba1e91",
+      "score": 0.3,
+      "judgment": "SCORE: 0.300\nREASON: The solution gives the energy matching, continuum-limit hopping parameter, and a bound-state equation for \\(C\\), but does not provide the requested finite negative coupling, three specified singlet states, or the required excited-level energies and degeneracy.",
+      "judge_prompt_sha256": "3ef1308fb8a0f473fa927aa97a6726e78131801ce75bfe0538553b25bbcc48ab"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-short-rounds-20261001/society-fixed-3rounds/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 1,
+      "primary_score": 0.55,
+      "answer_sha256": "01478ece56289391439a75e01a0c5b84b218d661b9815c08e2b843c182c80c69",
+      "score": 0.625,
+      "judgment": "SCORE: 0.625\nREASON: The response covers pathway effects on redox homeostasis, Keap1/Nrf2 and transcriptional targets, and multiple optogenetic techniques, but misses or only partially matches the rubric\u2019s specific CRY2/CIB mechanisms involving Keap1 homodimerization, Nrf2 clustering, and activator binding.",
+      "judge_prompt_sha256": "96657700e66e0c23abb19bd013036f7b6048f91b09207acca1a13b89c20aa355"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-short-rounds-20261001/society-fixed-3rounds/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 2,
+      "primary_score": 0.55,
+      "answer_sha256": "01478ece56289391439a75e01a0c5b84b218d661b9815c08e2b843c182c80c69",
+      "score": 0.526,
+      "judgment": "SCORE: 0.526\nREASON: The response explains Nrf2-related homeostatic effects, lists at least six optogenetic techniques, and identifies several pathway targets, but it does not give the specified CRY2/CIB mechanisms involving Keap1 homodimerization, Nrf2 nuclear exclusion, or blocking Nrf2\u2013activator binding in the requested detail.",
+      "judge_prompt_sha256": "96657700e66e0c23abb19bd013036f7b6048f91b09207acca1a13b89c20aa355"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-short-rounds-20261001/society-fixed-3rounds/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 1,
+      "primary_score": 0.12,
+      "answer_sha256": "9df34ffd8e702b19065cdf32e67d87450bbb06cbd2c1d7307ff0bfeb6e0e8e7b",
+      "score": 0.12,
+      "judgment": "SCORE: 0.120\nREASON: The response identifies the unspecified evaporation time/extent, hydration duration, and water volume, but misses the expected no-consequence answers, DLS peaks and sizes, rapid dissolution rationale, protocol-specific salt and sucrose explanations, lyoprotectant detail, and filtration-temperature ambiguity.",
+      "judge_prompt_sha256": "938142df3ddfc8315668020081ed2b101b533058d347b58709119540960966d1"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-short-rounds-20261001/society-fixed-3rounds/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 2,
+      "primary_score": 0.12,
+      "answer_sha256": "9df34ffd8e702b19065cdf32e67d87450bbb06cbd2c1d7307ff0bfeb6e0e8e7b",
+      "score": 0.17,
+      "judgment": "SCORE: 0.170\nREASON: The answer identifies the unspecified solvent-removal endpoint and hydration duration and volume, and partially addresses shorter stirring, but misses the expected outcomes for saline, sucrose, and pre-filtration DLS and the lyoprotectant and filtration-temperature omissions.",
+      "judge_prompt_sha256": "938142df3ddfc8315668020081ed2b101b533058d347b58709119540960966d1"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-voluntary/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 1,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-voluntary/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 2,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-voluntary/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 1,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-voluntary/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 2,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 1,
+      "primary_score": 0.475,
+      "answer_sha256": "6d06cb05cc7627cdb1ea65c039b9ad1df6d9d920623ecaf2b82b31d6fa62db38",
+      "score": 0.625,
+      "judgment": "SCORE: 0.625\nREASON: The solution gives the three spin-singlet channels, the single-particle energy and lattice matching, and a regulated negative-coupling relation, but omits the specified singlet combinations and numerical excited-state results and does not provide the requested basis/operator derivation.",
+      "judge_prompt_sha256": "01d4fc7ef9a384008e1840535c9768e06d9963d67490182d51c55a0b9a7be891"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership/01-d3acd2cb-8477-4630-b8bb-b4bc22670dc8/result.json",
+      "task_id": "d3acd2cb-8477-4630-b8bb-b4bc22670dc8",
+      "repeat": 2,
+      "primary_score": 0.475,
+      "answer_sha256": "6d06cb05cc7627cdb1ea65c039b9ad1df6d9d920623ecaf2b82b31d6fa62db38",
+      "score": 0.444,
+      "judgment": "SCORE: 0.444\nREASON: The solution identifies three nucleon spin-singlet channels, derives the lattice matching and thermodynamic-limit form of \\(t\\), and gives a negative regulated expression for \\(C\\), but it misses the requested explicit two-body finite-volume energies, numerical excited levels and degeneracy, and the specified spin-singlet combinations.",
+      "judge_prompt_sha256": "01d4fc7ef9a384008e1840535c9768e06d9963d67490182d51c55a0b9a7be891"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-fixed/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 1,
+      "primary_score": 0.639,
+      "answer_sha256": "3eab2bbc1c848b055602c1fed76ffcc939c39ebd48a5606f3b95a0949070bd9e",
+      "score": 0.611,
+      "judgment": "SCORE: 0.611\nREASON: The response covers redox/homeostatic consequences, Nrf2\u2013Maf transcriptional control, several optogenetic targets, and more than six techniques, but misses key specified CRY2/CIB mechanisms, especially blocking Keap1 homodimerization and the exact Nrf2-clustering mechanism.",
+      "judge_prompt_sha256": "1ea38e51d3b949d16d0da19c37d0b07f6fc001152f9da4e40223cf387c8a8ec5"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-fixed/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 2,
+      "primary_score": 0.639,
+      "answer_sha256": "3eab2bbc1c848b055602c1fed76ffcc939c39ebd48a5606f3b95a0949070bd9e",
+      "score": 0.632,
+      "judgment": "SCORE: 0.632\nREASON: The response addresses redox/homeostasis, pathway targets and interactions, optogenetic options, and transcriptional effects, but omits the specified Keap1 homodimer-disruption mechanism and only partially matches the requested CRY2/CIB-based Nrf2 and activator interventions.",
+      "judge_prompt_sha256": "1ea38e51d3b949d16d0da19c37d0b07f6fc001152f9da4e40223cf387c8a8ec5"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-voluntary/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 1,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-voluntary/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 2,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-fixed/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 1,
+      "primary_score": 0.595,
+      "answer_sha256": "5e441b7ad9581d2d9b11cadf2f21c7d3aa2ea5f35417af88ca9112e15cda12c4",
+      "score": 0.579,
+      "judgment": "SCORE: 0.579\nREASON: The response explains pathway and homeostasis effects, identifies several relevant targets and interaction disruptions, and lists at least six optogenetic techniques, but it omits the specified CRY2/CIB mechanisms\u2014especially Keap1 homodimerization\u2014and only partially matches the requested Nrf2 and activator designs.",
+      "judge_prompt_sha256": "88db5e5f78d299eba86dc3a6003bfde1ec24654849b3e6c63a8b3dd9a48964f9"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-fixed/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 2,
+      "primary_score": 0.595,
+      "answer_sha256": "5e441b7ad9581d2d9b11cadf2f21c7d3aa2ea5f35417af88ca9112e15cda12c4",
+      "score": 0.579,
+      "judgment": "SCORE: 0.579\nREASON: The response addresses pathway homeostasis, several optogenetic targets and interaction types, and names at least six techniques, but omits the specified Keap1 homodimerization mechanism and only partially describes the required CRY2/CIB-based Nrf2 and transcriptional-complex interventions.",
+      "judge_prompt_sha256": "88db5e5f78d299eba86dc3a6003bfde1ec24654849b3e6c63a8b3dd9a48964f9"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-voluntary/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 1,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-voluntary/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 2,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-fixed/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 1,
+      "primary_score": 0.16,
+      "answer_sha256": "70065c158726107ef29b7cfe73b8decc8b0eb2ab16ba827ed9f2bbf87e004a27",
+      "score": 0.16,
+      "judgment": "SCORE: 0.160\nREASON: The solution identifies missing details about acetonitrile removal, hydration duration and volume, and filtration temperature, but misses the specified outcomes for stirring, saline, sucrose, and DLS, as well as the solubility explanation and missing lyoprotectant details.",
+      "judge_prompt_sha256": "12f67b54e750a847e9b4208f7f169c5f06c6e027dff07ae1e22388d9a7b8c27d"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/wealth-fixed/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 2,
+      "primary_score": 0.16,
+      "answer_sha256": "70065c158726107ef29b7cfe73b8decc8b0eb2ab16ba827ed9f2bbf87e004a27",
+      "score": 0.16,
+      "judgment": "SCORE: 0.160\nREASON: The solution identifies missing details about solvent removal, hydration duration and volume, and filtration temperature, but misses the specified effects, DLS peaks and sizes, solubility explanation, and lyoprotectant omission.",
+      "judge_prompt_sha256": "12f67b54e750a847e9b4208f7f169c5f06c6e027dff07ae1e22388d9a7b8c27d"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 1,
+      "primary_score": 0.25,
+      "answer_sha256": "e7e83820b568c85d90181557251c009f46d83a2cd284c97791334234d3696cf9",
+      "score": 0.6,
+      "judgment": "SCORE: 0.600\nREASON: The solution explains redox and homeostatic consequences, identifies several relevant interaction targets, and outlines more than six optogenetic techniques, but it does not provide the rubric\u2019s specific Keap1-homodimerization or CRY2/CIB-based Nrf2 and transcriptional-activator strategies.",
+      "judge_prompt_sha256": "d4fae4da28945b908510a3257fb9d6afc109ba143f8008f6c2c96d0aca0c5a1d"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership/02-30a44280-a888-42bf-913a-208aa47c8772/result.json",
+      "task_id": "30a44280-a888-42bf-913a-208aa47c8772",
+      "repeat": 2,
+      "primary_score": 0.25,
+      "answer_sha256": "e7e83820b568c85d90181557251c009f46d83a2cd284c97791334234d3696cf9",
+      "score": 0.45,
+      "judgment": "SCORE: 0.450\nREASON: The response covers homeostatic consequences, optogenetic techniques, and some relevant interaction and transcriptional effects, but misses the specified CRY2/CIB designs targeting Keap1, Nrf2, and the transcriptional activator.",
+      "judge_prompt_sha256": "d4fae4da28945b908510a3257fb9d6afc109ba143f8008f6c2c96d0aca0c5a1d"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-fixed/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 1,
+      "primary_score": 0.12,
+      "answer_sha256": "d32675e2dea3dbaf7181c9a3e9ce67952e22afbc3cf594cb310a5e205b6c114c",
+      "score": 0.12,
+      "judgment": "SCORE: 0.120\nREASON: It identifies missing solvent-removal duration/endpoint and hydration duration/volume, but misses the specified no-consequence answers, DLS peaks and sizes, solubility explanation, formulation-specific salt/sucrose conclusions, and other missing protocol details.",
+      "judge_prompt_sha256": "9640dbe215febd35eb95a1adaabda9c1280ef2e1468c4c459d23793c20626984"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-ablation-seed17-20261001/society-fixed/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 2,
+      "primary_score": 0.12,
+      "answer_sha256": "d32675e2dea3dbaf7181c9a3e9ce67952e22afbc3cf594cb310a5e205b6c114c",
+      "score": 0.12,
+      "judgment": "SCORE: 0.120\nREASON: The response identifies missing solvent-removal duration/extent and water-addition duration/volume, but misses the specified no-consequence conclusions, DLS peaks and sizes, solubility rationale, and the missing lyoprotectant and filtration-temperature details.",
+      "judge_prompt_sha256": "9640dbe215febd35eb95a1adaabda9c1280ef2e1468c4c459d23793c20626984"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 1,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    },
+    {
+      "source": "/Users/baiyu/Documents/ChatGPT/Multiagent/eom-teams/runs/k10-membership-clarity-v2-20261001/wealth-voluntary-feedback-membership/03-7c94f50a-0896-450f-8d55-00c98aca5158/result.json",
+      "task_id": "7c94f50a-0896-450f-8d55-00c98aca5158",
+      "repeat": 2,
+      "primary_score": 0.0,
+      "answer_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "score": 0,
+      "reason": "No submitted answer; no API call"
+    }
+  ],
+  "started_at": 1790919042.2558231,
+  "usage": {
+    "cost_usd": 0.017796344999999998,
+    "unconfirmed_usd": 0.0,
+    "requests": 24,
+    "input_tokens": 72290,
+    "output_tokens": 32135,
+    "cap_usd": 1
+  },
+  "updated_at": 1790921903.969117
+}
