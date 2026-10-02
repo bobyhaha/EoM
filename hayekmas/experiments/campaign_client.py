@@ -37,6 +37,7 @@ def canonical_decision(text, kind):
         "round_chat": "message",
         "round_recap": "message",
         "round_work": ("message", "candidate"),
+        "shared_work": ("message", "candidate"),
         "round_bid": "act",
         "round_membership": "leave",
         "round_join": "invitation",

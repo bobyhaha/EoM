@@ -62,7 +62,7 @@ def worker(root, cell, key):
         raise RuntimeError('Dataset changed')
     tasks = load_tasks(dataset, 'train')[:3]
     objective, bidding = plan['cells'][cell]
-    cfg = TeamConfig(**{**plan['config'], 'objective_mode': objective, 'team_bid_rule': bidding})
+    cfg = TeamConfig(**{**plan['config'], 'objective_mode': objective, 'team_bid_rule': bidding, **plan.get('cell_overrides', {}).get(cell, {})})
     state = {'cell': cell, 'status': 'running', 'results': [], 'started_at': time.time(), 'pid': os.getpid()}
 
     def tick():

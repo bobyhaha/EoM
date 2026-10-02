@@ -17,7 +17,9 @@ from hayekmas.utils.logger import logger
 from .campaign_client import CampaignClient, CampaignStop, atomic_json
 
 
-def run(root, key, deadline, *, solver_tokens=8192, solver_reasoning='medium', cap=2):
+def run(root, key, deadline, *, solver_tokens=8192, solver_reasoning='medium', cap=2, seed=7):
+    if type(seed) is not int or seed < 0:
+        raise ValueError('Invalid seed')
     if solver_tokens not in (8192,16384) or solver_reasoning not in ('medium','high') or not 0 < cap <= 2:
         raise ValueError('Unsupported original-reference settings')
     root.mkdir(parents=True, exist_ok=False)
@@ -26,14 +28,20 @@ def run(root, key, deadline, *, solver_tokens=8192, solver_reasoning='medium', c
     for section, overrides in spec['original_overrides'].items():
         raw['mas'][section].update(overrides)
     cfg = load_research_runtime_config(raw)
-    state = {'status': 'running', 'results': [], 'started_at': time.time()}
+    state = {'status': 'running', 'results': [], 'started_at': time.time(), 'pid': os.getpid()}
 
     def tick():
         state.update(usage=client.usage(), updated_at=time.time())
         atomic_json(root / 'status.json', state)
 
-    client = CampaignClient(key, root, deadline, cap=cap, tick=tick)
-    atomic_json(root / 'plan.json', {'scope': 'Fresh untrained original EoM k10 reference; three matched development tasks; seed7; no cross-task carryover.',
+    class BoundedClient(CampaignClient):
+        def _generate_impl(self, *args, **kwargs):
+            if (root / 'STOP').exists() or (root.parent / 'STOP').exists():
+                raise CampaignStop('Study stop requested')
+            return super()._generate_impl(*args, **kwargs)
+
+    client = BoundedClient(key, root, deadline, cap=cap, tick=tick)
+    atomic_json(root / 'plan.json', {'seed': seed, 'scope': f'Fresh untrained original EoM k10 reference; three matched development tasks; seed{seed}; no cross-task carryover.',
         'config': asdict(cfg.mas), 'cap_usd': cap, 'deadline': deadline,
         'solver_tokens':solver_tokens, 'solver_reasoning':solver_reasoning,
         'comparability': f'Native original loop and fixed individual bids; {solver_tokens} {solver_reasoning} solver output vs team16384 high. Roles, early stopping and total compute still differ.'})
@@ -44,7 +52,7 @@ def run(root, key, deadline, *, solver_tokens=8192, solver_reasoning='medium', c
             state.update(task_id=task.id, task_number=index+1)
             client.context = {'arm': 'original-reference', 'task_id': task.id, 'task_number': index+1}
             tick()
-            random.seed(7)
+            random.seed(seed)
             engine = HayekMAS(cfg.mas)
             trainer = ResearchTrainer(client, cfg)
             agents = create_research_agents(client) + create_research_agents(client)
@@ -88,7 +96,8 @@ if __name__ == '__main__':
     p.add_argument('--deadline', type=float, required=True)
     p.add_argument('--solver-tokens', type=int, default=8192, choices=(8192,16384))
     p.add_argument('--solver-reasoning', default='medium', choices=('medium','high'))
+    p.add_argument('--seed', type=int, default=7)
     p.add_argument('--cap', type=float, default=2)
     a = p.parse_args()
     key = os.environ.get('OPENROUTER_API_KEY') or getpass.getpass('OpenRouter API key (hidden): ')
-    run(a.root.resolve(), key, a.deadline, solver_tokens=a.solver_tokens, solver_reasoning=a.solver_reasoning, cap=a.cap)
+    run(a.root.resolve(), key, a.deadline, solver_tokens=a.solver_tokens, solver_reasoning=a.solver_reasoning, cap=a.cap, seed=a.seed)
