@@ -8,6 +8,29 @@ from hayekmas.utils.llm import LLMConfig, get_llm_client
 
 
 INSTRUCTIONS = {
+    "round_membership": (
+        "Briefly discuss next-round membership with the population and make one proposal. Return "
+        '{"leave":false, "invite":"agent name or null", "message":"short public message", "reason":"short reason"}. '
+        "Use JSON null for no invitation. leave=true exits your current team. You may leave AND invite one "
+        "agent in this call. All departures are applied before invitations. An invite can succeed only if its "
+        "recipient is then solo and explicitly accepts. Keeping membership is the default; there are no "
+        "automatic joins, assigned roles, kicks or unilateral merges."
+    ),
+    "round_join": (
+        "You have valid invitations after this round's membership proposals. Accept at most one or decline all. "
+        'Return {"invitation":"listed invitation id or null", "reason":"short explanation"}. '
+        "Use JSON null to stay solo. You cannot be added without your acceptance. No further invitation pass follows."
+    ),
+    "round_commit": (
+        "The private discussion is complete. Cast ONE binding vote on whether your TEAM should act this round, "
+        "and authorize only your own contribution. Other current ballots are hidden. Return "
+        '{"act":true, "contribution":number, "reason":"short explanation"}. '
+        "A strict majority of all members must vote yes; ties and invalid ballots do not activate the team. "
+        "act=false sets your own contribution to zero. You may vote yes with zero money. If the team abstains, "
+        "all pledges are canceled. Otherwise its bid is the sum of members' valid personal pledges; only a "
+        "winning positive bid is paid. You cannot commit another member's wealth. No forced deadline action. "
+        "All members still receive R/N for accepted team work, irrespective of pledge or vote."
+    ),
     "coordinate": (
         "Team formation has ended. Decide whether to consent to the announced maximum coordination fee "
         'for this round. Return {"participate":true, "reason":"short explanation"} or false to leave. '
@@ -170,6 +193,23 @@ class DemoPolicy:
             result = {
                 "strategy": "Preserve capital by contributing a small fraction of wealth. Check arithmetic before voting."
             }
+        elif phase == "round_membership":
+            size = len(observation["roster"])
+            own = int(agent.name.split("-")[-1])
+            offset = (observation["episode"] + observation["step"]) % size
+            peer = f"agent-{(offset + (((own - offset) % size) ^ 1)) % size}"
+            result = {"leave": agent.team_tag is not None, "invite": peer if peer != agent.name else None,
+                      "message": "Would you like to try this partnership?", "reason": "Try a new pairing this round."}
+        elif phase == "round_join":
+            result = {"invitation": observation["invitations"][0]["id"], "reason": "I accept this partnership."}
+        elif phase == "round_commit":
+            # Scripted fixture: show some collective abstentions in the replay.
+            # This is not a learned strategy or evidence about model behavior.
+            first = min(int(m["name"].split("-")[-1]) for m in observation["members"])
+            active = (first + observation["step"]) % 3 != 2
+            result = {"act": active, "contribution": round(agent.wealth * self.rng.uniform(.03, .12), 6) if active else 0,
+                      "reason": "Scripted demo vote: contribute this round." if active else
+                                "Scripted demo vote: let another team contribute this round."}
         elif phase == "formation":
             invitations = observation["invitations"]
             if (

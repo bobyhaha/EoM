@@ -35,7 +35,8 @@ class TeamMAS:
         for i in range(config.num_agents):
             agent = TeamAgent(f"agent-{i}", config.initial_wealth)
             if config.interaction_protocol == "rounds":
-                agent.frozen_system_prompt = agent.ROUND_SYSTEM_PROMPT
+                agent.frozen_system_prompt = (agent.COMPACT_ROUND_SYSTEM_PROMPT if config.round_schedule == "compact"
+                                              else agent.ROUND_SYSTEM_PROMPT)
             self.population.add_agent(agent)
         self.round = 0
         self.step = None
@@ -70,6 +71,10 @@ class TeamMAS:
         self.emit(
             "initialized", condition=config.condition, backend=policy.label, config=asdict(config), roster=self.roster()
         )
+
+    @property
+    def compact_rounds(self):
+        return self.config.interaction_protocol == "rounds" and self.config.round_schedule == "compact"
 
     @property
     def agents(self):
@@ -125,6 +130,8 @@ class TeamMAS:
         return bidding + self.collaboration_reserve(largest)
 
     def bidding_turns(self, member_count):
+        if self.compact_rounds:
+            return 1
         return self.config.bidding_turns if member_count > 1 and self.config.bidding_mode == "negotiated" else 1
 
     def collaboration_reserve(self, member_count):
@@ -372,6 +379,11 @@ class TeamMAS:
         # Membership and wealth are frozen throughout negotiation, bidding and settlement.
         groups = self.groups()
         opening_wealth = {a.name: a.wealth for a in self.agents}
+        if self.compact_rounds:
+            from .compact_rounds import commit
+
+            contributions, activation, team_activation = commit(self, task, groups, opening_wealth)
+            return self.settle_auction(groups, opening_wealth, contributions, activation, team_activation)
         contributions = {a.name: 0.0 for a in self.agents}
         activation = {a.name: False for a in self.agents}
         for group in groups:
@@ -450,6 +462,10 @@ class TeamMAS:
                 self.remember(agent, f"Committed {contributions[agent.name]} to {group}'s bid after discussion.")
         if self.config.bidding_mode == "sealed" and not any(contributions.values()):
             self.repair_funding(task, groups, opening_wealth, contributions)
+        return self.settle_auction(groups, opening_wealth, contributions, activation)
+
+    def settle_auction(self, groups, opening_wealth, contributions, activation, team_activation=None):
+        """Shared original payment chain; compact abstentions arrive with zero bids."""
         for agent in self.agents:
             agent.set_bid(contributions[agent.name])
         for team in self.team_manager.active_teams(self.round):
@@ -494,6 +510,7 @@ class TeamMAS:
             credits=credits,
             burned=paid if not credits else 0.0,
             **({"activation": activation} if self.config.interaction_protocol == "rounds" else {}),
+            **({"team_activation": team_activation} if team_activation is not None else {}),
         )
         return winner, members, contributions, opening_wealth
 

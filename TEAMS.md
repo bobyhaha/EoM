@@ -9,7 +9,8 @@ the supplied implementation notes, and the subsequent requirements for
 
 ## New protocol: teams within each decision round
 
-Use `teams.interaction_protocol: "rounds"`. This is a separately selectable
+Use `teams.interaction_protocol: "rounds"`, with `round_schedule: "compact"`
+(the default round schedule). This is a separately selectable
 mechanism; saved legacy results are not rerun or relabeled. On October 1, 2026,
 the upstream HEAD was `d272266f7d6a0c302b7af5d20f1326b63c5656fb`. The local
 original `base/mas.py`, `base/config.py`, `base/population.py`, and
@@ -27,14 +28,23 @@ and publish work within that episode. For backward-compatible storage,
 decision rounds per episode, event `round` identifies the episode, and event
 `step` identifies its decision round (both zero based).
 
-1. Every decision round starts with short population communication. Agents see
-   the public task and can invite, accept, leave or stay, with a short reason.
-   Team membership changes only by consent.
-2. Every team discusses freely on its shared scratchpad before the auction.
-3. Each member returns an explicit `act` decision and a personal monetary
-   pledge, and can discuss/revise both. `act: false` sets that member's pledge
-   to zero. A positive team sum enters the auction. No member can spend another
-   member's money. Zero-money members can still collaborate and earn rewards.
+1. Every decision round starts with one short public membership proposal per
+   agent: stay or leave, optionally invite one person, and explain briefly.
+   Departures are applied before invitations. Only solo recipients with valid
+   invitations get an additional acceptance/decline call, at most one each.
+   This allows a late invitation to be accepted without three full passes.
+   Team membership changes only by consent; a departure and new invitation
+   can be proposed together.
+2. Every member gets one free-form message on the team's private scratchpad.
+   Members can discuss readiness, the problem, and proposed personal amounts.
+3. Each member makes one binding `act` vote **for the team** and authorizes
+   their own pledge. Everyone sees the completed discussion; current ballots
+   stay hidden until all members decide. A **strict majority of all members**
+   must vote yes. Ties and invalid ballots do not activate the team; all its
+   pledges are then canceled. Otherwise a positive sum enters the auction.
+   `act: false` makes that member's pledge zero. Voting yes with zero money is
+   allowed. No member can spend another's money. All members of an accepted
+   contribution, including no voters and zero-money members, earn path rewards.
 4. The winning team uses its shared discussion to propose and vote on a public
    contribution. Intermediate rounds add work to the common solution; the
    final round proposes a complete answer. No permanent roles, leader,
@@ -68,15 +78,24 @@ wealth. Bid payments remain separate: winners pay their own pledges, later
 bids transfer equally to the previous winning round's recorded members, and
 the first winning bid burns. Switching cannot redirect a past team's payment.
 
-An empty intermediate discussion does not end the episode. Calls are reserved
-for finalization; tight budgets can shorten optional discussion or finish an
-episode early, with explicit events. If no team funds the final round, a seeded
-lottery selects an existing team to attempt finalization without charging a
-bid. This recovery action earns path credit if its answer is submitted. A valid
-final proposal survives malformed voting through a logged candidate lottery.
-If every member explicitly abstains or fails to produce valid final text, no
-answer is invented and the reward stays zero. This recovery is a deliberate
-addition, not behavior claimed to be identical to upstream EoM.
+An empty intermediate round does not end the episode. Calls are reserved for
+discussion, the binding ballots and finalization; tight budgets may skip a
+membership window or finish early, with explicit events. If no team activates
+with a positive bid at the deadline, **no team is forced to act**: there is no
+final answer and reward is zero. A winning team's real final proposal can still
+survive malformed candidate votes through a logged candidate lottery. This
+does not override a team's act/abstain decision or fabricate an answer.
+
+`round_schedule: "full"` retains the previous round schedule for reproducibility:
+one opening message, three configured membership passes, two configured private
+discussion turns and two configured bid turns per member. It uses individual
+activation and a free team lottery if the deadline is unfunded. Compact changes
+those rules explicitly; full-versus-compact is therefore a bundled mechanism
+comparison, not a clean single-variable ablation. Legacy EoM is unchanged.
+`formation_turns` and `bidding_turns` control full/legacy schedules; compact has
+one proposal plus targeted replies and one ballot regardless of those settings.
+`discussion_turns` still controls the winner's substantive intermediate work
+(two turns by default); compact pre-bid chat always has one turn.
 
 Round teaming requires `bidding_mode: negotiated`, `collaboration_mode:
 discussion`, and `finalization_enabled: true`. The `dynamic` condition offers
@@ -124,11 +143,27 @@ are **study specifications**, not inputs for the old campaign launcher. A new
 budget-enforcing launcher is required before paid execution. The estimator
 does not load an API key or make requests.
 
-The full ten-round schedule uses about eight control/discussion calls per
-agent per round, before the winning team's work. It is much larger than the
-earlier experiment, which often ended before producing an answer. The estimate
-assumes complete episodes, counts roster growth, and includes grader costs.
-Its low/central/high values are assumptions, not confidence intervals or caps.
+With lambda=0, compact uses **3k + I** calls before each winning action: k
+membership proposals, I invitation replies (0 through k), k private messages
+and k combined act/pledge ballots. At k=10 that is 30–40 rather than 80. The
+central estimate assumes I=0.5k, not a measured switching rate. One seed of 40
+training plus 19 test tasks at ten rounds projects about $29 for teams rather
+than $51 under the prior full schedule, before a 20% allowance; original EoM
+remains about $4. Winning-team work, final proposals and judging budgets are
+preserved. No savings are assumed from abstention or caching. These estimates
+use the stored Luna prices and unmeasured mean token assumptions, not spending
+caps. The generated plan includes exact phase arithmetic and full comparisons.
+
+We expect substantive reasoning and answer checking to influence task score
+more directly than repeated membership/bidding administration, but this has
+not been established by paid experiments. Equal R/N is a payment rule, not a
+causal estimate of each round's value. Measure final environment score,
+completion and dollars separately from amplified agent wealth. Proposed
+ablations hold activation/reward/finalization fixed while changing formation
+frequency, private chat length or repeated bidding individually. To estimate a
+round's marginal value, remove its public contribution and rerun the remaining
+episode on paired tasks/seeds. Those additional runs are not part of the
+prepared budget and are not authorized to execute.
 
 Compare original and team arms at matched population sizes, model, training
 exposure, and per-task API budgets; preserve a separately labeled upstream
@@ -156,8 +191,10 @@ work is not guaranteed useful. Large populations can add redundancy and
 coordination costs rather than expertise. These are mechanism-derived
 hypotheses, not observations from the scripted demonstration. Track team sizes,
 membership duration, unique contributions, pledge inequality, and task score
-separately. Keep logged finalization lotteries visible: an unfunded recovery
-changes incentives and should be isolated in a future ablation.
+separately. Compact majority activation may reduce unilateral expensive actions
+but can also create deadlock (a two-person team needs both votes). Track all
+abstentions, canceled pledges and deadline failures. Full-schedule finalization
+lotteries remain visible in historical replays; compact removes that recovery.
 
 ### Coordination fee (first study: lambda = 0)
 

@@ -5,6 +5,7 @@
   "plots": false,
   "teams": {
     "interaction_protocol": "rounds",
+    "round_schedule": "compact",
     "condition": "dynamic",
     "num_agents": 6,
     "rounds": 3,

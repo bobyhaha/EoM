@@ -8,7 +8,7 @@ from pathlib import Path
 VISIBLE = {
     "decision_round_started", "membership_window", "membership_committed", "membership_decision", "activation",
     "path_reward", "finalization_recovery", "selection_fallback",
-    "coordination_fee", "coordination_decision",
+    "coordination_fee", "coordination_decision", "team_activation", "invitation_skipped",
     "invited",
     "joined",
     "left",
@@ -70,6 +70,7 @@ def replay_data(engine, status):
         "backend": engine.policy.label,
         "condition": engine.config.condition,
         "interaction_protocol": engine.config.interaction_protocol,
+        "round_schedule": engine.config.round_schedule,
         "coordination_fee_lambda": engine.config.coordination_fee_lambda,
         "bidding_mode": engine.config.bidding_mode,
         "collaboration_mode": engine.config.collaboration_mode,

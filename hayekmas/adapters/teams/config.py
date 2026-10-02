@@ -5,6 +5,7 @@ import math
 @dataclass
 class TeamConfig:
     interaction_protocol: str = "legacy"
+    round_schedule: str = "compact"
     coordination_fee_lambda: float = 0.0
     condition: str = "dynamic"
     seed: int = 7
@@ -39,6 +40,8 @@ class TeamConfig:
     def __post_init__(self):
         if self.interaction_protocol not in {"legacy", "rounds"}:
             raise ValueError("interaction_protocol must be legacy or rounds")
+        if self.round_schedule not in {"compact", "full"}:
+            raise ValueError("round_schedule must be compact or full")
         if self.interaction_protocol == "rounds" and (
             self.bidding_mode != "negotiated" or self.collaboration_mode != "discussion"
             or not self.finalization_enabled

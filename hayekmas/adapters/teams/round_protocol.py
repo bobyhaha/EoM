@@ -32,6 +32,10 @@ def formation_window(engine, task, enabled, *, keep_calls):
     """A public short conversation followed by consent-based membership actions."""
     if not enabled or not engine.formation_enabled():
         return
+    if engine.compact_rounds:
+        from .compact_rounds import form
+
+        return form(engine, task, keep_calls=keep_calls)
     cost = len(engine.agents) * (engine.config.formation_turns + 1)
     if engine.remaining_calls() < cost + keep_calls:
         engine.emit("phase_skipped", phase="round_membership", reason="reserved answer calls")
@@ -118,7 +122,8 @@ def discuss_before_bidding(engine, task, keep_calls):
             engine.emit("phase_skipped", phase="pre_bid_discussion", reason="reserved answer calls; no fee charged")
             return fees
         fees = coordinate(engine, task)
-    for turn in range(engine.config.discussion_turns):
+    turns = 1 if engine.compact_rounds else engine.config.discussion_turns
+    for turn in range(turns):
         if engine.remaining_calls() < len(engine.agents) + keep_calls:
             engine.emit("phase_skipped", phase="pre_bid_discussion", reason="reserved answer calls")
             break
@@ -128,7 +133,10 @@ def discuss_before_bidding(engine, task, keep_calls):
             engine.rng.shuffle(order)
             for agent in order:
                 reply = engine.ask("round_chat", agent, engine.scratchpad(
-                    task, members, transcript, phase="pre_bid_discussion", turn=turn))
+                    task, members, transcript, phase="pre_bid_discussion", turn=turn,
+                    **({"next_decision": "One simultaneous act vote and personal pledge per member; "
+                        "strict majority activates the team. Discuss readiness and proposed contributions now."}
+                       if engine.compact_rounds else {})))
                 message = reply.get("message", "")
                 if not isinstance(message, str):
                     engine.invalid(agent, "round_chat", "message must be text")
@@ -236,10 +244,13 @@ def run_episode(engine, env, *, formation=True, reflection=True):
         if engine.remaining_calls() < reserve(engine):
             raise BudgetExceeded("Insufficient calls for a complete final-answer window")
         # Every round starts with public membership discussion, then private team work.
+        discussion_reserve = (len(engine.agents) * (2 if engine.config.coordination_fee_lambda > 0 else 1)
+                              if engine.compact_rounds else 0)
         formation_window(engine, task, formation,
-                         keep_calls=len(engine.agents) * engine.config.bidding_turns + reserve(engine))
+                         keep_calls=len(engine.agents) * engine.bidding_turns(engine.config.max_team_size)
+                         + reserve(engine) + discussion_reserve)
         final = step == engine.config.max_steps - 1
-        if engine.remaining_calls() >= auction_calls(engine) + reserve(engine):
+        if engine.remaining_calls() >= auction_calls(engine) + reserve(engine) + discussion_reserve:
             fees = discuss_before_bidding(engine, task, auction_calls(engine) + reserve(engine))
             for name, fee in fees.items():
                 coordination_paid[name] += fee
@@ -251,19 +262,24 @@ def run_episode(engine, env, *, formation=True, reflection=True):
                 for agent in engine.previous_members:
                     bid_income[agent.name] += payment / len(engine.previous_members)
             work_calls = len(members) * (engine.config.discussion_turns + 1)
-            if engine.remaining_calls() < work_calls + auction_calls(engine) + reserve(engine):
+            if engine.remaining_calls() < work_calls + auction_calls(engine) + reserve(engine) + discussion_reserve:
                 final = True
                 engine.emit("phase_skipped", phase="later_rounds", reason="reserved answer calls")
         else:
+            if engine.compact_rounds:
+                engine.emit("phase_skipped", phase="auction",
+                            reason="insufficient calls for discussion, ballots and final answer reserve")
             winner, members, contributions, opening = None, (), dict(paid), balances(engine)
             contributions = {name: 0.0 for name in contributions}
             final = True
-        if not members and final:
+        if not members and final and not engine.compact_rounds:
             groups = engine.groups()
             winner = engine.rng.choice(sorted(groups))
             members = tuple(groups[winner])
             engine.emit("finalization_recovery", reason="no funded final-round team", winner=winner,
                         members=[agent.name for agent in members], bid_charged=0.0)
+        elif not members and final:
+            engine.emit("no_submission", reason="no funded, majority-approved team at deadline; abstention respected")
         action = select_action(engine, task, winner, members, final) if members else None
         if action is not None:
             result = env.apply(action)

@@ -7,6 +7,15 @@ from hayekmas.experiments.population_study import KS, estimate, prepare, prior_s
 
 
 class PopulationStudyTests(unittest.TestCase):
+    def test_compact_cost_preserves_winning_work_and_full_reference_estimate(self):
+        compact, full = estimate(10)["teams"], estimate(10, schedule="full")["teams"]
+        self.assertAlmostEqual(full["usd"], 51.25935)
+        for phase in ("winning_work", "votes", "final_proposals", "judge"):
+            self.assertEqual(compact["phases"][phase], full["phases"][phase])
+        self.assertEqual(compact["phases"]["act_and_pledge"]["calls"], 5900)
+        self.assertEqual(compact["phases"]["invitation_replies"]["calls"], 2950)
+        self.assertLess(compact["usd"], full["usd"] * .6)
+
     def test_estimates_increase_with_population_and_context(self):
         for arm in ("original", "teams"):
             values = [estimate(k)[arm]["usd"] for k in KS]

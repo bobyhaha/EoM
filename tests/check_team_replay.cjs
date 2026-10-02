@@ -72,6 +72,13 @@ if (auctionIndex>=0) {
 seek(0);
 assert.ok(!$('round-outcome').textContent.includes('score'));
 if(payload.interaction_protocol==='rounds') {
+  if(payload.round_schedule==='compact') {
+    const activation=round.events.find(e=>e.event==='team_activation');
+    assert.ok(activation, 'Compact replay records collective act/abstain decisions');
+    assert.ok(document.querySelector(`[data-event="${round.events.indexOf(activation)+1}"]`).textContent.includes('yes votes'),
+      'Collective decision exposes vote count and threshold');
+    assert.ok(!round.events.some(e=>e.event==='finalization_recovery'), 'Compact never forces an unfunded final action');
+  }
   const feeIndex=round.events.findIndex(e=>e.event==='coordination_fee');
   if(feeIndex>=0){
     seek(feeIndex);

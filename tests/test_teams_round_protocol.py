@@ -60,7 +60,7 @@ class RoundPolicy:
 
 
 def engine(policy=None, **options):
-    cfg = TeamConfig(**{"interaction_protocol": "rounds", "num_agents": 4, "max_steps": 3,
+    cfg = TeamConfig(**{"interaction_protocol": "rounds", "round_schedule": "full", "num_agents": 4, "max_steps": 3,
                         "formation_turns": 3, "max_calls": 1000, **options})
     result = TeamMAS(cfg, policy or RoundPolicy())
     result.team_manager.create_team(result.agents[:2], 0)
@@ -251,6 +251,7 @@ class RoundProtocolTests(unittest.TestCase):
             }, out=root / "run")
             requests = [json.loads(line) for line in (root / "run/requests.jsonl").read_text().splitlines()]
             tests = [r for r in requests if r["phase"] == "test"]
-            self.assertTrue(any(r["kind"] == "formation" for r in tests))
-            self.assertTrue(any(r["kind"] == "round_recap" for r in tests))
+            self.assertTrue(any(r["kind"] == "round_membership" for r in tests))
+            self.assertTrue(any(r["kind"] == "round_commit" for r in tests))
+            self.assertFalse(any(r["kind"] in {"formation", "round_recap", "round_bid"} for r in tests))
             self.assertFalse(any(r["kind"] in {"reflect", "improve"} for r in tests))

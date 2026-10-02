@@ -30,17 +30,17 @@ SCENARIOS = {
                 chat_input=4000, bid_input=5000, control_output=40, chat_output=128,
                 bid_output=80, work_input=8000, work_output=1500,
                 final_input=10000, final_output=2500, judge_input=5000, judge_output=1000,
-                reflection_fraction=0, wake_fraction=.35, trials=1, birth_fraction=.1),
+                reflection_fraction=0, invitation_reply_fraction=.2, wake_fraction=.35, trials=1, birth_fraction=.1),
     "central": dict(formation_base=6500, roster_per_agent=80, recap_base=6500,
                     chat_input=8000, bid_input=8000, control_output=80, chat_output=256,
                     bid_output=160, work_input=12000, work_output=2500,
                     final_input=16000, final_output=5000, judge_input=8000, judge_output=1500,
-                    reflection_fraction=.1, wake_fraction=.6, trials=1.5, birth_fraction=.35),
+                    reflection_fraction=.1, invitation_reply_fraction=.5, wake_fraction=.6, trials=1.5, birth_fraction=.35),
     "high": dict(formation_base=12000, roster_per_agent=200, recap_base=12000,
                  chat_input=14000, bid_input=14000, control_output=256, chat_output=512,
                  bid_output=320, work_input=20000, work_output=4000,
                  final_input=28000, final_output=8000, judge_input=12000, judge_output=3000,
-                 reflection_fraction=.5, wake_fraction=1, trials=2, birth_fraction=1),
+                 reflection_fraction=.5, invitation_reply_fraction=1, wake_fraction=1, trials=2, birth_fraction=1),
 }
 
 
@@ -53,9 +53,11 @@ def priced(calls, inputs, outputs):
             "usd": calls * (inputs * PRICE["input_per_million"] + outputs * PRICE["output_per_million"]) / 1e6}
 
 
-def estimate(k, scenario="central", *, steps=10, train=40, test=19):
+def estimate(k, scenario="central", *, steps=10, train=40, test=19, schedule="compact"):
     """One seed; all steps used, average winning team size three (cap four)."""
     s, episodes, m = SCENARIOS[scenario], train + test, 3
+    if schedule not in {"compact", "full"}:
+        raise ValueError("Unknown round schedule")
     roster = s["roster_per_agent"] * k
     team = {
         "membership_actions": priced(episodes * steps * 3 * k, s["formation_base"] + roster, s["control_output"]),
@@ -69,6 +71,17 @@ def estimate(k, scenario="central", *, steps=10, train=40, test=19):
         "reflection_choices": priced(train * k, 1000, 16),
         "reflection_edits": priced(train * k * s["reflection_fraction"] * 2, 4000, 1000),
     }
+    if schedule == "compact":
+        team.pop("membership_actions")
+        team.pop("opening_discussion")
+        team.pop("bid_negotiation")
+        team.update({
+            "membership_proposals": priced(episodes * steps * k, s["formation_base"] + roster, s["control_output"]),
+            "invitation_replies": priced(episodes * steps * k * s["invitation_reply_fraction"],
+                                         s["formation_base"] + roster, s["control_output"]),
+            "private_discussion": priced(episodes * steps * k, s["chat_input"], s["chat_output"]),
+            "act_and_pledge": priced(episodes * steps * k, s["bid_input"], s["bid_output"]),
+        })
     trials = train * s["trials"] + test
     original = {
         "wakeups": priced(trials * steps * k * s["wake_fraction"], s["chat_input"] / 2, 60),
@@ -142,7 +155,7 @@ def prepare(destination):
                                         for arm in ("original", "teams")) + reference["calls"]}
     cells = []
     for k in KS:
-        team_config = TeamConfig(interaction_protocol="rounds", coordination_fee_lambda=0.0,
+        team_config = TeamConfig(interaction_protocol="rounds", round_schedule="compact", coordination_fee_lambda=0.0,
                                  num_agents=k, rounds=40, max_steps=10,
                                  formation_turns=3, discussion_turns=2, bidding_turns=2, max_team_size=4,
                                  action_tokens=1024, solution_tokens=8192, judge_tokens=8192,
@@ -181,8 +194,8 @@ def prepare(destination):
             "tasks": {split: [{"id": t.id, "subject": t.subject} for t in ts] for split, ts in tasks.items()},
             "dataset_sha256": dataset_hashes, "cells": cells,
             "core_episodes_per_seed": 8 * 59, "core_episodes_three_seeds": 8 * 59 * 3,
-            "round_sequence": ["Public membership conversation", "Invite / accept / leave / stay with a brief reason",
-                               "Private team discussion", "Negotiate personal bids; total team bid is their sum",
+            "round_sequence": ["One public membership proposal per agent", "Targeted replies to valid invitations",
+                               "One private discussion turn per member", "One act vote + personal pledge; strict majority activates team",
                                "Select and charge winning team", "Winning team publishes one action"],
             "coordination_fee": {"lambda": 0.0, "rule": "Per member per discussion round: lambda * (team size - 1).",
                                  "first_study": "Disabled: no charge and no extra consent calls.",
@@ -206,18 +219,33 @@ def prepare(destination):
                                   "No causal claim about communication alone; reward, selection and finalization also differ.",
                                   "Team-size cap four is an engineering constraint, not evidence of an optimal team size.",
                                   "The first study sets coordination lambda to zero; positive fee ablations are not scheduled.",
-                                  "Unfunded final-round recovery uses a logged lottery. Report its frequency; it differs from a funded auction.",
+                                  "Compact activation requires a strict majority. Ties abstain; no forced unfunded finalization. "
+                                  "Measure no-bid rounds and final-answer failures; lower spend alone is not an improvement.",
                                   "Track environment score separately from amplified wealth; larger payouts are not better answers."],
             "metrics": ["paired task score and completion rate", "pass rate at fixed threshold", "billed and reserved cost",
-                        "request/token counts", "team size and membership switches per round", "membership reasons",
+                        "request/token counts by phase", "team activation votes and abstentions", "team size and membership switches per round", "membership reasons",
                         "pledges, payments and path credits per agent", "actual strategy edits and population changes"],
             "pricing": PRICE, "cost_scenarios": SCENARIOS, "estimates": estimates, "totals": totals,
             "prior_spending": prior_spend(),
+            "schedule_comparison": {str(k): {"full": estimate(k, schedule="full")["teams"],
+                                             "compact": estimates["central"][str(k)]["teams"]} for k in KS},
+            "value_ablation_plan": [
+                "Measure final environment score and completion per dollar, not amplified agent wealth.",
+                "Compare compact and full schedules on paired training tasks/seeds; the comparison bundles call schedule, "
+                "activation rule and final recovery changes, so it does not isolate one cause.",
+                "In separate controlled ablations hold activation/finalization/reward fixed and vary membership windows, "
+                "pre-bid discussion length or repeated pledges one at a time. Preserve winning-work budgets.",
+                "To estimate an accepted round's marginal value, omit its public work and rerun the suffix on matched seeds. "
+                "Equal R/N payments and a final grade alone do not provide causal attribution.",
+                "Ablations are proposals only; not included in the eight-cell budget and not authorized to run."],
             "estimate_limits": "Scenario calculations, not confidence intervals or spending guarantees. Assume ten rounds "
-                "and full communication windows. No cache discount. Singleton bidding can use fewer calls. A 20% planning "
+                "with an active winning team every round. Compact uses one membership proposal, one private message and "
+                "one act/pledge ballot per agent; invitation reply fractions are 0.2/0.5/1.0 in low/central/high scenarios "
+                "and are unmeasured assumptions. No abstention or cache discount. Winning work remains two turns. A 20% planning "
                 "allowance covers some retries/corrections, not an absolute bound. Calibrate on training tasks before launch.",
-            "runtime": "At the old team's median 1.85 seconds between request starts, the k=100 team cell alone "
-                "projects roughly 10 days per seed if kept sequential. This is not a 12-hour study. Parallel independent "
+            "runtime": f"At the old team's median 1.85 seconds between request starts, the k=100 compact team cell alone "
+                f"projects roughly {estimates['central']['100']['teams']['calls'] * 1.85 / 86400:.1f} days per seed if kept sequential. "
+                "This is not a 12-hour study. Parallel independent "
                 "cells do not remove sequential dependencies within membership and shared discussions.",
             "next_execution_work": "Build a launcher that consumes these cell specs and enforces aggregate authorization. "
                 "Preparation deliberately has no API client or launch operation.",
@@ -267,9 +295,37 @@ These are scenario estimates, not measured costs or spending authorization.</sma
 <h2>Per population, one seed</h2><p class="muted">Central estimate (low–high); raw model cost before the shared allowance and reference baselines.</p>
 <div class="scroll"><table><thead><tr><th>k</th><th>Original EoM variant</th><th>Round teams</th><th>Team requests</th><th>Cell specs</th></tr></thead><tbody>'''
     html += ''.join(rows) + '</tbody></table></div><h2>Why the team estimate grows</h2>'
-    html += '<p>The full schedule calls every agent eight times per round before the winning action: one opening message, '
-    html += 'three membership turns, two private discussion turns and two bid turns. Membership prompts also grow with the roster. '
-    html += 'At k=100, that is approximately 8,000 calls per episode before winning-team work and reflection.</p>'
+    html += '<p>The compact schedule uses 3k + I calls before the winning action: k membership proposals, I valid invitation '
+    html += 'replies (0 ≤ I ≤ k), k private discussion messages, and k combined act/pledge ballots. No assigned leader. '
+    html += 'A strict majority activates each team; only members can authorize their own money. '
+    html += 'At k=10 this is 30–40 calls per round, down from 80. Winning-team reasoning and final-answer budgets are preserved. '
+    html += 'Membership prompts still grow with the roster.</p>'
+    before = plan['schedule_comparison']['10']['full']['usd']
+    after = plan['schedule_comparison']['10']['compact']['usd']
+    html += f'<p>k=10 team cell, central estimate: <strong>${before:.2f} → ${after:.2f}</strong> '
+    html += '(40 training + 19 test tasks; one seed; before allowance). These are projections, not measured savings.</p>'
+    full = plan['schedule_comparison']['10']['full']['phases']
+    compact = plan['schedule_comparison']['10']['compact']['phases']
+    cost_rows = [
+        ('Formation and public messages', ['membership_actions', 'opening_discussion'],
+         ['membership_proposals', 'invitation_replies']),
+        ('Private pre-bid discussion', ['private_discussion'], ['private_discussion']),
+        ('Bidding / act decision', ['bid_negotiation'], ['act_and_pledge']),
+        ('Winning work + answer proposals + selection', ['winning_work', 'final_proposals', 'votes'],
+         ['winning_work', 'final_proposals', 'votes']),
+        ('Grading + reflection', ['judge', 'reflection_choices', 'reflection_edits'],
+         ['judge', 'reflection_choices', 'reflection_edits']),
+    ]
+    html += '<div class="scroll"><table><thead><tr><th>k=10 phase</th><th>Previous full</th><th>Compact</th></tr></thead><tbody>'
+    for label, old_keys, new_keys in cost_rows:
+        old_cost = math.fsum(full[p]['usd'] for p in old_keys)
+        new_cost = math.fsum(compact[p]['usd'] for p in new_keys)
+        html += f'<tr><td>{label}</td><td>${old_cost:.2f}</td><td>${new_cost:.2f}</td></tr>'
+    html += '</tbody></table></div>'
+    html += '<h2>What is worth spending on?</h2><p>Working hypothesis: preserve substantive winning-team reasoning and '
+    html += 'answer checking; remove repeated administration first. An equal R/N payout is an incentive rule, '
+    html += 'not evidence that each accepted round was equally useful. No paid accuracy result is available for this schedule.</p><ul>'
+    html += ''.join(f'<li>{escape(item)}</li>' for item in plan['value_ablation_plan']) + '</ul>'
     for k in KS:
         value = plan["estimates"]["central"][str(k)]["teams"]["usd"]
         maximum = plan["estimates"]["central"]["100"]["teams"]["usd"]

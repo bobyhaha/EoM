@@ -53,6 +53,20 @@ class TeamAgent(BaseAgent):
         "Return the requested JSON only."
     )
 
+    COMPACT_ROUND_SYSTEM_PROMPT = ROUND_SYSTEM_PROMPT.replace(
+        "A bounded deadline finalization may use a team chosen by lottery "
+        "without charging a bid if nobody bids. No answer is fabricated if everyone abstains. ",
+        "No team is forced to act, even at the deadline. If no team enters with a positive bid, "
+        "the round has no action; if this happens at the deadline, no final answer or reward is produced. "
+    ) + (
+        "The compact schedule combines a brief public membership message with your leave/invite decision. "
+        "Only recipients of valid invitations get an extra acceptance call. After one private discussion "
+        "turn per member, each member makes one simultaneous binding act vote and personal pledge. "
+        "A STRICT MAJORITY of all team members must vote act=true for the team to enter the auction; "
+        "a tie or invalid vote counts against activation. If the team abstains, all pledges are canceled. "
+        "You may vote yes with zero money. There are no repeated monetary negotiation calls."
+    )
+
     def __init__(self, name, initial_wealth):
         super().__init__(name=name, initial_wealth=initial_wealth)
         self.team_tag = None
