@@ -68,6 +68,42 @@ def analyze(folder, rule):
                 issues.append(f'step {step}: winner payment mismatch')
         if e['paid'] < 0 or any(not math.isfinite(v) or v < 0 for v in e['contributions'].values()):
             issues.append(f'step {step}: invalid money')
+    settlements = {e['step']: e for e in es if e['event'] == 'settlement'}
+    previous_members = []
+    for e in auctions:
+        settlement = settlements.get(e['step'])
+        if settlement:
+            for name, opening in e['opening_wealth'].items():
+                expected = opening - (e['contributions'][name] if name in e['members'] else 0)
+                expected += e.get('credits', {}).get(name, 0) + settlement.get('credits', {}).get(name, 0)
+                if not math.isclose(settlement['wealth'][name], expected, abs_tol=1e-8):
+                    issues.append(f"step {e['step']}: per-agent wealth flow mismatch for {name}")
+        expected_credits = {name: e['paid']/len(previous_members) for name in previous_members} if e['winner'] and previous_members else {}
+        if set(e.get('credits', {})) != set(expected_credits) or any(
+                not math.isclose(e['credits'][name], value, abs_tol=1e-9) for name, value in expected_credits.items()):
+            issues.append(f"step {e['step']}: previous-winner transfer mismatch")
+        if e['members']:
+            previous_members = e['members']
+    for e in es:
+        if e['event'] != 'path_reward':
+            continue
+        n = e['contributing_rounds']
+        share = e['environment_reward']/n if n else 0
+        totals = Counter()
+        if len(e['payouts']) != n:
+            issues.append('Path length differs from credited rounds')
+        for payout in e['payouts']:
+            if set(payout['credits']) != set(payout['members']):
+                issues.append('Historical member set differs from reward recipients')
+            for name, amount in payout['credits'].items():
+                if not math.isclose(amount, share, abs_tol=1e-9):
+                    issues.append('Per-member path reward is not R/N')
+                totals[name] += amount
+        for name, amount in e['credits'].items():
+            if not math.isclose(amount, totals[name], abs_tol=1e-9):
+                issues.append('Aggregate member reward differs from path credits')
+        if not math.isclose(e['issued'], sum(totals.values()), abs_tol=1e-9):
+            issues.append('Issued reward differs from sum of member credits')
     submissions = [e for e in es if e['event'] == 'submission']
     repeats = []
     previous = {}
@@ -102,7 +138,7 @@ def analyze(folder, rule):
 
 def report(root):
     plan = json.loads((root / 'plan.json').read_text())
-    output = {'updated_at': time.time(), 'cells': {}}
+    output = {'audit_version': 2, 'updated_at': time.time(), 'cells': {}}
     for cell, (_, rule) in plan['cells'].items():
         out = root / cell
         latest = {r['request']: r for r in records(out / 'api_usage.jsonl')}

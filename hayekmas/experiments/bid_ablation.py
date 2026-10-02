@@ -25,18 +25,20 @@ CELLS = {'wealth-voluntary': ('wealth', 'voluntary'), 'society-voluntary': ('soc
          'wealth-fixed': ('wealth', 'fixed'), 'society-fixed': ('society', 'fixed')}
 
 
-def prepare(root, deadline):
+def prepare(root, deadline, *, seed=7, cell_cap=20):
+    if type(seed) is not int or seed < 0 or not 0 < cell_cap <= 20:
+        raise ValueError("Invalid seed or cell cap")
     root.mkdir(parents=True, exist_ok=False)
     dataset = Path('third_party/benchmarks/frontier-science-research/data/research_train.jsonl')
     tasks = load_tasks(dataset, 'train')[:3]
     config = json.loads(Path('runs/population-study-evolution-f2dbe94/cells/teams-k10.json').read_text())['team_config']
-    config.update(rounds=1, evolution_enabled=False)
-    plan = {'deadline': deadline, 'started_at': time.time(), 'cells': CELLS, 'cell_cap_usd': 20,
-            'total_partitioned_cap_usd': 80, 'user_max_usd': 100,
+    config.update(rounds=1, evolution_enabled=False, seed=seed)
+    plan = {'deadline': deadline, 'started_at': time.time(), 'cells': CELLS, 'cell_cap_usd': cell_cap,
+            'total_partitioned_cap_usd': 4 * cell_cap, 'user_max_usd': 100,
             'budget_note': 'Four disjoint $20 ledgers cap this study at $80; prior pilots remain below $2. No automatic expansion.',
             'tasks': [t.id for t in tasks], 'dataset': str(dataset),
             'dataset_sha256': hashlib.sha256(dataset.read_bytes()).hexdigest(), 'config': config,
-            'model': 'openai/gpt-6-luna', 'seed': 7,
+            'model': 'openai/gpt-6-luna', 'seed': seed,
             'protocol': '2x2 objective x bid rule. Fresh k10 population per task; max10 rounds; no reflection/evolution; lambda0. Fixed bid=.1 per team, equally paid by explicit consenting yes voters, strict majority required. No feedback fix in primary cells. Same judge and token/reasoning settings. Development tasks, one seed; unequal actual compute is measured.',
             'source_sha256': {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path('hayekmas').rglob('*.py'))}}
     atomic_json(root / 'plan.json', plan)
