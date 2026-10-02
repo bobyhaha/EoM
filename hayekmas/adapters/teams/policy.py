@@ -8,6 +8,35 @@ from hayekmas.utils.llm import LLMConfig, get_llm_client
 
 
 INSTRUCTIONS = {
+    "coordinate": (
+        "Team formation has ended. Decide whether to consent to the announced maximum coordination fee "
+        'for this round. Return {"participate":true, "reason":"short explanation"} or false to leave. '
+        "The fee is burned from your wealth before discussion, even if the team loses the auction. "
+        "Other members may leave; your actual fee can only decrease. No response means no consent."
+    ),
+    "round_chat": (
+        "Discuss the task and current shared solution freely with your team before deciding whether "
+        'to act or pledge money. Return {"message":"your contribution to the conversation"}.'
+    ),
+    "round_bid": (
+        "Use the team conversation to decide whether to act and negotiate your personal pledge. "
+        'Return {"act":true, "contribution":number, "message":"text"}. '
+        "act=false sets your pledge to zero. Only you can commit your money, between zero and your "
+        "available wealth. You may revise your decision and amount; the last valid decision binds. "
+        "The greatest positive team sum wins. Membership, not payment size, determines path credit: "
+        "every member of a team that submits accepted work receives R/N for that round at episode end."
+    ),
+    "round_work": (
+        "Use the shared team discussion freely to propose the next public contribution to the solution. "
+        'Return {"message":"text", "candidate":"public work or null"}. '
+        "This is an intermediate round, so the chosen candidate is added to the shared solution; "
+        "it is not the final answer. Each member can propose work and vote. No roles are assigned."
+    ),
+    "round_recap": (
+        "A new decision round is starting. You may briefly talk to the population about the shared work "
+        'or future team membership. Return {"message":"text"}. '
+        "A voluntary invitation/acceptance/leave window follows. Joining cannot change past credit."
+    ),
     "assess_bid": (
         "Make one sealed personal pledge. Assess relevant expertise and the main uncertainty in at most "
         "two short sentences; do not solve the entire problem or negotiate. Other current pledges are hidden. "
@@ -131,7 +160,9 @@ class DemoPolicy:
         self.rng = random.Random(seed)
 
     def respond(self, phase, agent, observation, max_tokens):
-        if phase == "reflect":
+        if phase == "coordinate":
+            result = {"participate": True, "reason": "The planned collaboration is worth the announced fee."}
+        elif phase == "reflect":
             result = {"reflect": observation["round"] > 0 and observation["round"] % 4 == 0}
         elif phase == "inspect":
             result = {"analysis": "Compare money spent with equal reward share in the supplied history."}
@@ -141,13 +172,19 @@ class DemoPolicy:
             }
         elif phase == "formation":
             invitations = observation["invitations"]
-            if observation["round"] > 0 and observation["turn"] == 0 and agent.team_tag is not None:
+            if (
+                observation["round"] > 0 or (observation.get("stage") == "round_start" and observation["step"] > 0)
+            ) and observation["turn"] == 0 and agent.team_tag is not None:
                 result = {"action": "leave"}
             elif agent.team_tag is None and invitations:
                 result = {"action": "accept", "invitation": invitations[0]["id"]}
             elif agent.team_tag is None:
                 own = int(agent.name.split("-")[-1])
                 peer = f"agent-{own ^ (2 if (observation['round'] // 5) % 2 else 1)}"
+                if observation.get("stage") == "round_start":
+                    size = len(observation["roster"])
+                    offset = (observation["round"] + observation["step"]) % size
+                    peer = f"agent-{(offset + (((own - offset) % size) ^ 1)) % size}"
                 names = {p["name"] for p in observation["roster"] if p["team"] is None}
                 result = (
                     {"action": "invite", "target": peer, "text": "Would you like to work together?"}
@@ -156,14 +193,19 @@ class DemoPolicy:
                 )
             else:
                 result = {"action": "pass"}
-        elif phase in {"contribute", "negotiate", "assess_bid"}:
+            if observation.get("stage") == "round_start":
+                result["reason"] = "Try this partnership for the next public contribution."
+        elif phase in {"round_chat", "round_recap"}:
+            result = {"message": "Let us use the shared progress and decide together how to contribute."}
+        elif phase in {"contribute", "negotiate", "assess_bid", "round_bid"}:
             result = {
+                **({"act": True} if phase == "round_bid" else {}),
                 "contribution": round(agent.wealth * self.rng.uniform(0.03, 0.12), 6),
                 "message": ("I can attempt this arithmetic. This is my one binding pledge."
                             if phase == "assess_bid" else
                             "Here is my current pledge. Please consider contributing an affordable amount too."),
             }
-        elif phase in {"discuss", "finalize", "draft", "independent_check", "revise"}:
+        elif phase in {"discuss", "finalize", "draft", "independent_check", "revise", "round_work"}:
             # Uses only the public problem, never the environment's hidden answer.
             problem = observation["task"]["problem"]
             try:

@@ -12,8 +12,20 @@
 
 ### Voluntary-team prototype
 
-This checkout adds a minimal team layer with negotiated personal contributions,
-joint costly auctions, a shared scratchpad, equal rewards, and paid reflection.
+The new round-team protocol adds discussion before activation/bidding, voluntary
+team changes between decision rounds, and an episode path reward of **R/N to
+each member for every contributing round** (no division by team size).
+Run `.venv/bin/python main.py global_configs/teams_rounds_demo.json` for an
+offline demonstration and open `runs/teams-rounds-demo/replay.html`.
+See the first section of **[TEAMS.md](TEAMS.md)** for the exact rules, differences
+from the earlier experiment, and how to inspect each round's credit allocation.
+Existing configs default to `interaction_protocol: legacy` for reproducibility.
+To prepare the requested k=10/20/50/100 study and its cost scenarios without API
+calls, run `.venv/bin/python -m hayekmas.experiments.population_study --out runs/population-study-plan`.
+Open the generated `index.html`. These are unlaunched study specifications;
+they are not runnable inputs for the older campaign supervisor.
+The older team layer uses negotiated personal contributions,
+joint costly auctions, a shared scratchpad, equal final-team rewards, and paid reflection.
 Every run includes an interactive replay of team formation and conversations.
 See **[TEAMS.md](TEAMS.md)** for the mechanism, setup, live viewing and experiments.
 Original adapters and the original individual engine are retained. The team

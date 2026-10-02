@@ -33,6 +33,12 @@ def canonical_decision(text, kind):
     """Extract the last complete decision, without generating or editing its values."""
     required = {
         "formation": "action",
+        "coordinate": "participate",
+        "round_chat": "message",
+        "round_recap": "message",
+        "round_work": ("message", "candidate"),
+        "round_bid": "act",
+        "finalize": ("candidate", "abstain"),
         "contribute": "contribution",
         "negotiate": "contribution",
         "assess_bid": "contribution",

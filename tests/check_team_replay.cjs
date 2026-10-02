@@ -71,6 +71,46 @@ if (auctionIndex>=0) {
 }
 seek(0);
 assert.ok(!$('round-outcome').textContent.includes('score'));
+if(payload.interaction_protocol==='rounds') {
+  const feeIndex=round.events.findIndex(e=>e.event==='coordination_fee');
+  if(feeIndex>=0){
+    seek(feeIndex);
+    const fee=round.events[feeIndex], balances=Object.fromEntries(fee.members.map(name=>[name,Number(document.querySelector(`[data-agent="${name}"] small`).textContent)]));
+    seek(feeIndex+1);
+    for(const [name,cost]of Object.entries(fee.costs))
+      assert.ok(Math.abs(Number(document.querySelector(`[data-agent="${name}"] small`).textContent)-balances[name]+cost)<.011,'Coordination fee is burned exactly once in playback');
+  }
+  const payoutIndex=round.events.findIndex(e=>e.event==='path_reward'), payout=round.events[payoutIndex];
+  assert.ok(payoutIndex>=0);
+  seek(payoutIndex);
+  const before=Object.fromEntries(payload.initial_roster.map(a=>[a.name,Number(document.querySelector(`[data-agent="${a.name}"] small`).textContent)]));
+  seek(payoutIndex+1);
+  for(const [name,amount]of Object.entries(payout.credits)) {
+    const actual=Number(document.querySelector(`[data-agent="${name}"] small`).textContent);
+    assert.ok(Math.abs(actual-before[name]-amount)<0.011,'Path reward credits the historical members exactly once');
+  }
+  const nextSettlement=round.events.findIndex((e,i)=>i>payoutIndex&&e.event==='settlement');
+  seek(nextSettlement+1);
+  for(const [name,wealth]of Object.entries(round.events[nextSettlement].wealth))
+    assert.equal(document.querySelector(`[data-agent="${name}"] small`).textContent,wealth.toFixed(2));
+  assert.match($('events').textContent,/R\/N to each member/);
+  const decisions=payload.rounds.reduce((sum,r)=>sum+r.events.filter(e=>e.event==='settlement').length,0);
+  assert.equal(document.querySelectorAll('#membership thead th').length,decisions+2,'Timeline contains each decision round');
+  seek(0);
+  const historicalTeam=round.events.find(e=>e.event==='team_message'&&e.channel==='pre_bid').team;
+  // Some traces identify a discussion by group rather than team; its member snapshot is authoritative.
+  const firstDiscussion=round.events.find(e=>e.event==='team_message'&&e.channel==='pre_bid');
+  const team=historicalTeam||round.events.find(e=>e.event==='membership_committed').membership[firstDiscussion.agent];
+  assert.ok([...$('team-filter').options].some(o=>o.value===team),'Dissolved teams remain selectable');
+  input('team-filter',team,'change');
+  assert.ok($('events').querySelector(`[data-event="${round.events.indexOf(firstDiscussion)+1}"]`),'Historical discussion stays associated with its team');
+  const laterDiscussion=round.events.find(e=>e.event==='team_message'&&e.channel==='pre_bid'&&e.step>firstDiscussion.step&&e.agent===firstDiscussion.agent);
+  if(laterDiscussion){
+    const laterTeam=round.events.find(e=>e.event==='membership_committed'&&e.step===laterDiscussion.step).membership[laterDiscussion.agent];
+    if(laterTeam!==team)assert.ok(!$('events').querySelector(`[data-event="${round.events.indexOf(laterDiscussion)+1}"]`),'Switching agents do not attach future messages to past teams');
+  }
+  input('team-filter','','change');
+}
 $('events').querySelector('[data-event="2"] .event-jump').click();
 assert.equal($('event-slider').value, '2');
 // Inspectors and filters still work independently of playback position.

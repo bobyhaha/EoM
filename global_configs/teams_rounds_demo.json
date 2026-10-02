@@ -1,0 +1,19 @@
+{
+  "domain": "teams",
+  "backend": "demo",
+  "out": "runs/teams-rounds-demo",
+  "plots": false,
+  "teams": {
+    "interaction_protocol": "rounds",
+    "condition": "dynamic",
+    "num_agents": 6,
+    "rounds": 3,
+    "max_steps": 4,
+    "formation_turns": 3,
+    "discussion_turns": 2,
+    "bidding_turns": 2,
+    "reward": 12,
+    "max_calls": 3000,
+    "coordination_fee_lambda": 0.0
+  }
+}

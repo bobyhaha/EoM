@@ -1,0 +1,315 @@
+"""Prepare an offline population-scaling study and transparent API cost scenarios.
+
+This module has no model client and no paid execution entry point. Cell files
+are study specifications, not configs accepted by the legacy campaign launcher.
+"""
+
+import argparse
+from dataclasses import asdict
+import hashlib
+from html import escape
+import json
+import math
+from pathlib import Path
+import shutil
+from datetime import datetime, timezone
+
+from hayekmas.adapters.teams.config import TeamConfig
+from hayekmas.adapters.teams.env import load_tasks
+
+
+REPO = Path(__file__).resolve().parents[2]
+KS = (10, 20, 50, 100)
+PRICE = {"input_per_million": 0.10, "output_per_million": 0.50,
+         "verified_date": "2026-10-01", "model": "openai/gpt-6-luna",
+         "source": "https://openrouter.ai/openai/gpt-6-luna/providers"}
+# Mean input/output tokens are explicit planning assumptions, not measurements
+# of the new protocol. Output includes hidden reasoning billed by the provider.
+SCENARIOS = {
+    "low": dict(formation_base=3000, roster_per_agent=40, recap_base=4000,
+                chat_input=4000, bid_input=5000, control_output=40, chat_output=128,
+                bid_output=80, work_input=8000, work_output=1500,
+                final_input=10000, final_output=2500, judge_input=5000, judge_output=1000,
+                reflection_fraction=0, wake_fraction=.35, trials=1, birth_fraction=.1),
+    "central": dict(formation_base=6500, roster_per_agent=80, recap_base=6500,
+                    chat_input=8000, bid_input=8000, control_output=80, chat_output=256,
+                    bid_output=160, work_input=12000, work_output=2500,
+                    final_input=16000, final_output=5000, judge_input=8000, judge_output=1500,
+                    reflection_fraction=.1, wake_fraction=.6, trials=1.5, birth_fraction=.35),
+    "high": dict(formation_base=12000, roster_per_agent=200, recap_base=12000,
+                 chat_input=14000, bid_input=14000, control_output=256, chat_output=512,
+                 bid_output=320, work_input=20000, work_output=4000,
+                 final_input=28000, final_output=8000, judge_input=12000, judge_output=3000,
+                 reflection_fraction=.5, wake_fraction=1, trials=2, birth_fraction=1),
+}
+
+
+def sha(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
+def priced(calls, inputs, outputs):
+    return {"calls": calls, "input_tokens": calls * inputs, "output_tokens": calls * outputs,
+            "usd": calls * (inputs * PRICE["input_per_million"] + outputs * PRICE["output_per_million"]) / 1e6}
+
+
+def estimate(k, scenario="central", *, steps=10, train=40, test=19):
+    """One seed; all steps used, average winning team size three (cap four)."""
+    s, episodes, m = SCENARIOS[scenario], train + test, 3
+    roster = s["roster_per_agent"] * k
+    team = {
+        "membership_actions": priced(episodes * steps * 3 * k, s["formation_base"] + roster, s["control_output"]),
+        "opening_discussion": priced(episodes * steps * k, s["recap_base"] + roster, s["chat_output"]),
+        "private_discussion": priced(episodes * steps * 2 * k, s["chat_input"], s["chat_output"]),
+        "bid_negotiation": priced(episodes * steps * 2 * k, s["bid_input"], s["bid_output"]),
+        "winning_work": priced(episodes * (steps - 1) * 2 * m, s["work_input"], s["work_output"]),
+        "votes": priced(episodes * steps * m, s["work_input"] + 2000, 20),
+        "final_proposals": priced(episodes * m, s["final_input"], s["final_output"]),
+        "judge": priced(episodes, s["judge_input"], s["judge_output"]),
+        "reflection_choices": priced(train * k, 1000, 16),
+        "reflection_edits": priced(train * k * s["reflection_fraction"] * 2, 4000, 1000),
+    }
+    trials = train * s["trials"] + test
+    original = {
+        "wakeups": priced(trials * steps * k * s["wake_fraction"], s["chat_input"] / 2, 60),
+        "actions": priced(trials * steps, s["work_input"] / 2, s["work_output"]),
+        "judge": priced(trials, s["judge_input"], s["judge_output"]),
+        "mutations": priced(train * k * s["birth_fraction"], s["work_input"], s["work_output"]),
+    }
+    return {arm: {"phases": phases, **{key: math.fsum(p[key] for p in phases.values())
+                                      for key in ("calls", "input_tokens", "output_tokens", "usd")}}
+            for arm, phases in (("original", original), ("teams", team))}
+
+
+def reference_baselines(scenario="central", test=19):
+    s = SCENARIOS[scenario]
+    # One pool of 100 independent samples/task supplies single-agent and every
+    # pass@k estimate; do not pay for separate 10+20+50+100 pools.
+    solve = priced(test * 100, 2500, s["final_output"])
+    judge = priced(test * 100, s["final_output"] + s["judge_input"], s["judge_output"])
+    return {"calls": solve["calls"] + judge["calls"], "usd": solve["usd"] + judge["usd"]}
+
+
+def prior_spend(repo=REPO):
+    """Deduplicate copied receipts and retain all unresolved reservations."""
+    sources = ["eom-vs-teams-12h", "teams-finalization-19-20260930",
+               "teams-reviewed-19-20260930", "teams-reviewed-19-v2-20260930"]
+    charged, uncertain, manifests = {}, {}, []
+    for source in sources:
+        for path in sorted((repo / "runs" / source).rglob("api_usage.jsonl")):
+            rows = {}
+            for line in path.read_text().splitlines():
+                row = json.loads(line)
+                rows[row["request"]] = row
+            manifests.append({"path": str(path.relative_to(repo)), "sha256": sha(path)})
+            for row in rows.values():
+                if "cost_usd" in row:
+                    identity = row.get("generation_id") or (str(path), row["request"])
+                    charged[identity] = max(charged.get(identity, 0), row["cost_usd"])
+                else:
+                    identity = (row.get("time"), row.get("reserved_usd"), row.get("kind"))
+                    uncertain[identity] = max(uncertain.get(identity, 0), row.get("reserved_usd", 0))
+    billed, reserved = math.fsum(charged.values()), math.fsum(uncertain.values())
+    return {"billed_usd": billed, "reserved_usd": reserved, "existing_limit_usd": 50,
+            "remaining_usd": max(0, 50 - billed - reserved), "receipt_sources": manifests,
+            "scope": "Recorded $50 comparison campaign and subsequent team follow-ups; earlier separate $5 exploration excluded."}
+
+
+def write_json(path, value):
+    Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n")
+
+
+def prepare(destination):
+    destination = Path(destination).resolve()
+    destination.mkdir(parents=True, exist_ok=False)
+    (destination / "cells").mkdir()
+    dataset = REPO / "third_party/benchmarks/frontier-science-research/data"
+    tasks = {split: load_tasks(dataset / f"research_{split}.jsonl", split) for split in ("train", "test")}
+    if len(tasks["train"]) != 40 or len(tasks["test"]) != 19:
+        raise ValueError("Expected the bundled 40/19 split")
+    if {t.id for t in tasks["train"]} & {t.id for t in tasks["test"]}:
+        raise ValueError("Training/test task overlap")
+    dataset_hashes = {split: sha(dataset / f"research_{split}.jsonl") for split in tasks}
+    estimates = {s: {str(k): estimate(k, s) for k in KS} for s in SCENARIOS}
+    totals = {}
+    for s, rows in estimates.items():
+        core = math.fsum(v[arm]["usd"] for v in rows.values() for arm in ("original", "teams"))
+        reference = reference_baselines(s)
+        totals[s] = {"core_usd": core, "reference_usd": reference["usd"],
+                     "one_seed_with_20_percent_allowance": (core + reference["usd"]) * 1.2,
+                     "three_seeds_with_20_percent_allowance": (core + reference["usd"]) * 3 * 1.2,
+                     "calls": math.fsum(v[arm]["calls"] for v in rows.values()
+                                        for arm in ("original", "teams")) + reference["calls"]}
+    cells = []
+    for k in KS:
+        team_config = TeamConfig(interaction_protocol="rounds", coordination_fee_lambda=0.0,
+                                 num_agents=k, rounds=40, max_steps=10,
+                                 formation_turns=3, discussion_turns=2, bidding_turns=2, max_team_size=4,
+                                 action_tokens=1024, solution_tokens=8192, judge_tokens=8192,
+                                 inspect_tokens=1024, update_tokens=1024, summary_tokens=512,
+                                 environment_tokens=16384, evidence_tokens=8192, context_tokens=131072,
+                                 max_calls=2_000_000)
+        for arm in ("original", "teams"):
+            spec = {"schema": "population-study-cell-v1", "status": "prepared_not_authorized_to_run",
+                    "arm": arm, "k": k, "seeds": [7, 17, 29], "initial_review_scope": "one seed (7)",
+                    "training_tasks": 40, "test_tasks": 19, "max_steps": 10,
+                    "model": PRICE["model"], "solver_reasoning": "medium", "control_reasoning": "none",
+                    "dataset_sha256": dataset_hashes,
+                    "budget": {"execution_authorized": False, "allocated_usd": 0},
+                    "team_config": asdict(team_config) if arm == "teams" else None,
+                    "original_initialization": {"agents_per_role": k // 5,
+                                                "method": "Fresh instances of each of the five upstream research roles; unique IDs and names."}
+                    if arm == "original" else None,
+                    "original_overrides": {"engine": {"min_num_agents": k, "max_num_agents": k,
+                                                       "max_steps_per_episode": 10},
+                                           "wakeup": {"wakeup_model": None, "wakeup_parallel_enabled": False},
+                                           "evaluation": {"periodic_test_enabled": False}}
+                    if arm == "original" else None,
+                    "evaluation": "Fresh copy of final 40-task checkpoint for every test. Original eval freezes wealth and prompts; "
+                    "teams retain within-episode auctions/membership/rewards but discard all test state afterward. No test reflection.",
+                    "required_prelaunch_checks": ["Construct exactly k agents; verify unique identities and upstream role coverage.",
+                                                  "Assert k agents at every task boundary; stop on failed native replenishment.",
+                                                  "Reserve worst-case next-request cost in restart-safe per-cell and global ledgers.",
+                                                  "Verify source and dataset hashes; do not reuse checkpoints trained under old team rules.",
+                                                  "Use a new launcher with this schema; the legacy campaign hard-codes population/budget settings."]}
+            filename = f"{arm}-k{k}.json"
+            write_json(destination / "cells" / filename, spec)
+            cells.append({"arm": arm, "k": k, "file": f"cells/{filename}"})
+    plan = {"schema": "population-study-plan-v1", "prepared_at": datetime.now(timezone.utc).isoformat(),
+            "status": "prepared_only_no_paid_calls", "execution_authorized": False,
+            "population_sizes": list(KS), "seeds": [7, 17, 29], "initial_review_seed": 7,
+            "tasks": {split: [{"id": t.id, "subject": t.subject} for t in ts] for split, ts in tasks.items()},
+            "dataset_sha256": dataset_hashes, "cells": cells,
+            "core_episodes_per_seed": 8 * 59, "core_episodes_three_seeds": 8 * 59 * 3,
+            "round_sequence": ["Public membership conversation", "Invite / accept / leave / stay with a brief reason",
+                               "Private team discussion", "Negotiate personal bids; total team bid is their sum",
+                               "Select and charge winning team", "Winning team publishes one action"],
+            "coordination_fee": {"lambda": 0.0, "rule": "Per member per discussion round: lambda * (team size - 1).",
+                                 "first_study": "Disabled: no charge and no extra consent calls.",
+                                 "future_ablation": "Positive lambda requires consent before payment. Declining or unaffordable "
+                                 "members leave; recompute fees for remaining groups. Burn fees even if the group loses. "
+                                 "Future positive-fee studies need extra cost estimates for consent calls."},
+            "reward": "Grade the final answer once. N counts accepted public actions including finalization. "
+                      "Every saved member receives R/N for each contributed round; no team-size division.",
+            "population_interpretation": "k is the number of agents at task boundaries. Teams keep k throughout. "
+                "Original EoM uses its existing min/max bounds, bankruptcy and replenishment with k initial agents; "
+                "within-training-trial population can temporarily fall below k. This is a controlled configuration "
+                "variant, not an exact reproduction of the paper's initial population. No checkpoint cloning/upsampling.",
+            "baselines": "In addition to eight trained cells, one pool of 100 independent zero-shot answers per test "
+                "supplies single-agent and pass@10/20/50/100 estimates. Report success using 1-C(100-c,k)/C(100,k). "
+                "Same rubric threshold 0.5; report full continuous scores too. This is an oracle success metric, "
+                "not an implemented best-answer selector, and has different training exposure.",
+            "comparison_limits": ["Same tasks/model/step ceiling and k at test time; actual tokens and dollars differ.",
+                                  "Native roles/evolution/rubric-assisted mutation differ from role-free team reflection.",
+                                  "Training means economic/strategy adaptation, not model-weight fine tuning.",
+                                  "These 19 test tasks have been inspected before; label this a development comparison.",
+                                  "No causal claim about communication alone; reward, selection and finalization also differ.",
+                                  "Team-size cap four is an engineering constraint, not evidence of an optimal team size.",
+                                  "The first study sets coordination lambda to zero; positive fee ablations are not scheduled.",
+                                  "Unfunded final-round recovery uses a logged lottery. Report its frequency; it differs from a funded auction.",
+                                  "Track environment score separately from amplified wealth; larger payouts are not better answers."],
+            "metrics": ["paired task score and completion rate", "pass rate at fixed threshold", "billed and reserved cost",
+                        "request/token counts", "team size and membership switches per round", "membership reasons",
+                        "pledges, payments and path credits per agent", "actual strategy edits and population changes"],
+            "pricing": PRICE, "cost_scenarios": SCENARIOS, "estimates": estimates, "totals": totals,
+            "prior_spending": prior_spend(),
+            "estimate_limits": "Scenario calculations, not confidence intervals or spending guarantees. Assume ten rounds "
+                "and full communication windows. No cache discount. Singleton bidding can use fewer calls. A 20% planning "
+                "allowance covers some retries/corrections, not an absolute bound. Calibrate on training tasks before launch.",
+            "runtime": "At the old team's median 1.85 seconds between request starts, the k=100 team cell alone "
+                "projects roughly 10 days per seed if kept sequential. This is not a 12-hour study. Parallel independent "
+                "cells do not remove sequential dependencies within membership and shared discussions.",
+            "next_execution_work": "Build a launcher that consumes these cell specs and enforces aggregate authorization. "
+                "Preparation deliberately has no API client or launch operation.",
+            "source_sha256": {str(p.relative_to(REPO)): sha(p) for p in sorted((REPO / "hayekmas").rglob("*.py"))}}
+    write_json(destination / "plan.json", plan)
+    write_json(destination / "cost-estimate.json", {"pricing": PRICE, "assumptions": SCENARIOS,
+                                                  "cells": estimates, "totals": totals})
+    shutil.copy2(__file__, destination / "estimator-source.py")
+    render(destination, plan)
+    return plan
+
+
+def render(root, plan):
+    totals = plan["totals"]
+    rows = []
+    for k in KS:
+        scenarios = plan["estimates"]
+        cells = [scenarios[s][str(k)] for s in ("low", "central", "high")]
+        cost = lambda arm: [c[arm]["usd"] for c in cells]
+        orig, team = cost("original"), cost("teams")
+        rows.append(f'<tr><td>{k}</td><td>${orig[1]:.0f} <small>(${orig[0]:.0f}–${orig[2]:.0f})</small></td>'
+                    f'<td>${team[1]:.0f} <small>(${team[0]:.0f}–${team[2]:.0f})</small></td>'
+                    f'<td>{cells[1]["teams"]["calls"]:,.0f}</td>'
+                    f'<td><a href="cells/original-k{k}.json">Original</a> · '
+                    f'<a href="cells/teams-k{k}.json">Teams</a></td></tr>')
+    safe = json.dumps(totals).replace('<', '\\u003c')
+    html = '''<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EoM population study · proposed budget</title><style>
+body{background:#101720;color:#e5edf7;font:16px/1.6 system-ui;max-width:1100px;margin:32px auto;padding:0 22px}
+h1{line-height:1.2;font-size:32px}h2{font-size:21px}a{color:#8bdccc}small,.muted{color:#aabbcf}
+.badge{color:#f0c279}.card{padding:20px;background:#192330;border:1px solid #344354;border-radius:12px;margin:20px 0}
+.flow{display:flex;flex-wrap:wrap;gap:10px}.flow span{padding:10px;border:1px solid #46586d;border-radius:8px}
+table{border-collapse:collapse;width:100%}td,th{padding:12px;text-align:left;border-bottom:1px solid #354454}
+.scroll{overflow:auto}select{font:inherit;padding:5px;background:#263649;color:white}#total{font-size:30px;color:#8bdccc}
+li{margin-bottom:8px}.bar{height:18px;background:#8bdccc;border-radius:3px;min-width:2px}figure{margin:12px 0}
+</style><body><p class="badge">PREPARED ONLY · NO PAID RUNS LAUNCHED</p>
+<h1>Population size: 10, 20, 50, 100</h1><p>Same 40 training tasks and 19 test tasks for each trained system.
+One round ends after the winning team's public action. One final answer receives one grade.
+Coordination fee λ = 0 for this first study; fee ablations are deferred.</p>
+<div class="flow">'''
+    html += ''.join(f'<span>{i+1}. {escape(text)}</span>' for i, text in enumerate(plan["round_sequence"]))
+    html += '''</div><div class="card"><label>Planning scenario <select id="scenario"><option value="low">Low</option>
+<option value="central" selected>Central</option><option value="high">High</option></select></label> ·
+<label>Independent seeds <select id="seeds"><option value="1">1</option><option value="3">3</option></select></label>
+<p id="total"></p><p id="scope"></p><small>Includes independent single-agent/pass@k reference samples and a 20% planning allowance.
+These are scenario estimates, not measured costs or spending authorization.</small></div>
+<h2>Per population, one seed</h2><p class="muted">Central estimate (low–high); raw model cost before the shared allowance and reference baselines.</p>
+<div class="scroll"><table><thead><tr><th>k</th><th>Original EoM variant</th><th>Round teams</th><th>Team requests</th><th>Cell specs</th></tr></thead><tbody>'''
+    html += ''.join(rows) + '</tbody></table></div><h2>Why the team estimate grows</h2>'
+    html += '<p>The full schedule calls every agent eight times per round before the winning action: one opening message, '
+    html += 'three membership turns, two private discussion turns and two bid turns. Membership prompts also grow with the roster. '
+    html += 'At k=100, that is approximately 8,000 calls per episode before winning-team work and reflection.</p>'
+    for k in KS:
+        value = plan["estimates"]["central"][str(k)]["teams"]["usd"]
+        maximum = plan["estimates"]["central"]["100"]["teams"]["usd"]
+        html += f'<figure><figcaption>k={k}: ${value:.0f}</figcaption><div class="bar" style="width:{value/maximum*100:.1f}%"></div></figure>'
+    spent = plan["prior_spending"]
+    html += f'<div class="card">Recorded prior spend: ${spent["billed_usd"]:.2f}; unresolved reservations: ${spent["reserved_usd"]:.2f}. '
+    html += f'Remaining under the existing $50 limit: <strong>${spent["remaining_usd"]:.2f}</strong>. No new spending is authorized by this plan.</div>'
+    html += '<h2>How to interpret this study</h2><ul>'
+    html += ''.join(f'<li>{escape(t)}</li>' for t in [plan["population_interpretation"], plan["baselines"], *plan["comparison_limits"], plan["runtime"]])
+    html += '</ul><p>For each test, restore a fresh trained checkpoint. Save every membership decision, message, bid, action, '
+    html += 'final grade and per-agent payment. Show completion failures separately and never count API interruptions as wrong answers.</p>'
+    html += '<p><a href="plan.json">Full study plan</a> · <a href="cost-estimate.json">All arithmetic and assumptions</a> · '
+    html += f'<a href="{PRICE["source"]}">OpenRouter pricing verified October 1</a> · '
+    html += '<a href="http://127.0.0.1:8786/replay.html">Current scripted mechanism replay</a></p>'
+    html += f'<script id="cost-data" type="application/json">{safe}</script>'
+    html += '''<script>const costs=JSON.parse(document.getElementById('cost-data').textContent);
+function update(){const seed=Number(document.getElementById('seeds').value),s=document.getElementById('scenario').value;
+document.getElementById('total').textContent='$'+Math.round(costs[s].one_seed_with_20_percent_allowance*seed).toLocaleString();
+document.getElementById('scope').textContent=(472*seed).toLocaleString()+' trained-system episodes · approximately '+Math.round(costs[s].calls*seed).toLocaleString()+' API requests';}
+document.getElementById('scenario').onchange=update;document.getElementById('seeds').onchange=update;update();</script></body></html>'''
+    (root / "index.html").write_text(html)
+    lines = ["POPULATION STUDY — PREPARED ONLY, NO PAID EXECUTION", "",
+             "k = 10, 20, 50, 100. Each cell: 40 training tasks + 19 test tasks; 10 decision rounds.",
+             "Two trained arms per k; eight cells and 472 episodes per seed.",
+             "One-seed estimates include a 100-sample/task single-agent/pass@k pool and 20% allowance:"]
+    lines += [f"  {s}: ${t['one_seed_with_20_percent_allowance']:.0f}; three seeds ${t['three_seeds_with_20_percent_allowance']:.0f}"
+              for s, t in totals.items()]
+    lines += ["", plan["estimate_limits"], "", plan["runtime"], "", plan["population_interpretation"],
+              "", plan["reward"], "", *plan["comparison_limits"], "", plan["next_execution_work"],
+              "Open index.html for the interactive budget and all cell specifications."]
+    (root / "STUDY_PLAN.txt").write_text('\n'.join(lines) + '\n')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--out", required=True)
+    args = parser.parse_args()
+    plan = prepare(args.out)
+    print(json.dumps({"out": str(Path(args.out).resolve()), "status": plan["status"], "totals": plan["totals"]}, indent=2))
+
+
+if __name__ == "__main__":
+    main()

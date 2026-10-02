@@ -33,7 +33,10 @@ class TeamMAS:
         self.rng = random.Random(config.seed)
         self.population = Population()
         for i in range(config.num_agents):
-            self.population.add_agent(TeamAgent(f"agent-{i}", config.initial_wealth))
+            agent = TeamAgent(f"agent-{i}", config.initial_wealth)
+            if config.interaction_protocol == "rounds":
+                agent.frozen_system_prompt = agent.ROUND_SYSTEM_PROMPT
+            self.population.add_agent(agent)
         self.round = 0
         self.step = None
         self.previous_winner = None
@@ -55,6 +58,7 @@ class TeamMAS:
         self.bid_paid_total = 0.0
         self.bid_transfer_total = 0.0
         self.reflection_burn_total = 0.0
+        self.coordination_burn_total = 0.0
         self.initial_total = config.num_agents * config.initial_wealth
         if config.condition == "random_fixed":
             shuffled = list(self.agents)
@@ -239,6 +243,8 @@ class TeamMAS:
                 self.invalid(agent, "improve", "missing strategy; fee remains spent")
 
     def formation_enabled(self):
+        if self.config.interaction_protocol == "rounds" and self.config.condition == "dynamic":
+            return True
         return (self.config.condition == "dynamic" and self.round % self.config.negotiation_interval == 0) or (
             self.config.condition == "self_selected_fixed" and self.round == 0
         )
@@ -313,7 +319,20 @@ class TeamMAS:
                     "inbox": self.inboxes[agent.name],
                     "invitations": [v for v in self.invitations.values() if v["to"] == agent.name],
                 }
+                if self.config.interaction_protocol == "rounds":
+                    observation.update(getattr(self, "formation_context", {}))
+                    observation["decision_format"] = (
+                        'Include "reason": "one short explanation" with your membership action. '
+                        'Explain why you invite, accept, leave, message, or stay. No roles are assigned.'
+                    )
                 decision = self.ask("formation", agent, observation)
+                if self.config.interaction_protocol == "rounds":
+                    reason = decision.get("reason")
+                    if not isinstance(reason, str) or not reason.strip():
+                        self.invalid(agent, "formation", "membership decision requires a short reason")
+                        continue
+                    self.emit("membership_decision", agent=agent.name, action=decision.get("action"),
+                              reason=reason, target=decision.get("target"), team=agent.team_tag)
                 self.apply_formation(agent, decision)
         self.invitations.clear()
 
@@ -342,6 +361,10 @@ class TeamMAS:
             "members": [{"name": a.name, "public_summary": a.public_summary} for a in members],
             "discussion": self.tokens.clip(dumps(transcript), self.config.evidence_tokens, tail=True),
             "objective": "Maximize your own long-term wealth. Collaborate however you think is useful.",
+            **({"reward_rule": "At episode end, each member of each accepted contributing round receives "
+                 "R/N. No division by team size; repeat contributors receive repeat shares. "
+                 "Membership is frozen at submission; zero-money members are included."}
+               if self.config.interaction_protocol == "rounds" else {}),
             **extra,
         }
 
@@ -350,6 +373,7 @@ class TeamMAS:
         groups = self.groups()
         opening_wealth = {a.name: a.wealth for a in self.agents}
         contributions = {a.name: 0.0 for a in self.agents}
+        activation = {a.name: False for a in self.agents}
         for group in groups:
             self.scratchpads.setdefault(group, [])
         for group, members in groups.items():
@@ -383,11 +407,25 @@ class TeamMAS:
                             "equal_reward_share_if_correct": self.config.reward / len(members),
                             "bid_cost_rate": self.config.bid_cost_rate,
                         }
+                    if self.config.interaction_protocol == "rounds":
+                        phase = "round_bid"
+                        observation["activation"] = {a.name: activation[a.name] for a in members}
                     decision = self.ask(
                         phase, agent, observation,
                         self.config.bid_tokens if phase == "assess_bid" else None,
                     )
                     value = decision.get("contribution")
+                    if self.config.interaction_protocol == "rounds":
+                        act = decision.get("act")
+                        valid = (type(act) is bool and type(value) in (int, float)
+                                 and math.isfinite(value) and 0 <= value <= opening_wealth[agent.name])
+                        if valid:
+                            activation[agent.name] = act
+                            value = value if act else 0.0
+                        else:
+                            value = None
+                        self.emit("activation", agent=agent.name, group=group,
+                                  active=activation[agent.name], valid=valid, turn=turn)
                     if (
                         type(value) not in (int, float)
                         or not math.isfinite(value)
@@ -455,6 +493,7 @@ class TeamMAS:
             paid=paid,
             credits=credits,
             burned=paid if not credits else 0.0,
+            **({"activation": activation} if self.config.interaction_protocol == "rounds" else {}),
         )
         return winner, members, contributions, opening_wealth
 
@@ -636,13 +675,18 @@ class TeamMAS:
 
     def assert_accounting(self):
         total = math.fsum(a.wealth for a in self.agents)
-        expected = self.initial_total + self.reward_total - self.bid_burn_total - self.reflection_burn_total
+        expected = (self.initial_total + self.reward_total - self.bid_burn_total
+                    - self.reflection_burn_total - self.coordination_burn_total)
         if any(not math.isfinite(a.wealth) or a.wealth < -1e-9 for a in self.agents):
             raise AssertionError("Negative or nonfinite personal wealth")
         if not math.isclose(total, expected, rel_tol=1e-10, abs_tol=1e-8):
             raise AssertionError(f"Ledger mismatch: {total} != {expected}")
 
     def run_one_episode(self, env, *, formation=True, reflection=True):
+        if self.config.interaction_protocol == "rounds":
+            from .round_protocol import run_episode
+
+            return run_episode(self, env, formation=formation, reflection=reflection)
         env.initialize()
         self.step = None
         self.previous_winner, self.previous_members = None, ()
@@ -826,6 +870,8 @@ class TeamMAS:
                 "bids_transferred": self.bid_transfer_total,
                 "bids_burned": self.bid_burn_total,
                 "reflection_spent": self.reflection_burn_total,
+                **({"coordination_spent": self.coordination_burn_total}
+                   if self.config.interaction_protocol == "rounds" else {}),
             },
             "usage": {
                 "decision_calls": self.calls,

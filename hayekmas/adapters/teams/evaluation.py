@@ -477,7 +477,7 @@ def compare(raw, *, out=None):
                     environment,
                     policy,
                     destination / relative,
-                    formation=not bool(training),
+                    formation=cfg.interaction_protocol == "rounds" or not bool(training),
                     reflection=False,
                 )
                 team["passed"] = team["answer"] is not None and team["score"] >= settings["pass_threshold"]

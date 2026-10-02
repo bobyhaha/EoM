@@ -15,6 +15,7 @@ COUNTERS = (
     "bid_paid_total",
     "bid_transfer_total",
     "reflection_burn_total",
+    "coordination_burn_total",
     "initial_total",
 )
 FIELDS = ("name", "wealth", "team_tag", "summary", "public_summary", "trajectory", "trainable_system_prompt")

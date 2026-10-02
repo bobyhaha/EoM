@@ -7,6 +7,216 @@ It implements the narrow prototype from the
 the supplied implementation notes, and the subsequent requirements for
 **communicated contribution decisions** and a **shared team scratchpad**.
 
+## New protocol: teams within each decision round
+
+Use `teams.interaction_protocol: "rounds"`. This is a separately selectable
+mechanism; saved legacy results are not rerun or relabeled. On October 1, 2026,
+the upstream HEAD was `d272266f7d6a0c302b7af5d20f1326b63c5656fb`. The local
+original `base/mas.py`, `base/config.py`, `base/population.py`, and
+`researchworld/agent.py` match those upstream files byte for byte.
+
+In original EoM, ordinary steps are **activation/wake-up, bidding among active
+agents, selection, payment, action**, repeated until termination. Terminal mode
+can bypass wake-up and restrict the final auction to answer agents. Its default
+path reward pays each occurrence in the realized action path; an optional mode
+deduplicates authors. See [the upstream loop and path rewards](https://github.com/zhentingqi/EoM/blob/d272266f7d6a0c302b7af5d20f1326b63c5656fb/hayekmas/base/mas.py).
+
+An **episode** is one task. A **decision round** is one opportunity to auction
+and publish work within that episode. For backward-compatible storage,
+`config.rounds` still means the number of episodes, `config.max_steps` bounds
+decision rounds per episode, event `round` identifies the episode, and event
+`step` identifies its decision round (both zero based).
+
+1. Every decision round starts with short population communication. Agents see
+   the public task and can invite, accept, leave or stay, with a short reason.
+   Team membership changes only by consent.
+2. Every team discusses freely on its shared scratchpad before the auction.
+3. Each member returns an explicit `act` decision and a personal monetary
+   pledge, and can discuss/revise both. `act: false` sets that member's pledge
+   to zero. A positive team sum enters the auction. No member can spend another
+   member's money. Zero-money members can still collaborate and earn rewards.
+4. The winning team uses its shared discussion to propose and vote on a public
+   contribution. Intermediate rounds add work to the common solution; the
+   final round proposes a complete answer. No permanent roles, leader,
+   mandatory critique, or independent-draft duties are assigned.
+5. After the winning action, the next round starts with a new membership window.
+   Existing teams may stay intact; they are not forcibly dissolved. Invitations
+   expire at each membership window. Membership
+   remains frozen during discussion, the auction and submission. Dynamic
+   membership ignores the legacy every-five-tasks schedule.
+6. One final answer is graded. The environment returns reward R, and credits
+   are paid using the recorded team membership of **each accepted round**.
+
+If N rounds published accepted work (including the final answer), then:
+
+\[
+\Delta w_i^{\mathrm{reward}} = \sum_{r=1}^{N}\mathbf{1}[i\in T_r]\frac{R}{N}.
+\]
+
+There is **no division by team size**. For R=12 and three contributing rounds,
+each membership occurrence receives 4. If round 1 uses A+B and rounds 2 and 3
+use A+C, A receives 12, B receives 4, and C receives 8. Joining C's team later
+does not give C any of B's past credit. A zero-money member receives the same
+share. Failed rounds and private work from losing teams are excluded from N.
+Accepted means submitted to the environment, not independently proven useful.
+
+Total issued reward is `(R/N) * sum(team_sizes_on_the_path)`, which can exceed
+R. `reward` records environment R, `reward_issued` records actual new wealth,
+and `credit_path` lists every round, saved members and payouts. `reward_income`
+aggregates each person's receipts. The conservation check uses actual issued
+wealth. Bid payments remain separate: winners pay their own pledges, later
+bids transfer equally to the previous winning round's recorded members, and
+the first winning bid burns. Switching cannot redirect a past team's payment.
+
+An empty intermediate discussion does not end the episode. Calls are reserved
+for finalization; tight budgets can shorten optional discussion or finish an
+episode early, with explicit events. If no team funds the final round, a seeded
+lottery selects an existing team to attempt finalization without charging a
+bid. This recovery action earns path credit if its answer is submitted. A valid
+final proposal survives malformed voting through a logged candidate lottery.
+If every member explicitly abstains or fails to produce valid final text, no
+answer is invented and the reward stays zero. This recovery is a deliberate
+addition, not behavior claimed to be identical to upstream EoM.
+
+Round teaming requires `bidding_mode: negotiated`, `collaboration_mode:
+discussion`, and `finalization_enabled: true`. The `dynamic` condition offers
+membership changes; the other conditions remain useful fixed/singleton
+ablations. The comparison runner enables within-task formation for the new
+protocol even after training, starts every test from a fresh trained copy, and
+continues to disable paid strategy reflection during tests.
+
+Run the new protocol without an API key:
+
+```bash
+.venv/bin/python -m hayekmas.adapters.teams.runtime \
+  --config global_configs/teams_rounds_demo.json \
+  --out runs/my-round-team-demo --no-plots
+```
+
+Open `runs/my-round-team-demo/replay.html`. Play advances one recorded event;
+the membership timeline now contains each decision round. Read the activation,
+regrouping and **Episode path reward** events to see exact decisions and credit.
+The demo uses scripted arithmetic, not a scientific performance evaluation.
+For a real run, copy your model/dataset/budget settings into a new config and
+select this protocol; do not resume the sealed campaign. No paid evaluation of
+this new mechanism has been performed as part of this change.
+
+### Population size
+
+The new demo uses six scripted agents to make individual events easy to inspect.
+The adapter's general default remains 12 agents, with at most four in a team.
+Six agents is useful for mechanism checks, but does not establish how teaming
+scales. The requested full study uses k = 10, 20, 50 and 100, with all 40 training
+tasks and 19 test tasks. Preparation and cost estimation do not authorize paid
+execution; the saved study plan explicitly remains unlaunched.
+
+Prepare the full study and its interactive cost estimate, without API calls:
+
+```bash
+.venv/bin/python -m hayekmas.experiments.population_study \
+  --out runs/my-population-study-plan
+```
+
+Open `runs/my-population-study-plan/index.html`. It includes eight cell
+specifications, dataset/source hashes, token assumptions, one- and three-seed
+scenarios, prior spending, and single-agent/pass@k references. These cell files
+are **study specifications**, not inputs for the old campaign launcher. A new
+budget-enforcing launcher is required before paid execution. The estimator
+does not load an API key or make requests.
+
+The full ten-round schedule uses about eight control/discussion calls per
+agent per round, before the winning team's work. It is much larger than the
+earlier experiment, which often ended before producing an answer. The estimate
+assumes complete episodes, counts roster growth, and includes grader costs.
+Its low/central/high values are assumptions, not confidence intervals or caps.
+
+Compare original and team arms at matched population sizes, model, training
+exposure, and per-task API budgets; preserve a separately labeled upstream
+evolution baseline if fixing its population changes its original mechanism.
+Report task scores, answer-submission rates and dollar cost separately from
+wealth: amplified path payouts increase wealth mechanically with team size.
+Larger populations alone do not guarantee more diverse reasoning or better
+answers. The earlier paid team arm already had 12 agents; the original arm
+evolved from five specialists to 19 agents, so that result was not a six-agent
+comparison.
+
+### Hypotheses to examine
+
+This is a collaboration-incentive prototype, not yet evidence of better task
+performance. Equal per-member path rewards make joining a productive team
+valuable even without useful work or money. Expect pressure toward the team-size
+cap, unequal personal pledges, and possible free riding. Next-bid payments can
+reinforce incumbents: when the same members win consecutive auctions, the
+payment is redistributed within that group. Switching may instead follow
+changing subproblems if agents learn who contributes useful work.
+
+Repeated path participation is rewarded, so agents may also publish unnecessary
+intermediate actions to gain a larger fraction of the action path. Accepted
+work is not guaranteed useful. Large populations can add redundancy and
+coordination costs rather than expertise. These are mechanism-derived
+hypotheses, not observations from the scripted demonstration. Track team sizes,
+membership duration, unique contributions, pledge inequality, and task score
+separately. Keep logged finalization lotteries visible: an unfunded recovery
+changes incentives and should be isolated in a future ablation.
+
+### Coordination fee (first study: lambda = 0)
+
+`teams.coordination_fee_lambda` defaults to **0.0**. Both the demo and all
+prepared population-study cells set it to zero explicitly. At zero there are
+no fee charges or extra consent calls; the R/N reward rule is unchanged.
+
+For a later ablation, a positive lambda charges each member
+`lambda * (team_size - 1)` once per decision round before private discussion.
+Fees are burned, including for teams that lose the auction. The value is in
+simulated wealth units, not API dollars. Singleton agents pay zero.
+
+Every member first receives the maximum fee and chooses whether to pay or
+leave. Missing/invalid consent and unaffordable fees cause departure without
+a charge. After all departures, the fee is recomputed from each remaining
+team's size; it cannot exceed what anyone consented to. No fee is charged
+when the call budget cannot fit consent plus a complete discussion turn.
+Positive fees currently require dynamic round teaming so voluntary exit is
+available. No new member can enter between consent and payment.
+
+Replay events show consent and burned fees. `coordination_paid` records each
+agent's episode total; `coordination_burn_total` is cumulative and survives
+checkpoints. Accounting uses initial wealth + issued rewards − burned bids −
+reflection costs − coordination fees. A joining fee alone would discourage
+mobility rather than large stable teams; the recurring coordination fee targets
+team size. Positive-fee experiments and their extra consent-call costs are
+deferred, not silently included in this first study.
+
+### What the earlier low-scoring team run actually measured
+
+The sealed `runs/eom-vs-teams-12h` experiment used the legacy mechanism:
+
+| Aspect | Earlier campaign | New round-team protocol |
+|---|---|---|
+| Membership | Changed every five training tasks; fixed within tasks and all tests | Voluntary switching windows between decision rounds |
+| Before auction | Negotiate monetary pledges; only winners then discuss solutions | Every team discusses first, then explicit activation and pledge negotiation |
+| Empty candidate window | End the episode without a final answer | Continue; reserve finalization and log any recovery |
+| Terminal credit | Only final acting team; R divided by its size | Every accepted round; each saved member receives full R/N |
+| Earlier work | Receives next-bid transfers only | Retains next-bid transfers and terminal path credit |
+
+Primary held-out results: original submitted 17/19 answers and scored 0.256;
+teams submitted 7/19 and scored 0.122. Of 12 team non-submissions, nine happened
+before any public submission and three after intermediate work. In the six
+tasks where both systems submitted, means were 0.305 versus 0.296. This selected
+subset is descriptive, not a controlled estimate of answer quality. Missing
+answers account arithmetically for most of the aggregate gap. They do not
+prove that repairing finalization, changing rewards, or adding communication
+will improve future scores.
+
+The original baseline retained its upstream engine. The team arm was a separate
+prototype, not a faithful implementation of the round-team mechanism described
+above. Training also differed: original EoM evolved its population and prompts;
+the team population stayed fixed, and all 480 optional reflections were declined.
+Different populations, supervision, economics and stopping policies prevent a
+causal conclusion that teamwork is worse. Exact evidence remains in
+`runs/eom-vs-teams-12h/SUBMISSION_REVIEW.txt` and `RESEARCH_FINDINGS.txt`.
+
+The remaining sections document the older configurations and additional modes.
+
 ## Run and watch
 
 From this repository:
@@ -82,7 +292,7 @@ not call the original role-based wakeup or mutation loop. The original
 `ResearchAgent` is instantiated. The native action's `answer` tag is only a
 grader protocol field and is never shown as an agent role.
 
-## Round protocol
+## Legacy episode-level team protocol
 
 This section describes the default `negotiated` bidding and `discussion`
 collaboration protocol. Existing configurations retain this behavior.

@@ -4,6 +4,8 @@ import math
 
 @dataclass
 class TeamConfig:
+    interaction_protocol: str = "legacy"
+    coordination_fee_lambda: float = 0.0
     condition: str = "dynamic"
     seed: int = 7
     num_agents: int = 12
@@ -35,6 +37,13 @@ class TeamConfig:
     max_calls: int = 10000
 
     def __post_init__(self):
+        if self.interaction_protocol not in {"legacy", "rounds"}:
+            raise ValueError("interaction_protocol must be legacy or rounds")
+        if self.interaction_protocol == "rounds" and (
+            self.bidding_mode != "negotiated" or self.collaboration_mode != "discussion"
+            or not self.finalization_enabled
+        ):
+            raise ValueError("rounds protocol requires negotiated bids, free discussion and finalization")
         if type(self.finalization_enabled) is not bool:
             raise ValueError("finalization_enabled must be a boolean")
         if self.bidding_mode not in {"negotiated", "sealed"}:
@@ -45,10 +54,12 @@ class TeamConfig:
             raise ValueError("reviewed collaboration requires finalization_enabled")
         if self.condition not in {"individual", "random_fixed", "self_selected_fixed", "dynamic"}:
             raise ValueError("Unknown team condition")
-        for name in ("initial_wealth", "reward", "reflection_cost", "bid_cost_rate"):
+        for name in ("initial_wealth", "reward", "reflection_cost", "bid_cost_rate", "coordination_fee_lambda"):
             value = getattr(self, name)
             if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0:
                 raise ValueError(f"{name} must be finite and nonnegative")
+        if self.coordination_fee_lambda > 0 and (self.interaction_protocol != "rounds" or self.condition != "dynamic"):
+            raise ValueError("Positive coordination fees require dynamic round teaming so members can decline and leave")
         if self.bid_cost_rate > 1:
             raise ValueError("bid_cost_rate must be in [0, 1]")
         for f in fields(self):

@@ -40,7 +40,7 @@ function svg(tag,attrs){const n=document.createElementNS('http://www.w3.org/2000
 function current(){
  const full=fullRound();if(index<0)return full;if(cursor>=full.events.length&&full.events.length)return full;
  const before=index===0?initial():data.rounds[index-1], agents=before.agents.map(a=>({...a})), byName=new Map(agents.map(a=>[a.name,a]));
- const metrics={contributions:{},paid:{},bid_income:{},reward_income:{},wealth:{},membership:{},reward:0,winner:null};
+ const metrics={contributions:{},paid:{},bid_income:{},reward_income:{},coordination_paid:{},wealth:{},membership:{},reward:0,winner:null};
  const events=full.events.slice(0,cursor);
  const credit=(name,amount,field)=>{const a=byName.get(name);if(a){a.wealth+=amount;metrics[field][name]=(metrics[field][name]||0)+amount}};
  for(const e of events){
@@ -55,9 +55,16 @@ function current(){
    for(const [name,amount]of Object.entries(e.credits||{}))credit(name,amount,'bid_income');
   }
   if(e.event==='auction'){metrics.winner=e.winner;Object.assign(metrics.contributions,e.contributions)}
+  if(e.event==='coordination_fee'){
+   for(const [name,cost]of Object.entries(e.costs||{})){if(byName.has(name))byName.get(name).wealth-=cost;metrics.coordination_paid[name]=(metrics.coordination_paid[name]||0)+cost}
+  }
+  if(e.event==='path_reward'){
+   for(const [name,amount]of Object.entries(e.credits||{}))credit(name,amount,'reward_income');
+   metrics.reward_issued=e.issued;
+  }
   if(e.event==='settlement'){
    metrics.winner=e.winner;metrics.reward+=e.reward||0;metrics.score=e.score;
-   for(const name of e.members||[])credit(name,e.share||0,'reward_income');
+   if(e.reward_distribution!=='per_member_path')for(const name of e.members||[])credit(name,e.share||0,'reward_income');
    for(const [name,wealth]of Object.entries(e.wealth||{}))if(byName.has(name))byName.get(name).wealth=wealth;
   }
   if(e.event==='reflection_paid'&&byName.has(e.agent))byName.get(e.agent).wealth-=e.cost;
@@ -97,17 +104,17 @@ function render(){
  $('previous').disabled=index<0;$('next').disabled=!data.rounds.length||(index===data.rounds.length-1&&cursor>=total);$('play').disabled=!data.rounds.length;
  const selector=$('round-select');if(selector.options.length!==data.rounds.length+1){selector.replaceChildren(new Option('Initial state','-1'));data.rounds.forEach((r,i)=>selector.add(new Option(`Task ${i+1}${r.round!==i?` (round ${r.round+1})`:''}`,String(i))))}selector.value=index;
  $('event-context').textContent=event?`${Number.isInteger(event.step)?`Step ${event.step+1} · `:''}${describe(event)[0]}`:'Before the first event · press Play or Next, or select an event in the transcript.';
- $('run-status').textContent=`${data.condition.replaceAll('_',' ')} · ${data.initial_roster.length} agents · ${data.status} · ${data.rounds.length} recorded tasks`;
+ $('run-status').textContent=`${data.condition.replaceAll('_',' ')} · ${data.initial_roster.length} agents · ${data.status} · ${data.rounds.length} recorded tasks${data.interaction_protocol==='rounds'?` · round teaming · R/N per member per contribution · λ=${data.coordination_fee_lambda||0}`:''}`;
  $('backend-label').textContent=data.backend==='scripted_demo'?'SCRIPTED DEMO · not evidence of emergence':data.backend;
  $('live-note').textContent=data.status==='running'?'New completed tasks appear in the task selector. Your playback and reading position stay unchanged.':'The full transcript stays readable while playback updates the diagram. Scrolling pauses playback.';
- $('round-outcome').textContent=round.metrics.score!==undefined?`${round.metrics.winner||'No winner'} · score ${round.metrics.score} · reward ${money(round.metrics.reward)}`:round.metrics.winner?`${round.metrics.winner} won the auction`:'Auction not yet resolved';
+ $('round-outcome').textContent=round.metrics.score!==undefined?`${round.metrics.winner||'No winner'} · score ${round.metrics.score} · reward R ${money(round.metrics.reward)}${round.metrics.reward_issued!==undefined?` · issued ${money(round.metrics.reward_issued)}`:''}`:round.metrics.winner?`${round.metrics.winner} won the auction`:'Auction not yet resolved';
  const list=$('agent-list');list.replaceChildren();round.agents.forEach(a=>{const b=el('button',a.name);b.setAttribute('aria-pressed',String(selected===a.name));b.onclick=()=>chooseAgent(a.name);list.append(b)});
  const filter=$('team-filter'),previousFilter=teamFilter;filter.replaceChildren(new Option('All teams',''));
- [...new Set([...round.agents,...full.agents].map(a=>a.team||`solo:${a.name}`))].sort().forEach(t=>filter.add(new Option(t,t)));
+ [...new Set([...round.agents,...full.agents].map(a=>a.team||`solo:${a.name}`).concat(eventTeams(full).flatMap(tags=>[...tags])))].sort().forEach(t=>filter.add(new Option(t,t)));
  if([...filter.options].some(o=>o.value===previousFilter))filter.value=previousFilter;else teamFilter='';
  const steps=$('step-filter');steps.replaceChildren(new Option('All steps',''));[...new Set(full.events.map(e=>e.step).filter(Number.isInteger))].sort((a,b)=>a-b).forEach(s=>steps.add(new Option(`Step ${s+1}`,String(s))));
  if([...steps.options].some(o=>o.value===stepFilter))steps.value=stepFilter;else stepFilter='';
- const nav=$('phase-nav');if(nav.dataset.task!==String(index)||Number(nav.dataset.count)!==total){nav.replaceChildren();nav.dataset.task=index;nav.dataset.count=total;let last='';full.events.forEach((e,i)=>{const phase=reviewPhase(e)|| (e.event==='finalization_started'?'Finalization':e.event==='settlement'?'Reward':e.event==='submission'?'Submission':e.event==='auction'?'Auction':category(e));const key=`${e.step}:${phase}`;if(key!==last){last=key;if(['bidding','team','formation','reflection','Finalization','Independent drafts','Review','Revision','Reward','Submission','Auction'].includes(phase)){const labels={bidding:'Bidding',team:'Discussion',formation:'Formation',reflection:'Reflection'};const b=el('button',`${Number.isInteger(e.step)?`${e.step+1} · `:''}${labels[phase]||phase}`);b.onclick=()=>{stop();seek(i+1)};nav.append(b)}}})}
+ const nav=$('phase-nav');if(nav.dataset.task!==String(index)||Number(nav.dataset.count)!==total){nav.replaceChildren();nav.dataset.task=index;nav.dataset.count=total;let last='';full.events.forEach((e,i)=>{const phase=reviewPhase(e)|| (e.event==='finalization_started'?'Finalization':e.event==='path_reward'?'Reward':e.event==='settlement'?(e.reward_distribution==='per_member_path'?'Round settled':'Reward'):e.event==='submission'?'Submission':e.event==='auction'?'Auction':category(e));const key=`${e.step}:${phase}`;if(key!==last){last=key;if(['bidding','team','formation','reflection','Finalization','Independent drafts','Review','Revision','Reward','Round settled','Submission','Auction'].includes(phase)){const labels={bidding:'Bidding',team:'Discussion',formation:'Formation',reflection:'Reflection'};const b=el('button',`${Number.isInteger(e.step)?`${e.step+1} · `:''}${labels[phase]||phase}`);b.onclick=()=>{stop();seek(i+1)};nav.append(b)}}})}
  renderNetwork();renderAgent();renderTimeline();renderEvents();
 }
 function renderNetwork(){
@@ -130,15 +137,54 @@ function renderAgent(){
  const round=current(), detail=$('agent-detail');detail.replaceChildren();
  if(!selected){detail.append(el('h3','Select an agent'),el('p','Inspect its wealth, contribution, running summary and strategy at any round.','muted'));const stats=el('div',undefined,'statline');[['Total wealth',money(round.agents.reduce((s,a)=>s+a.wealth,0))],['Bidding units',new Set(round.agents.map(a=>a.team||a.name)).size],['Reward',money(round.metrics.reward)]].forEach(([k,v])=>{const d=el('div');d.append(el('strong',v),el('span',k));stats.append(d)});detail.append(stats);return}
  const a=round.agents.find(a=>a.name===selected);if(!a)return;const opening=data.initial_roster.find(p=>p.name===a.name).wealth;detail.append(el('h3',`${a.name} · ${a.team||'independent'}`));
- const stats=el('div',undefined,'statline');[['Wealth',money(a.wealth)],['Last pledge',money(round.metrics.contributions[a.name])],['Paid this round',money(round.metrics.paid?.[a.name])],['Bid income',money(round.metrics.bid_income?.[a.name])],['Reward income',money(round.metrics.reward_income?.[a.name])],['Change',`${a.wealth-opening>=0?'+':''}${money(a.wealth-opening)}`]].forEach(([k,v])=>{const d=el('div');d.append(el('strong',v),el('span',k));stats.append(d)});detail.append(stats);
+ const stats=el('div',undefined,'statline');[['Wealth',money(a.wealth)],['Last pledge',money(round.metrics.contributions[a.name])],['Paid this round',money(round.metrics.paid?.[a.name])],['Bid income',money(round.metrics.bid_income?.[a.name])],['Reward income',money(round.metrics.reward_income?.[a.name])],...(data.interaction_protocol==='rounds'?[['Coordination fees',money(round.metrics.coordination_paid?.[a.name])]]:[]),['Change',`${a.wealth-opening>=0?'+':''}${money(a.wealth-opening)}`]].forEach(([k,v])=>{const d=el('div');d.append(el('strong',v),el('span',k));stats.append(d)});detail.append(stats);
  const wealth=el('div');wealth.append(el('small','Wealth through the selected event'));const plot=svg('svg',{viewBox:'0 0 400 105',role:'img','aria-label':`${a.name} wealth trajectory`});plot.classList.add('agent-wealth');const values=[opening,...data.rounds.slice(0,Math.max(0,index)).map(r=>r.metrics.wealth[a.name]),...(index>=0?[a.wealth]:[])],lo=Math.min(...values,0),hi=Math.max(...values,1),points=values.map((v,i)=>`${8+i*380/Math.max(1,values.length-1)},${85-(v-lo)*70/(hi-lo)}`).join(' ');plot.append(svg('line',{x1:8,y1:85,x2:388,y2:85,stroke:'#40516a'}),svg('polyline',{points,fill:'none',stroke:'#8de4d2','stroke-width':2}));values.forEach((v,i)=>plot.append(svg('circle',{cx:8+i*380/Math.max(1,values.length-1),cy:85-(v-lo)*70/(hi-lo),r:3,fill:'#8de4d2'})));wealth.append(plot);detail.append(wealth);
  [['Running summary',a.summary],['Current strategy',a.strategy]].forEach(([title,text])=>{const d=el('div');d.append(el('small',title),el('pre',text));detail.append(d)});
 }
-function renderTimeline(){const root=$('membership');root.replaceChildren();const table=el('table',undefined,'membership-table'),head=el('thead'),hr=el('tr');hr.append(el('th','Agent'));for(let r=-1;r<data.rounds.length;r++)hr.append(el('th',r<0?'Start':String(r+1)));head.append(hr);table.append(head);const body=el('tbody');data.initial_roster.forEach(a=>{const tr=el('tr');tr.append(el('th',a.name));for(let r=-1;r<data.rounds.length;r++){const state=r<0?initial():data.rounds[r],tag=state.metrics.membership[a.name],td=el('td'),b=el('button',tag?tag.replace('team-','T'):'—');b.style.setProperty('--cell-color',color(tag));if(r===index&&(selected===''||selected===a.name))b.classList.add('selected');b.setAttribute('aria-label',`${a.name}, ${r<0?'initial state':`round ${r+1}`}, ${tag||'independent'}`);b.onclick=()=>{stop();selected=a.name;setIndex(r,r<0?0:data.rounds[r].events.length)};td.append(b);tr.append(td)}body.append(tr)});table.append(body);root.append(table)}
+function renderTimeline(){
+ const columns=[{task:-1,event:0,label:'Start',membership:initial().metrics.membership}];
+ data.rounds.forEach((r,t)=>{
+  if(data.interaction_protocol==='rounds')r.events.forEach((e,i)=>{if(e.event==='settlement')columns.push({task:t,event:i+1,label:`T${t+1} · R${e.step+1}`,membership:e.membership})});
+  else columns.push({task:t,event:r.events.length,label:String(t+1),membership:r.metrics.membership});
+ });
+ const root=$('membership');root.replaceChildren();const table=el('table',undefined,'membership-table'),head=el('thead'),hr=el('tr');
+ hr.append(el('th','Agent'));columns.forEach(c=>hr.append(el('th',c.label)));head.append(hr);table.append(head);const body=el('tbody');
+ data.initial_roster.forEach(a=>{const tr=el('tr');tr.append(el('th',a.name));columns.forEach(c=>{
+  const tag=c.membership[a.name],td=el('td'),b=el('button',tag?tag.replace('team-','T'):'—');b.style.setProperty('--cell-color',color(tag));
+  if(c.task===index&&(selected===''||selected===a.name))b.classList.add('selected');
+  b.setAttribute('aria-label',`${a.name}, ${c.label}, ${tag||'independent'}`);b.onclick=()=>{stop();selected=a.name;setIndex(c.task,c.event)};
+  td.append(b);tr.append(td);
+ });body.append(tr)});table.append(body);root.append(table);
+}
 function reviewPhase(e){return {review_started:'Independent drafts',review_draft:'Independent drafts',review_feedback:'Review',review_revision:'Revision',review_fallback:'Revision',review_abstained:'Revision'}[e.event]||''}
-function category(e){if(e.event==='funding_repair_started')return'bidding';if(reviewPhase(e))return'team';if(e.event==='phase_skipped')return e.phase;if(['finalization_started','finalization_abstained','discussion_shortened'].includes(e.event)||(e.event==='invalid_action'&&e.phase==='finalize'))return'team';if(e.event==='team_message')return e.channel;if(e.event==='message'||['invited','joined','left','team_dissolved'].includes(e.event))return'formation';if(e.event==='pledge'||e.event==='contributions_committed')return'bidding';if(['reflection_paid','strategy_updated','decision_response'].includes(e.event))return'reflection';if(['candidate','vote','submission','no_submission'].includes(e.event))return'team';return'economy'}
+function category(e){if(['membership_window','membership_committed','membership_decision','coordination_decision'].includes(e.event)||e.channel==='regroup')return'formation';if(e.channel==='pre_bid')return'team';if(e.event==='activation')return'bidding';if(['finalization_recovery','selection_fallback'].includes(e.event))return'team';if(e.event==='funding_repair_started')return'bidding';if(reviewPhase(e))return'team';if(e.event==='phase_skipped')return e.phase;if(['finalization_started','finalization_abstained','discussion_shortened'].includes(e.event)||(e.event==='invalid_action'&&e.phase==='finalize'))return'team';if(e.event==='team_message')return e.channel;if(e.event==='message'||['invited','joined','left','team_dissolved'].includes(e.event))return'formation';if(e.event==='pledge'||e.event==='contributions_committed')return'bidding';if(['reflection_paid','strategy_updated','decision_response'].includes(e.event))return'reflection';if(['candidate','vote','submission','no_submission'].includes(e.event))return'team';return'economy'}
 function people(e){return[e.agent,e.author,e.sender,e.recipient,e.from,e.to,e.inviter,...(e.members||[]),...Object.keys(e.contributions||{}),...Object.keys(e.wealth||{}),...Object.keys(e.credits||{})].filter(Boolean)}
+// Associate messages with membership at that event, including teams that later dissolved.
+function eventTeams(round){
+ const before=index<=0?initial():data.rounds[index-1],membership=Object.fromEntries(before.agents.map(a=>[a.name,a.team]));
+ return round.events.map(e=>{
+  const tags=new Set([e.group,e.team,e.winner,e.payer,e.receiver,...Object.keys(e.bids||{}),...(e.payouts||[]).map(p=>p.team)].filter(Boolean));
+  const addPeople=()=>people(e).forEach(name=>{if(name in membership)tags.add(membership[name]||`solo:${name}`)});
+  addPeople();
+  if(e.membership)Object.assign(membership,e.membership);
+  if(e.event==='joined')for(const name of [e.agent,e.inviter])membership[name]=e.team;
+  if(e.event==='left')membership[e.agent]=null;
+  if(e.event==='team_dissolved')membership[e.remaining]=null;
+  addPeople();return tags;
+ });
+}
 function describe(e){
+ if(e.event==='decision_round_started')return[`Decision round ${e.decision_round+1} started`,'Teams discuss before choosing activation and personal pledges.'];
+ if(e.event==='membership_window')return['Team discussion and switching window','Start of this round: discuss briefly, then leave, invite, or accept by consent.'];
+ if(e.event==='coordination_decision')return[`${e.agent} · ${e.participate?'consent to fee':'decline and leave'}`,`Maximum fee ${money(e.maximum_fee)}. ${e.reason}`];
+ if(e.event==='coordination_fee')return['Coordination fee burned',`${e.group}: ${money(e.per_member)} per member; ${money(e.burned)} removed from the economy. Charged for discussion, including losing teams.`];
+ if(e.event==='membership_decision')return[`${e.agent} · ${e.action}`,e.reason];
+ if(e.event==='membership_committed')return['Membership committed',Object.entries(e.membership).map(([a,t])=>`${a}: ${t||'independent'}`).join(' · ')];
+ if(e.event==='activation')return[`${e.agent} · ${e.active?'act':'abstain'}`,`${e.valid?'Valid decision':'Invalid response; prior decision retained'} · ${e.group}`];
+ if(e.event==='finalization_recovery')return['Deadline finalization recovery',`${e.winner} selected by seeded lottery. No bid charged. ${e.reason}.`];
+ if(e.event==='selection_fallback')return['Final candidate selected by lottery',`${e.candidate_id}: ${e.reason}.`];
+ if(e.event==='path_reward')return['Episode path reward · R/N to each member',`R = ${money(e.environment_reward)}; N = ${e.contributing_rounds}; each member receives ${money(e.per_member_per_round)} for each contributing round. Total issued: ${money(e.issued)}.\n`+(e.payouts||[]).map(p=>`Round ${p.step+1} · ${p.team} · `+Object.entries(p.credits).map(([a,v])=>`${a}: +${money(v)}`).join(', ')).join('\n')];
+ if(e.event==='settlement'&&e.reward_distribution==='per_member_path')return[e.final?'Episode settled':'Decision round settled',e.final?`Reward R ${money(e.reward)}; actual agent payout ${money(e.issued)}. See the path-reward event for every round and recipient.`:`${e.accepted?'Public contribution accepted':'No accepted contribution'}. Rewards are deferred until the episode ends.`];
  if(e.event==='funding_repair_started')return['Additional funding round',e.reason+'; one final voluntary pledge per member with teammate pledges visible.'];
  if(e.event==='review_started')return['Independent drafts started',`Draft: ${e.drafter}. Independent check and review: ${(e.reviewers||[]).join(', ')}. Drafts remain hidden until every member has finished.`];
  if(e.event==='review_draft')return[`${e.author} · ${e.phase==='draft'?'independent draft':'independent check'}`,`${e.answer}\n\nQuestion checklist:\n${(e.checklist||[]).map(x=>'• '+x).join('\n')}`];
@@ -152,12 +198,12 @@ function renderEvents(){
  $('conversation-title').textContent=index<0?'Initial state':`Task ${index+1} · ${selected||'everyone'} · full transcript`;
  // Keep the same DOM nodes during playback so text selection, disclosures and scroll survive.
  if(eventListKey!==key){
-  eventListKey=key;root.replaceChildren();let count=0;
+  eventListKey=key;root.replaceChildren();let count=0;const teams=eventTeams(round);
   round.events.forEach((e,i)=>{
    const c=category(e),ps=people(e);
    if(stepFilter!==''&&String(e.step)!==stepFilter)return;
    if(selected&&!ps.includes(selected)&&!['auction','settlement'].includes(e.event))return;
-   if(teamFilter){const names=round.agents.filter(a=>(a.team||`solo:${a.name}`)===teamFilter).map(a=>a.name);if(!ps.some(p=>names.includes(p))&&e.group!==teamFilter&&e.team!==teamFilter)return}
+   if(teamFilter&&!teams[i].has(teamFilter))return;
    if(channel!=='all'&&(channel==='conversation'?!['team_message','message'].includes(e.event):c!==channel))return;
    const row=el('article',undefined,'event'),content=el('div'),[title,text]=describe(e),number=el('div',undefined,'event-index'),jump=el('button',String(i+1).padStart(2,'0'),'event-jump');
    row.dataset.event=i+1;jump.setAttribute('aria-label',`Jump to event ${i+1}: ${title}`);jump.onclick=()=>{stop();seek(i+1)};
