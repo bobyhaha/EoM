@@ -41,6 +41,7 @@ class TeamMAS:
                 from .token_allocation import PHASE_REASONING
 
                 agent.phase_reasoning_efforts = dict(PHASE_REASONING)
+            agent.configure_objective(config)
             self.population.add_agent(agent)
         self.round = 0
         self.step = None
@@ -399,7 +400,9 @@ class TeamMAS:
             "previous_members": [a.name for a in self.previous_members],
             "members": [{"name": a.name, "public_summary": a.public_summary} for a in members],
             "discussion": self.tokens.clip(dumps(transcript), self.config.evidence_tokens, tail=True),
-            "objective": "Maximize your own long-term wealth. Collaborate however you think is useful.",
+            "objective": ("Maximize your own long-term wealth. Collaborate however you think is useful."
+                          if self.config.interaction_protocol == "legacy" else
+                          TeamAgent.SOCIETY_OBJECTIVE if self.config.objective_mode == "society" else TeamAgent.WEALTH_OBJECTIVE),
             **({"reward_rule": "At episode end, each member of each accepted contributing round receives "
                  "R/N. No division by team size; repeat contributors receive repeat shares. "
                  "Membership is frozen at submission; zero-money members are included."}

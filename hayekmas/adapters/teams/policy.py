@@ -24,6 +24,11 @@ INSTRUCTIONS = {
         "Use JSON null to stay solo. You cannot be added without your acceptance. No further invitation pass follows."
     ),
     "round_commit": (
+        "If observation.bidding_rule is fixed: return {\"act\":true, \"authorize_base_bid\":true, "
+        "\"reason\":\"at most 12 words\"}. Both booleans must be true to consent. This authorizes up to "
+        "team_base_bid*bid_cost_rate from your own wealth if your team wins; the actual charge is split "
+        "equally among eligible consenting yes voters. False means no consent and no charge. "
+        "If bidding_rule is not fixed, use the voluntary-pledge instructions that follow. "
         "Make a brief decision from the completed team discussion; do not solve the problem again here. "
         "The private discussion is complete. Cast ONE binding vote on whether your TEAM should act this round, "
         "and authorize only your own contribution. Other current ballots are hidden. Return "

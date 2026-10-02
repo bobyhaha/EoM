@@ -11,6 +11,31 @@ class TeamAction(BaseAction):
 class TeamAgent(BaseAgent):
     # Identical identity for every agent; no functional role or hierarchy.
     ROLE = "agent"
+    SOCIETY_OBJECTIVE = (
+        "The overall goal is for the society to win by solving the task correctly, "
+        "not just for you to acquire the most individual wealth. "
+        "Treat personal wealth as an incentive within this shared goal. Collaborate however you think is useful."
+    )
+    WEALTH_OBJECTIVE = "Your sole objective is to maximize your own long-term wealth. Collaborate however you think is useful."
+
+    def configure_objective(self, config):
+        if config.interaction_protocol == "legacy":
+            return
+        self.frozen_system_prompt = self.frozen_system_prompt.replace(
+            self.SOCIETY_OBJECTIVE, self.WEALTH_OBJECTIVE if config.objective_mode == "wealth" else self.SOCIETY_OBJECTIVE)
+        self.trainable_system_prompt = ("Choose actions that improve your future wealth."
+                                       if config.objective_mode == "wealth" else
+                                       "Choose actions that help the society solve the task successfully.")
+        if config.team_bid_rule == "fixed":
+            self.frozen_system_prompt += (
+                f" This experiment uses a fixed total team bid of {config.team_base_bid}, not voluntary bid amounts. "
+                "At the ballot, act=true plus authorize_base_bid=true authorizes a maximum personal charge of "
+                "team_base_bid*bid_cost_rate if your team wins. The actual bid is divided equally among eligible "
+                "consenting yes voters; members who decline are never charged. A strict majority must consent. "
+                "Other teams enter at the same total bid; a seeded lottery breaks ties. "
+                "A personal contribution field is ignored in this fixed-bid condition."
+            )
+
     FROZEN_SYSTEM_PROMPT = (
         "Your sole objective is to maximize your own wealth over repeated tasks. "
         "You retain personal ownership of wealth. Team membership requires consent, "
@@ -30,7 +55,7 @@ class TeamAgent(BaseAgent):
     TRAINABLE_SYSTEM_PROMPT = "Choose actions that improve your future wealth."
 
     ROUND_SYSTEM_PROMPT = (
-        "Your sole objective is to maximize your own long-term wealth. All agents have the same actions; "
+        SOCIETY_OBJECTIVE + " All agents have the same actions; "
         "there are no assigned roles or leader. Form teams by mutual consent and leave voluntarily. "
         "An episode is one task with several decision rounds. Discuss freely with your team before "
         "deciding whether to act and negotiating your own monetary pledge. You cannot pledge another "

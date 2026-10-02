@@ -103,6 +103,8 @@ def commit(engine, task, groups, opening_wealth):
             wealth={a.name: opening_wealth[a.name] for a in members},
             activation_rule="strict majority of all members; ties/invalid votes mean no; no forced final action",
             bid_cost_rate=engine.config.bid_cost_rate,
+            **({"bidding_rule": "fixed", "team_base_bid": engine.config.team_base_bid}
+               if engine.config.team_bid_rule == "fixed" else {}),
         )
         order, messages = list(members), []
         engine.rng.shuffle(order)
@@ -111,7 +113,16 @@ def commit(engine, task, groups, opening_wealth):
         for agent in order:
             reply = engine.ask("round_commit", agent, observation, engine.config.bid_tokens)
             act, amount, reason = reply.get("act"), reply.get("contribution"), reply.get("reason")
-            valid = (type(act) is bool and type(amount) in (int, float) and math.isfinite(amount)
+            fixed = engine.config.team_bid_rule == "fixed"
+            if fixed:
+                consent = reply.get("authorize_base_bid")
+                valid = (type(act) is bool and type(consent) is bool
+                         and isinstance(reason, str) and bool(reason.strip()))
+                act = act is True and consent is True and opening_wealth[agent.name] >= (
+                    engine.config.team_base_bid * engine.config.bid_cost_rate)
+                amount = 0.0
+            else:
+                valid = (type(act) is bool and type(amount) in (int, float) and math.isfinite(amount)
                      and 0 <= amount <= opening_wealth[agent.name]
                      and isinstance(reason, str) and bool(reason.strip()))
             if valid:
@@ -125,6 +136,9 @@ def commit(engine, task, groups, opening_wealth):
         yes = sum(votes[a.name] for a in members)
         active = yes > len(members) / 2
         team_activation[group] = active
+        if engine.config.team_bid_rule == "fixed" and active:
+            for member in members:
+                contributions[member.name] = engine.config.team_base_bid / yes if votes[member.name] else 0.0
         offered = {a.name: contributions[a.name] for a in members}
         if not active:
             for agent in members:

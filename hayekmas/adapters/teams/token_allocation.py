@@ -37,7 +37,7 @@ def control_observation(engine, phase, agent, observation):
         # The preceding private conversation already contained the full task and
         # public work. This call only commits a vote and the member's own money.
         obs = {key: obs[key] for key in ("step", "steps_remaining", "must_finalize", "members", "wealth",
-               "activation_rule", "bid_cost_rate", "you") if key in obs}
+               "activation_rule", "bid_cost_rate", "bidding_rule", "team_base_bid", "you") if key in obs}
         obs["task_id"] = observation["task"]["id"]
         obs["members"] = [{"name": m["name"]} for m in observation["members"]]
         # Include every current member's latest discussion message, with a fair

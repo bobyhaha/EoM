@@ -32,6 +32,7 @@ def configure_agent(engine, agent):
         f"bankruptcy probabilities p_a={cfg.p_a}, p_b={cfg.p_b}; periodic good probability={cfg.periodical_good_p}; "
         f"rent={cfg.rent} every {cfg.rent_interval} training tasks (zero disables)."
     )
+    agent.configure_objective(cfg)
     if cfg.token_profile == "solve_first":
         from .token_allocation import PHASE_REASONING
         agent.phase_reasoning_efforts = dict(PHASE_REASONING)

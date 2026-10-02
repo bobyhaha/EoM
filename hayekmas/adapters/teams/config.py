@@ -11,6 +11,9 @@ class TeamConfig:
     formation_context_tokens: int = 6144
     pledge_context_tokens: int = 3072
     coordination_fee_lambda: float = 0.0
+    objective_mode: str = "society"
+    team_bid_rule: str = "voluntary"
+    team_base_bid: float = 0.1
     condition: str = "dynamic"
     seed: int = 7
     num_agents: int = 12
@@ -51,6 +54,14 @@ class TeamConfig:
     rent_interval: int = 5
 
     def __post_init__(self):
+        if self.objective_mode not in {"society", "wealth"}:
+            raise ValueError("Unknown objective_mode")
+        if self.team_bid_rule not in {"voluntary", "fixed"}:
+            raise ValueError("Unknown team_bid_rule")
+        if type(self.team_base_bid) not in (int, float) or not math.isfinite(self.team_base_bid) or self.team_base_bid <= 0:
+            raise ValueError("team_base_bid must be finite and positive")
+        if self.team_bid_rule == "fixed" and (self.interaction_protocol != "rounds" or self.round_schedule != "compact"):
+            raise ValueError("Fixed team bids require compact rounds")
         if type(self.evolution_enabled) is not bool:
             raise ValueError("evolution_enabled must be boolean")
         if self.evolution_enabled and (self.interaction_protocol != "rounds" or self.condition != "dynamic"):

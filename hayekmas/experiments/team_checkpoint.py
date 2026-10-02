@@ -53,6 +53,7 @@ def load_team(data, config, policy):
         if config.interaction_protocol == "rounds":
             agent.frozen_system_prompt = (agent.COMPACT_ROUND_SYSTEM_PROMPT if config.round_schedule == "compact"
                                          else agent.ROUND_SYSTEM_PROMPT)
+        agent.configure_objective(config)
         if config.token_profile == "solve_first":
             from hayekmas.adapters.teams.token_allocation import PHASE_REASONING
             agent.phase_reasoning_efforts = dict(PHASE_REASONING)
